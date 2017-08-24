@@ -10,6 +10,7 @@
     <name>java-rapidminer</name>
 
     <properties>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <version.jdk>1.8</version.jdk>
         <version.rapidminer>7.0.1</version.rapidminer>
         <version.antlr>4.5</version.antlr>

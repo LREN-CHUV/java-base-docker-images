@@ -30,7 +30,7 @@ Dockerfile
 
   # Repeating the file copy works better. I dunno why.
   RUN cp /usr/share/maven/ref/settings-docker.xml /root/.m2/settings.xml \
-      && mvn assembly:single site
+      && mvn package assembly:single site
 
   FROM hbpmip/java-mip:0.1.0
 
@@ -40,7 +40,7 @@ Dockerfile
   ENV JAVA_MAINCLASS=org.myorg.myalgo.Main
 
   COPY --from=build-java-env /project/target/my-algo-jar-with-dependencies.jar /usr/share/jars/my-algo.jar
-  COPY --from=build-java-env /project/target/site/ /var/www/html/
+  COPY --from=build-java-env /project/target/site/ /var/www/html/docs/
   COPY src/ /src/
 
   RUN chown -R compute:compute /src/ \

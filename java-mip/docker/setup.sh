@@ -39,7 +39,7 @@ GOSU_DOWNLOAD_KEY="0x036A9C25BF357DD4"
 
 # Download and install gosu
 # https://github.com/tianon/gosu/releases
-buildDeps='curl gnupg'
+buildDeps='bash curl gnupg'
 set -x
 apk add --no-cache $buildDeps
 gpg-agent --daemon
@@ -59,11 +59,12 @@ rm -rf /var/cache/apk/*
 apk --no-cache add nginx=1.12.1-r0
 rm -rf /etc/nginx/*.d
 mkdir -p /etc/nginx/addon.d /etc/nginx/conf.d /etc/nginx/host.d /etc/nginx/nginx.d
+usermod -a -G www-data compute
 
 # Create our standard directories:
 #   /data/in : input data should go there
 #   /data/out : output data should go there
 #   /var/www/html : root for the HTML documentation which can be served when the container is executed in serve mode
 mkdir -p /data/in /data/out /var/www/html/ /src
-chown -R compute:compute /data/in /data/out /var/www/html/ /src
-ln -s /var/www/html/ /src
+chown -R compute:compute /data/in /data/out /src
+ln -s /src /var/www/html/sources

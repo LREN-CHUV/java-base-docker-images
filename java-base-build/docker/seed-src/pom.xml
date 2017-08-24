@@ -15,7 +15,6 @@
 
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-    <src.dir>src/main/java</src.dir>
   </properties>
 
   <dependencies>
@@ -29,13 +28,11 @@
 
   <build>
     <finalName>${project.artifactId}</finalName>
-    <sourceDirectory>${src.dir}</sourceDirectory>
     <resources>
       <resource>
-        <directory>${src.dir}</directory>
+        <directory>src/main/resources</directory>
         <includes>
           <include>**/*.properties</include>
-          <include>**/*.sql</include>
         </includes>
         <filtering>false</filtering>
       </resource>
