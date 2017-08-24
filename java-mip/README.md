@@ -1,7 +1,8 @@
+[![DockerHub](https://img.shields.io/badge/docker-hbpmip%2Fjava--mip-008bb8.svg)](https://hub.docker.com/r/hbpmip/java-mip/) [![ImageVersion](https://images.microbadger.com/badges/version/hbpmip/java-mip.svg)](https://hub.docker.com/r/hbpmip/java-mip/tags "hbpmip/java-mip image tags") [![ImageLayers](https://images.microbadger.com/badges/image/hbpmip/java-mip.svg)](https://microbadger.com/#/images/hbpmip/java-mip "hbpmip/java-mip on microbadger")
 
-# Adapt the base Java image to the MIP environment
+# hbpmip/java-mip: Adapt the base Java image to the MIP environment
 
-This image provides a Java environment compatible with MIP and providing the following features:
+This image provides a Java environment compatible with MIP and with the following features:
 
 * The *compute* user is used to run the Java programs
 * Directories /data/in and /data/out are intended to store the incoming files
@@ -15,6 +16,42 @@ This image provides a Java environment compatible with MIP and providing the fol
 * If you run the container with the *export-docs* command and mount /data/out to a local directory,
   the documentation will be copied to that local directory.
 * If you run the container with the *shell* command, an interactive shell will start.
+
+## Usage
+
+Use this image as the parent image to adapt a Java-based algorithm to the MIP platform:
+
+Dockerfile
+```
+  FROM hbpmip/java-base-build:3.5.0-jdk-8-3 as build-java-env
+
+  COPY pom.xml /project/pom.xml
+  COPY src/ /project/src
+
+  # Repeating the file copy works better. I dunno why.
+  RUN cp /usr/share/maven/ref/settings-docker.xml /root/.m2/settings.xml \
+      && mvn assembly:single site
+
+  FROM hbpmip/java-mip:0.1.0
+
+  MAINTAINER <your email>
+
+  ENV JAVA_CLASSPATH=/usr/share/jars/my-algo.jar
+  ENV JAVA_MAINCLASS=org.myorg.myalgo.Main
+
+  COPY --from=build-java-env /project/target/my-algo-jar-with-dependencies.jar /usr/share/jars/my-algo.jar
+  COPY --from=build-java-env /project/target/site/ /var/www/html/
+  COPY src/ /src/
+
+  RUN chown -R compute:compute /src/ \
+      && chown -R root:www-data /var/www/html/
+```
+
+## See also
+
+You may want to use one of the following specialised images for your algorithm instead:
+
+* [hbpmip/java-rapidminer](../java-rapidminer/README.md): for algorithms based on RapidMiner
 
 ## Summary of commands:
 
@@ -33,7 +70,7 @@ This image provides a Java environment compatible with MIP and providing the fol
 * Quick documentation accessible at http://localhost:7777/ and sources at http://localhost:7777/src/
   Stop the server using Ctrl+C from the command line.
   ````
-    docker run -i -t --rm -p 7777:80 <image name> serve
+    docker run -d --rm -p 7777:80 <image name> serve
   ````
 * Export the sources to the ./src directory
   ````

@@ -1,4 +1,4 @@
-[![DockerHub](https://img.shields.io/badge/docker-hbpmip%2Fjava--build--base-008bb8.svg)](https://hub.docker.com/r/hbpmip/java-base-build/) [![ImageVersion](https://images.microbadger.com/badges/version/hbpmip/java-base-build.svg)](https://hub.docker.com/r/hbpmip/java-base-build/tags "hbpmip/java-base-build image tags") [![ImageLayers](https://images.microbadger.com/badges/image/hbpmip/java-base-build.svg)](https://microbadger.com/#/images/hbpmip/java-base-build "hbpmip/java-base-build on microbadger")
+[![DockerHub](https://img.shields.io/badge/docker-hbpmip%2Fjava--base--build-008bb8.svg)](https://hub.docker.com/r/hbpmip/java-base-build/) [![ImageVersion](https://images.microbadger.com/badges/version/hbpmip/java-base-build.svg)](https://hub.docker.com/r/hbpmip/java-base-build/tags "hbpmip/java-base-build image tags") [![ImageLayers](https://images.microbadger.com/badges/image/hbpmip/java-base-build.svg)](https://microbadger.com/#/images/hbpmip/java-base-build "hbpmip/java-base-build on microbadger")
 
 # hbpmip/java-base-build: Java build environment, including Maven
 
