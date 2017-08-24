@@ -1,8 +1,17 @@
+FROM hbpmip/java-base-build:3.5.0-jdk-8-2 as build-java-env
+
+COPY pom.xml /project/pom.xml
+COPY src/ /project/src
+
+# Repeating the file copy works better. I dunno why.
+RUN cp /usr/share/maven/ref/settings-docker.xml /root/.m2/settings.xml \
+    && mvn assembly:single
+
 FROM hbpmip/java-mip:latest
 
 MAINTAINER arnaud@ahead-solutions.ch
 
-ENV JAVA_CLASSPATH=/dist/java-mip.jar
+ENV JAVA_CLASSPATH= /usr/share/jars/java-mip.jar
 ENV JAVA_MAINCLASS=ch.lren.hbpmip.Main
 
-COPY java-mip.jar /dist/java-mip.jar
+COPY --from=build-java-env /project/target/java-mip-jar-with-dependencies.jar /usr/share/jars/java-mip.jar

@@ -23,7 +23,7 @@ RUN mkdir -p /usr/share/maven/ref/repository \
 WORKDIR /project
 
 LABEL org.label-schema.build-date=$BUILD_DATE \
-      org.label-schema.name="hbpmip/java-build-base" \
+      org.label-schema.name="hbpmip/java-base-build" \
       org.label-schema.description="Java build environment, including Maven" \
       org.label-schema.url="https://github.com/LREN-CHUV/java-base-docker-images" \
       org.label-schema.vcs-type="git" \
