@@ -1,4 +1,4 @@
-FROM hbpmip/java-base:8u131-0
+FROM hbpmip/java-base:8u131-1
 
 MAINTAINER arnaud@ahead-solutions.ch
 

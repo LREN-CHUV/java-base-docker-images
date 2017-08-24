@@ -7,7 +7,7 @@ This image contains the base Java Runtime (from [OpenJDK](https://hub.docker.com
 
 Dockerfile
 ```
-  FROM hbpmip/java-base:8u131-0
+  FROM hbpmip/java-base:8u131-1
 
 ```
 
