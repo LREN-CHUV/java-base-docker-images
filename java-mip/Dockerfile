@@ -1,4 +1,4 @@
-FROM hbpmip/java-base-build:3.5.0-jdk-8-1 as build-java-env
+FROM hbpmip/java-base-build:3.5.0-jdk-8-2 as build-java-env
 
 COPY pom.xml /project/pom.xml
 COPY src/ /project/src

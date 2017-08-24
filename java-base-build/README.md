@@ -10,7 +10,7 @@ Use this image as part of a multistage build:
 
 Dockerfile
 ```
-  FROM hbpmip/java-build-base:3.5.0-jdk-8-1 as java-build-env
+  FROM hbpmip/java-build-base:3.5.0-jdk-8-2 as java-build-env
 
   COPY pom.xml /project/
   COPY src/ /project/src/
