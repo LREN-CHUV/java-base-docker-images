@@ -7,7 +7,7 @@ This image contains the Java JDK and Maven 3 (from [Maven image](https://hub.doc
 
 Dockerfile
 ```
-  FROM hbpmip/java-build-base:3.5.0-jdk-8-0
+  FROM hbpmip/java-build-base:3.5.0-jdk-8-1
 
   COPY pom.xml /project/
   COPY src/ /project/src/
