@@ -18,6 +18,7 @@ RUN mkdir -p /usr/share/maven/ref/repository \
         jar:jar \
         package \
         assembly:single \
+        site \
     && rm -rf /seed-src/target
 
 WORKDIR /project

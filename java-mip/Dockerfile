@@ -6,12 +6,14 @@ LABEL eu.humanbrainproject.version=0.2 \
       eu.humanbrainproject.category=Java
 
 COPY docker/setup.sh /usr/local/bin/java-mip-docker-setup
+COPY docker/etc/nginx/ /etc/nginx/
 
 ENV COMPUTE_IN=/data/in \
     COMPUTE_OUT=/data/out \
     COMPUTE_TMP=/tmp \
     ERROR_FILE=/data/out/errors.txt \
     OUTPUT_FILE=/data/out/output.txt \
+    RESULT_TABLE=job_result \
     SRC=/src
 
 RUN /usr/local/bin/java-mip-docker-setup
