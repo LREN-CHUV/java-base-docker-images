@@ -32,7 +32,7 @@ mkdir /home/compute
 chown compute:compute /home/compute
 
 # Grab gosu for easy step-down from root
-GOSU_VERSION=1.7
+GOSU_VERSION=1.10
 GOSU_DOWNLOAD_URL="https://github.com/tianon/gosu/releases/download/$GOSU_VERSION/gosu-amd64"
 GOSU_DOWNLOAD_SIG="https://github.com/tianon/gosu/releases/download/$GOSU_VERSION/gosu-amd64.asc"
 GOSU_DOWNLOAD_KEY="0x036A9C25BF357DD4"
@@ -56,7 +56,7 @@ rm -rf /root/.gnupg
 rm -rf /var/cache/apk/*
 
 # Install nginx to be able to serve content from this container
-apk --no-cache add nginx=1.12.0-r2
+apk --no-cache add nginx=1.12.1-r0
 rm -rf /etc/nginx/*.d
 mkdir -p /etc/nginx/addon.d /etc/nginx/conf.d /etc/nginx/host.d /etc/nginx/nginx.d
 

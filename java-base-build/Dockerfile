@@ -17,6 +17,7 @@ RUN mkdir -p /usr/share/maven/ref/repository \
         surefire:test \
         jar:jar \
         package \
+        assembly:single \
     && rm -rf /seed-src/target
 
 WORKDIR /project
