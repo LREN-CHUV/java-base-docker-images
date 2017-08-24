@@ -1,7 +1,7 @@
 
 # hbpmip/java-base: Base image for Java programs
 
-This image contains the base Java Runtime (from [OpenJDK](https://hub.docker.com/r/_/openjdk/))
+This image contains the base Java Runtime (from [OpenJDK image](https://hub.docker.com/r/_/openjdk/))
 
 ## Usage
 
