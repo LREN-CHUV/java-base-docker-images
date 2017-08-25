@@ -5,7 +5,10 @@ COPY src/ /project/src
 
 # Repeating the file copy works better. I dunno why.
 RUN cp /usr/share/maven/ref/settings-docker.xml /root/.m2/settings.xml \
-    && mvn package assembly:single site
+    && mvn package
+
+RUN cp /usr/share/maven/ref/settings-docker.xml /root/.m2/settings.xml \
+    && mvn assembly:single site
 
 FROM hbpmip/java-mip:0.2.1
 
