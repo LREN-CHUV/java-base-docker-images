@@ -12,7 +12,7 @@
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <version.jdk>1.8</version.jdk>
-        <version.rapidminer>7.0.1</version.rapidminer>
+        <version.rapidminer>7.6.1</version.rapidminer>
         <version.antlr>4.5</version.antlr>
         <surefire.version>2.19.1</surefire.version>
     </properties>
@@ -46,7 +46,7 @@
         <dependency>
             <groupId>com.opendatagroup</groupId>
             <artifactId>hadrian</artifactId>
-            <version>0.8.3</version>
+            <version>0.8.4</version>
             <scope>test</scope>
         </dependency>
 
