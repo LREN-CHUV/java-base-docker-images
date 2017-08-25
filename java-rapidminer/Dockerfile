@@ -7,7 +7,7 @@ COPY src/ /project/src
 RUN cp /usr/share/maven/ref/settings-docker.xml /root/.m2/settings.xml \
     && mvn package assembly:single site
 
-FROM hbpmip/java-mip:0.2.0
+FROM hbpmip/java-mip:0.2.1
 
 MAINTAINER arnaud@ahead-solutions.ch
 
