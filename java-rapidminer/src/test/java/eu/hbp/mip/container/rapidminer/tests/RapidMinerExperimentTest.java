@@ -127,7 +127,7 @@ public class RapidMinerExperimentTest {
 		experiment.run();
 
 		System.out.println(experiment.toRMP());
-		System.out.println(experiment.toPFA());
+		System.out.println(experiment.toPrettyPFA());
 		assertTrue(!experiment.toPFA().contains("error"));
 	}
 
@@ -156,7 +156,7 @@ public class RapidMinerExperimentTest {
 		experiment.run();
 
 		System.out.println(experiment.toRMP());
-		System.out.println(experiment.toPFA());
+		System.out.println(experiment.toPrettyPFA());
 		assertTrue(!experiment.toPFA().contains("error"));
 	}
 }

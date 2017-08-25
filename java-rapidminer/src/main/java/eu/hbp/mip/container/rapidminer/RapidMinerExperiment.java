@@ -109,9 +109,7 @@ public class RapidMinerExperiment {
 
         } catch (OperatorCreationException | OperatorException | ClassCastException ex) {
             this.exception = new RapidMinerException(ex);
-        } catch (DBException ex) {
-            this.exception = ex;
-        } catch (RapidMinerException ex) {
+        } catch (DBException | RapidMinerException ex) {
             this.exception = ex;
         }
     }
@@ -152,6 +150,20 @@ public class RapidMinerExperiment {
         module.addSerializer(RapidMinerExperiment.class, new RapidMinerExperimentSerializer());
         myObjectMapper.registerModule(module);
         return myObjectMapper.writeValueAsString(this);
+    }
+
+    /**
+     * Generate the PFA representation of the experiment outcome
+     *
+     * @return
+     * @throws IOException
+     */
+    public String toPrettyPFA() throws IOException {
+        ObjectMapper myObjectMapper = new ObjectMapper();
+        SimpleModule module = new SimpleModule("RapidMiner", new Version(1, 0, 0, null, null, null));
+        module.addSerializer(RapidMinerExperiment.class, new RapidMinerExperimentSerializer());
+        myObjectMapper.registerModule(module);
+        return myObjectMapper.writerWithDefaultPrettyPrinter().writeValueAsString(this);
     }
 
     /**
