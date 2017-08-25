@@ -21,6 +21,7 @@
     <install.plugin.version>2.5.2</install.plugin.version>
     <surefire.plugin.version>2.20</surefire.plugin.version>
     <assembly.plugin.version>3.1.0</assembly.plugin.version>
+    <shade.plugin.version>3.1.0</shade.plugin.version>
     <site.plugin.version>3.6</site.plugin.version>
     <info.reports.plugin.version>2.9</info.reports.plugin.version>
     <surefire.report.plugin.version>2.20</surefire.report.plugin.version>
@@ -88,6 +89,19 @@
                   <descriptorRef>jar-with-dependencies</descriptorRef>
               </descriptorRefs>
           </configuration>
+      </plugin>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-shade-plugin</artifactId>
+        <version>${shade.plugin.version}</version>
+        <executions>
+          <execution>
+            <phase>package</phase>
+            <goals>
+              <goal>shade</goal>
+            </goals>
+          </executions>
+        </plugin>
       </plugin>
       <plugin>
           <groupId>org.apache.maven.plugins</groupId>

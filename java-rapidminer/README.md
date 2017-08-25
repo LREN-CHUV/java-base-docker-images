@@ -9,6 +9,35 @@ For the moment only classification algorithms...
 It can run any RapidMiner experiments (based on classifier) as long as the .rmp template is present
 in the data/in/template volume folder
 
+## Usage
+
+Use this image as the parent image to adapt a RapidMiner algorithm to the MIP platform:
+
+Dockerfile
+```
+  FROM hbpmip/java-base-build:3.5.0-jdk-8-6 as build-java-env
+
+  COPY pom.xml /project/pom.xml
+  COPY src/ /project/src
+
+  # Repeating the file copy works better. I dunno why.
+  RUN cp /usr/share/maven/ref/settings-docker.xml /root/.m2/settings.xml \
+      && mvn package assembly:single site
+
+  FROM hbpmip/java-rapidminer:0.2.0
+
+  MAINTAINER <your email>
+
+  ENV JAVA_CLASSPATH=${JAVA_CLASSPATH}:/usr/share/jars/my-algo.jar
+  ENV JAVA_MAINCLASS=org.myorg.myalgo.Main
+
+  COPY --from=build-java-env /project/target/my-algo-jar-with-dependencies.jar /usr/share/jars/my-algo.jar
+  COPY --from=build-java-env /project/target/site/ /var/www/html/
+  COPY src/ /src/
+
+  RUN chown -R compute:compute /src/ \
+      && chown -R root:www-data /var/www/html/
+```
 
 # TODO
 0) Parse the RapidMiner experiment template name from the algorithm field of the JSON input...

@@ -37,7 +37,8 @@ fi
 # Build
 echo "Build the project..."
 ./build.sh
-./tests/test.sh
+# Cannot run the integration test now as the jar needs to be deployed to BinTray first
+# ./tests/test.sh
 echo "[ok] Done"
 
 count=$(git status --porcelain | wc -l)
@@ -96,9 +97,11 @@ echo "Build the project for distribution..."
 ./build.sh
 # Extract the jar from the Docker image and publish it to BinTray first to be able to execute the tests
 $DOCKER run -d --rm --name java-rapidminer-published hbpmip/java-rapidminer:latest serve
-$DOCKER container cp java-rapidminer-published:/usr/share/jars/java-rapidminer.jar target/java-rapidminer.jar
+$DOCKER container cp java-rapidminer-published:/usr/share/jars/mip-rapidminer.jar target/mip-rapidminer-for-deploy.jar
 $DOCKER rm -f java-rapidminer-published
-mvn deploy
+mvn deploy:deploy-file \
+  "-Durl=https://api.bintray.com/maven/hbpmedical/maven/eu.hbp.mip.container:mip-rapidminer/;publish=1" \
+   -DrepositoryId=bintray-hbpmedical-mip -Dfile=target/mip-rapidminer-for-deploy.jar -DpomFile=pom.xml
 
 ./tests/test.sh
 echo "[ok] Done"
@@ -113,7 +116,6 @@ BUILD_DATE=$(date -Iseconds) \
   VERSION=$updated_version \
   WORKSPACE=$WORKSPACE \
   $CAPTAIN push target_image --branch-tags=false --commit-tags=false --tag $updated_version
-
 
 # Notify on slack
 sed "s/USER/${USER^}/" $WORKSPACE/slack.json > $WORKSPACE/.slack.json
