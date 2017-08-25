@@ -11,10 +11,11 @@ FROM hbpmip/java-mip:0.2.1
 
 MAINTAINER arnaud@ahead-solutions.ch
 
-ENV JAVA_CLASSPATH=/usr/share/jars/java-rapidminer.jar
+ENV JAVA_CLASSPATH=/usr/share/jars/java-rapidminer-deps.jar
 ENV JAVA_MAINCLASS=eu.hbp.mip.container.rapidminer.Main
 
-COPY --from=build-java-env /project/target/java-rapidminer-jar-with-dependencies.jar /usr/share/jars/java-rapidminer.jar
+COPY --from=build-java-env /project/target/java-rapidminer.jar /usr/share/jars/java-rapidminer.jar
+COPY --from=build-java-env /project/target/java-rapidminer-jar-with-dependencies.jar /usr/share/jars/java-rapidminer-deps.jar
 COPY --from=build-java-env /project/target/site/ /var/www/html/docs/
 COPY src/ /src/
 

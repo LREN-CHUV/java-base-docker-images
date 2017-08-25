@@ -16,49 +16,42 @@ get_script_dir () {
      pwd
 }
 
-ROOT_DIR="$(get_script_dir)/../../.."
+cd "$(get_script_dir)"
 
-echo "Starting the results database..."
-$ROOT_DIR/tests/analytics-db/start-db.sh
-echo
-echo "Starting the local database..."
-$ROOT_DIR/tests/dummy-ldsm/start-db.sh
-echo
+if [[ $NO_SUDO || -n "$CIRCLECI" ]]; then
+  DOCKER_COMPOSE="docker-compose"
+elif groups $USER | grep &>/dev/null '\bdocker\b'; then
+  DOCKER_COMPOSE="docker-compose"
+else
+  DOCKER_COMPOSE="sudo docker-compose"
+fi
 
 function _cleanup() {
   local error_code="$?"
-  echo "Stopping the databases..."
-  $ROOT_DIR/tests/analytics-db/stop-db.sh
-  $ROOT_DIR/tests/dummy-ldsm/stop-db.sh
+  echo "Stopping the containers..."
+  $DOCKER_COMPOSE stop
+  $DOCKER_COMPOSE down
+  $DOCKER_COMPOSE rm -f > /dev/null 2> /dev/null
   exit $error_code
 }
 trap _cleanup EXIT INT TERM
 
-sleep 2
+echo "Starting the databases..."
+$DOCKER_COMPOSE up -d it_db
+echo "Build Docker images while databases are starting..."
+$DOCKER_COMPOSE build java_rapidminer_test
+$DOCKER_COMPOSE run wait_dbs
+$DOCKER_COMPOSE run create_dbs
 
-if groups $USER | grep &>/dev/null '\bdocker\b'; then
-  DOCKER="docker"
-else
-  DOCKER="sudo docker"
-fi
+echo
+echo "Initialise the databases..."
+$DOCKER_COMPOSE run sample_data_db_setup
+$DOCKER_COMPOSE run woken_db_setup
 
- $DOCKER run --rm $OPTS \
-    -v ~/.m2:/root/.m2 \
-   --link dummyldsm:indb \
-   --link analyticsdb:outdb \
-   -e NODE=job_test \
-   -e IN_JDBC_DRIVER=org.postgresql.Driver \
-   -e IN_JDBC_URL=jdbc:postgresql://indb:5432/postgres \
-   -e IN_JDBC_USER=postgres \
-   -e IN_JDBC_PASSWORD=test \
-   -e OUT_JDBC_DRIVER=org.postgresql.Driver \
-   -e OUT_JDBC_URL=jdbc:postgresql://outdb:5432/postgres \
-   -e OUT_JDBC_USER=postgres \
-   -e OUT_JDBC_PASSWORD=test \
-   -e RESULT_TABLE=job_result \
-   -e OUT_FORMAT=INTERMEDIATE_RESULTS \
-   -e PARAM_query="select prov, left_amygdala, right_poparoper from brain" \
-   -e PARAM_variables=prov \
-   -e PARAM_covariables=left_amygdala,right_poparoper \
-   -e PARAM_grouping= \
-   hbpmip/java-rapidminer-build mvn -f /dist test
+echo
+echo "Run the test java-mip job..."
+$DOCKER_COMPOSE run java_rapidminer_test compute
+
+echo
+# Cleanup
+ _cleanup

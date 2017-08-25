@@ -25,10 +25,13 @@ fi
 
 if [ $NO_SUDO ]; then
   CAPTAIN="captain"
+  DOCKER="docker"
 elif groups $USER | grep &>/dev/null '\bdocker\b'; then
   CAPTAIN="captain"
+  DOCKER="docker"
 else
   CAPTAIN="sudo captain"
+  DOCKER="sudo docker"
 fi
 
 # Build
@@ -91,6 +94,12 @@ updated_version=$(bumpversion --dry-run --list patch | grep current_version | se
 # Build again to update the version
 echo "Build the project for distribution..."
 ./build.sh
+# Extract the jar from the Docker image and publish it to BinTray first to be able to execute the tests
+$DOCKER run -d --rm --name java-rapidminer-published hbpmip/java-rapidminer:latest serve
+$DOCKER container cp java-rapidminer-published:/usr/share/jars/java-rapidminer.jar target/java-rapidminer.jar
+$DOCKER rm -f java-rapidminer-published
+mvn deploy
+
 ./tests/test.sh
 echo "[ok] Done"
 
@@ -104,6 +113,7 @@ BUILD_DATE=$(date -Iseconds) \
   VERSION=$updated_version \
   WORKSPACE=$WORKSPACE \
   $CAPTAIN push target_image --branch-tags=false --commit-tags=false --tag $updated_version
+
 
 # Notify on slack
 sed "s/USER/${USER^}/" $WORKSPACE/slack.json > $WORKSPACE/.slack.json

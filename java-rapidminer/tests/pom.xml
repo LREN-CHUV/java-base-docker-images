@@ -3,11 +3,11 @@
 
   <modelVersion>4.0.0</modelVersion>
 
-  <groupId>eu.hbp.mip.container</groupId>
-  <artifactId>java-rapidminer</artifactId>
+  <groupId>ch.lren.hbpmip</groupId>
+  <artifactId>java-mip</artifactId>
   <packaging>jar</packaging>
-  <version>0.2.0</version>
-  <name>java-rapidminer</name>
+  <version>0.0.1</version>
+  <name>java-mip</name>
 
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -45,22 +45,23 @@
       <name>Repository for RapidMiner</name>
     </repository>
 
+    <repository>
+      <snapshots>
+        <enabled>false</enabled>
+      </snapshots>
+      <id>bintray-hbpmedical-mip</id>
+      <name>bintray</name>
+      <url>http://dl.bintray.com/hbpmedical/mip</url>
+    </repository>
+
   </repositories>
 
   <dependencies>
 
     <dependency>
-      <groupId>junit</groupId>
-      <artifactId>junit</artifactId>
-      <version>4.9</version>
-      <scope>test</scope>
-    </dependency>
-
-    <dependency>
       <groupId>com.opendatagroup</groupId>
       <artifactId>hadrian</artifactId>
       <version>0.8.4</version>
-      <scope>test</scope>
     </dependency>
 
     <dependency>
@@ -79,24 +80,6 @@
       <groupId>com.rapidminer.external</groupId>
       <artifactId>vldocking</artifactId>
       <version>1.1.0</version>
-    </dependency>
-
-    <dependency>
-      <groupId>net.sourceforge.jexcelapi</groupId>
-      <artifactId>jxl</artifactId>
-      <version>2.6.12</version>
-    </dependency>
-
-    <dependency>
-      <groupId>org.apache.poi</groupId>
-      <artifactId>poi-ooxml</artifactId>
-      <version>3.10-FINAL</version>
-    </dependency>
-
-    <dependency>
-      <groupId>org.apache.poi</groupId>
-      <artifactId>poi-scratchpad</artifactId>
-      <version>3.10-FINAL</version>
     </dependency>
 
     <dependency>
@@ -133,6 +116,13 @@
       <groupId>com.fasterxml.jackson.core</groupId>
       <artifactId>jackson-annotations</artifactId>
       <version>2.7.0</version>
+    </dependency>
+
+    <dependency>
+      <groupId>junit</groupId>
+      <artifactId>junit</artifactId>
+      <version>4.9</version>
+      <scope>test</scope>
     </dependency>
 
   </dependencies>
@@ -212,13 +202,5 @@
       </plugin>
     </plugins>
   </reporting>
-
-  <distributionManagement>
-    <repository>
-      <id>bintray-hbpmedical-mip</id>
-      <name>hbpmedical-mip</name>
-      <url>https://api.bintray.com/maven/hbpmedical/mip/eu.hbp.mip.container/;publish=1</url>
-    </repository>
-  </distributionManagement>
 
 </project>
