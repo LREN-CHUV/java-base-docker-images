@@ -23,7 +23,7 @@ Use this image as the parent image to adapt a Java-based algorithm to the MIP pl
 
 Dockerfile
 ```
-  FROM hbpmip/java-base-build:3.5.0-jdk-8-5 as build-java-env
+  FROM hbpmip/java-base-build:3.5.0-jdk-8-6 as build-java-env
 
   COPY pom.xml /project/pom.xml
   COPY src/ /project/src
