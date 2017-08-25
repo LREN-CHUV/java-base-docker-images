@@ -40,7 +40,7 @@ Dockerfile
   ENV JAVA_MAINCLASS=org.myorg.myalgo.Main
 
   COPY --from=build-java-env /project/target/my-algo-jar-with-dependencies.jar /usr/share/jars/my-algo.jar
-  COPY --from=build-java-env /project/target/site/ /var/www/html/docs/
+  COPY --from=build-java-env /project/target/site/ /var/www/html/
   COPY src/ /src/
 
   RUN chown -R compute:compute /src/ \

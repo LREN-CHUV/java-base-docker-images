@@ -67,4 +67,4 @@ usermod -a -G www-data compute
 #   /var/www/html : root for the HTML documentation which can be served when the container is executed in serve mode
 mkdir -p /data/in /data/out /var/www/html/ /src
 chown -R compute:compute /data/in /data/out /src
-ln -s /src /var/www/html/sources
+chown -R root:www-data /var/www/html/
