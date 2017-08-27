@@ -76,9 +76,5 @@ services:
       - OUT_JDBC_USER=woken
       - OUT_JDBC_PASSWORD=woken
       - OUT_FORMAT=INTERMEDIATE_RESULTS
-      - PARAM_query="select prov, left_amygdala, right_poparoper from brain"
-      - PARAM_variables=prov
-      - PARAM_covariables="left_amygdala,right_poparoper"
-      - PARAM_grouping=""
     links:
       - "it_db:db"
