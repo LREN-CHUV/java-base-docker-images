@@ -17,8 +17,7 @@ ENV JAVA_MAINCLASS=eu.hbp.mip.container.rapidminer.Main
 COPY --from=build-java-env /usr/share/maven/ref/repository/org/postgresql/postgresql/9.4.1212.jre7/postgresql-9.4.1212.jre7.jar /usr/share/jars/postgres-9.4.jar
 COPY --from=build-java-env /project/target/mip-rapidminer.jar /usr/share/jars/mip-rapidminer.jar
 COPY --from=build-java-env /project/target/mip-rapidminer-deps.jar /usr/share/jars/mip-rapidminer-deps.jar
-COPY --from=build-java-env /project/target/site/ /var/www/html/docs/
-COPY src/ /src/
+COPY --from=build-java-env /project/target/site/ /mip/java-rapidminer/docs/
+COPY src/ /mip/java-rapidminer/src/
 
-RUN chown -R compute:compute /src/ \
-    && chown -R root:www-data /var/www/html/
+RUN chown -R compute:compute /mip/

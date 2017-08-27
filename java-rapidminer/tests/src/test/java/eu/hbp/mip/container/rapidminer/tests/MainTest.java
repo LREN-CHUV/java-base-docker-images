@@ -25,9 +25,9 @@ public class MainTest {
 		String jobId = "001";
 
 		System.setProperty("JOB_ID", jobId);
-		System.setProperty("PARAM_query", "select prov, left_amygdala, right_poparoper from brain");
-		System.setProperty("PARAM_variables", "prov");
-		System.setProperty("PARAM_covariables", "left_amygdala,right_poparoper");
+		System.setProperty("PARAM_query", "select iq, response_time_task2 from sample_data");
+		System.setProperty("PARAM_variables", "response_time_task2");
+		System.setProperty("PARAM_covariables", "iq");
 		System.setProperty("PARAM_grouping", "");
 
 		System.setProperty("PARAM_MODEL_method", "mode");
@@ -54,9 +54,9 @@ public class MainTest {
 		String jobId = "002";
 
 		System.setProperty("JOB_ID", jobId);
-		System.setProperty("PARAM_query", "select prov, left_amygdala, right_poparoper from brain");
-		System.setProperty("PARAM_variables", "prov");
-		System.setProperty("PARAM_covariables", "left_amygdala,right_poparoper");
+		System.setProperty("PARAM_query", "select iq, response_time_task2, college_math from sample_data");
+		System.setProperty("PARAM_variables", "response_time_task2");
+		System.setProperty("PARAM_covariables", "iq,college_math");
 		System.setProperty("PARAM_grouping", "");
 
 		System.setProperty("PARAM_MODEL_method", "mode");
@@ -76,14 +76,14 @@ public class MainTest {
 	@Test
 	public void testMain3() throws DBException {
 
-		System.out.println("We can perform regression with one variable and two covariables");
+		System.out.println("We can perform regression with two variables and three covariables");
 
 		String jobId = "003";
 
 		System.setProperty("JOB_ID", jobId);
-		System.setProperty("PARAM_query", "select prov, left_amygdala, right_poparoper from brain");
-		System.setProperty("PARAM_variables", "left_amygdala");
-		System.setProperty("PARAM_covariables", "prov,right_poparoper");
+		System.setProperty("PARAM_query", "select iq, response_time_task2, college_math, score_test1, cognitive_task2 from sample_data");
+		System.setProperty("PARAM_variables", "response_time_task2,score_test1");
+		System.setProperty("PARAM_covariables", "iq,college_math,cognitive_task2");
 		System.setProperty("PARAM_grouping", "");
 
 		System.setProperty("PARAM_MODEL_method", "median");
@@ -108,9 +108,9 @@ public class MainTest {
 		String jobId = "004";
 
 		System.setProperty("JOB_ID", jobId);
-		System.setProperty("PARAM_query", "select prov, left_amygdala, right_poparoper from brain");
-		System.setProperty("PARAM_variables", "prov");
-		System.setProperty("PARAM_covariables", "left_amygdala,right_poparoper");
+		System.setProperty("PARAM_query", "select iq, response_time_task2, college_math from sample_data");
+		System.setProperty("PARAM_variables", "response_time_task2");
+		System.setProperty("PARAM_covariables", "iq,college_math");
 		System.setProperty("PARAM_grouping", "");
 
 		System.setProperty("PARAM_MODEL_method", "mode");

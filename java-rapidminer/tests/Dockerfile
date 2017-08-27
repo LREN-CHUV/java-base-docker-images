@@ -2,7 +2,9 @@ FROM hbpmip/java-base-build:3.5.0-jdk-8-6
 
 COPY pom.xml /project/pom.xml
 COPY src/ /project/src
+COPY docker/run-tests.sh /
 
-# Repeating the file copy works better. I dunno why.
-RUN cp /usr/share/maven/ref/settings-docker.xml /root/.m2/settings.xml \
-    && mvn test
+RUN chmod a+rx /run-tests.sh \
+    && mkdir -p /root/.RapidMiner
+
+ENTRYPOINT ["/run-tests.sh"]
