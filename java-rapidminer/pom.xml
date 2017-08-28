@@ -6,7 +6,7 @@
   <groupId>eu.hbp.mip.container</groupId>
   <artifactId>mip-rapidminer</artifactId>
   <packaging>jar</packaging>
-  <version>0.3.2</version><!-- bumpversion -->
+  <version>0.3.3</version><!-- bumpversion -->
   <name>mip-rapidminer</name>
 
   <properties>
