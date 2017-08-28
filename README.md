@@ -21,4 +21,5 @@ This image provides a Java environment compatible with MIP and with the followin
 
 Run Rapidminer algorithms (experiments) in MIP platform.
 
-## hbpmip/java-base-build
+## hbpmip/scala-base-build
+
