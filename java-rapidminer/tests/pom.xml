@@ -61,7 +61,7 @@
     <dependency>
       <groupId>eu.hbp.mip.container</groupId>
       <artifactId>mip-rapidminer</artifactId>
-      <version>0.3.0</version><!-- bumpversion -->
+      <version>0.3.1</version><!-- bumpversion -->
     </dependency>
 
     <dependency>
