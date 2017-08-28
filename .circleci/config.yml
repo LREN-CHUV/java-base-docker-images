@@ -24,7 +24,7 @@ jobs:
       - run:
           name: "Build java-base"
           command: |
-            PATH=$PATH:/$HOME/.captain/bin/ .java-base/build.sh
+            PATH=$PATH:/$HOME/.captain/bin/ ./java-base/build.sh
       - run:
           name: "Test java-base"
           command: |
@@ -32,7 +32,7 @@ jobs:
       - run:
           name: "Build java-base-build"
           command: |
-            PATH=$PATH:/$HOME/.captain/bin/ .java-base-build/build.sh
+            PATH=$PATH:/$HOME/.captain/bin/ ./java-base-build/build.sh
       - run:
           name: "Test java-base-build"
           command: |
@@ -40,7 +40,7 @@ jobs:
       - run:
           name: "Build java-mip"
           command: |
-            PATH=$PATH:/$HOME/.captain/bin/ .java-mip/build.sh
+            PATH=$PATH:/$HOME/.captain/bin/ ./java-mip/build.sh
       - run:
           name: "Test java-mip"
           command: |
@@ -48,7 +48,7 @@ jobs:
       - run:
           name: "Build java-rapidminer"
           command: |
-            PATH=$PATH:/$HOME/.captain/bin/ .java-rapidminer/build.sh
+            PATH=$PATH:/$HOME/.captain/bin/ ./java-rapidminer/build.sh
       - run:
           name: "Test java-rapidminer"
           command: |
