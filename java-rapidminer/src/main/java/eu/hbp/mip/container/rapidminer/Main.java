@@ -30,7 +30,9 @@ public class Main {
 			String pfa = experiment.toPFA();
 			DBConnector.saveResults(experiment);
 
-		} catch (ClassNotFoundException | InstantiationException | IllegalAccessException |
+		} catch (ClassNotFoundException e) {
+			System.err.println(e.getMessage());
+		} catch (InstantiationException | IllegalAccessException |
 				IOException | DBException | ClassCastException e) {
 			e.printStackTrace();
 		}

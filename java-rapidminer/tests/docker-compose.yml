@@ -75,6 +75,5 @@ services:
       - OUT_JDBC_URL=jdbc:postgresql://db:5432/woken
       - OUT_JDBC_USER=woken
       - OUT_JDBC_PASSWORD=woken
-      - OUT_FORMAT=INTERMEDIATE_RESULTS
     links:
       - "it_db:db"
