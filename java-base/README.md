@@ -11,8 +11,3 @@ Dockerfile
   FROM hbpmip/java-base:8u131-1
 
 ```
-
-
-* hbpmip/java-base-build
-
-Image to use to build a Java project. Contains the JDK and Maven 3.
