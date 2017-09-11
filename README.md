@@ -13,6 +13,8 @@ This image contains the base Java Runtime (from [OpenJDK image](https://hub.dock
 
 This image contains the Java JDK and Maven 3 (from [Maven image](https://hub.docker.com/r/_/maven/))
 
+Use it to build Java projects.
+
 ## [hbpmip/java-mip](./java-mip/): Adapt the base Java image to the MIP environment
 
 This image provides a Java environment compatible with MIP and with the following features:
@@ -23,3 +25,6 @@ Run Rapidminer algorithms (experiments) in MIP platform.
 
 ## hbpmip/scala-base-build
 
+This image contains [Scala](https://www.scala-lang.org/) and [sbt](http://www.scala-sbt.org/)
+
+Use it to build Scala projects.

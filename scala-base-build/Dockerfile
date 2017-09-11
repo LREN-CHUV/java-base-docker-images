@@ -9,33 +9,37 @@ FROM hbpmip/java-base-build:3.5.0-jdk-8-7
 
 MAINTAINER Arnaud Jutzeler <arnaud.jutzeler@chuv.ch>
 
-ENV SCALA_VERSION 2.11.7
-ENV SBT_VERSION 0.13.15
+ENV SCALA_VERSION 2.11.8
+ENV SBT_VERSION 0.13.16
+
+# Install sbt dependencies
+RUN apk add --no-cache ncurses
 
 # Install sbt
 RUN \
-  curl -L -o sbt-$SBT_VERSION.deb http://dl.bintray.com/sbt/debian/sbt-$SBT_VERSION.deb && \
-  dpkg -i sbt-$SBT_VERSION.deb && \
-  rm sbt-$SBT_VERSION.deb && \
-  apt-get update && \
-  apt-get install sbt && \
-  sbt sbtVersion
-
-# Create a user with id 1000, with some luck it should match your user on the host machine.
-RUN adduser --quiet --uid 1000 build
-USER build
+  curl -L -o sbt-$SBT_VERSION.tgz https://cocl.us/sbt-$SBT_VERSION.tgz && \
+  mkdir -p /opt /usr/share/sbt/ref /usr/share/ivy/ref/repository && \
+  tar -x -v -z -C /opt -f sbt-$SBT_VERSION.tgz && \
+  rm sbt-$SBT_VERSION.tgz && \
+  ln -s /opt/sbt/bin/sbt /usr/local/bin
 
 # Install Scala
 ## Piping curl directly in tar
 RUN \
-  curl -fsL http://downloads.typesafe.com/scala/$SCALA_VERSION/scala-$SCALA_VERSION.tgz | tar xfz - -C /home/build/ && \
-  echo >> /home/build/.bashrc && \
-  echo 'export PATH=~/scala-$SCALA_VERSION/bin:$PATH' >> /home/build/.bashrc && \
-  chown build:build /home/build/.bashrc
+  curl -fsL http://downloads.typesafe.com/scala/$SCALA_VERSION/scala-$SCALA_VERSION.tgz | tar xfz - -C /opt/ && \
+  echo >> /root/.bashrc && \
+  echo 'export PATH=~/scala-$SCALA_VERSION/bin:$PATH' >> /root/.bashrc
 
-COPY build-in-docker.sh /
+RUN sbt sbtVersion
+
+WORKDIR /seed
+
+COPY docker/build.sbt /seed/
+COPY docker/project/ /seed/project/
+COPY docker/src/ /seed/src/
+
+RUN sbt about
+RUN sbt compile && rm -rf /seed/target
 
 # Define working directory
 WORKDIR /build
-
-ENTRYPOINT ["/build-in-docker.sh"]

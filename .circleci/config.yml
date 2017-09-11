@@ -53,3 +53,11 @@ jobs:
           name: "Test java-rapidminer"
           command: |
             PATH=$PATH:/$HOME/.captain/bin/ ./java-rapidminer/tests/test.sh
+      - run:
+          name: "Build scala-base-build"
+          command: |
+            PATH=$PATH:/$HOME/.captain/bin/ ./scala-base-build/build.sh
+      - run:
+          name: "Test scala-base-build"
+          command: |
+            PATH=$PATH:/$HOME/.captain/bin/ ./scala-base-build/tests/test.sh
