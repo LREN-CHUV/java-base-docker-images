@@ -21,6 +21,6 @@ Dockerfile
 
   FROM hbpmip/java-base:8u131-1
 
-  COPY --from=build-java-env /project/target/my-project.jar /usr/share/jars/
+  COPY --from=java-build-env /project/target/my-project.jar /usr/share/jars/
 
 ```
