@@ -100,8 +100,8 @@
             <goals>
               <goal>shade</goal>
             </goals>
-          </executions>
-        </plugin>
+          </execution>
+        </executions>
       </plugin>
       <plugin>
           <groupId>org.apache.maven.plugins</groupId>
