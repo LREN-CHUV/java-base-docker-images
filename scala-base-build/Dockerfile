@@ -1,5 +1,5 @@
 # Pull base image
-FROM hbpmip/java-base-build:3.5.0-jdk-8-6
+FROM hbpmip/java-base-build:3.5.0-jdk-8-7
 
 #
 # Scala and sbt Dockerfile
