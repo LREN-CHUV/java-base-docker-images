@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 
 if [[ $NO_SUDO || -n "$CIRCLECI" ]]; then
   DOCKER="docker"
