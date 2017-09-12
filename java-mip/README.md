@@ -38,6 +38,7 @@ Dockerfile
 
   ENV JAVA_CLASSPATH=/usr/share/jars/my-algo.jar
   ENV JAVA_MAINCLASS=org.myorg.myalgo.Main
+  ENV JAVA_ARGS=--verbose
 
   COPY --from=build-java-env /project/target/my-algo-jar-with-dependencies.jar /usr/share/jars/my-algo.jar
   COPY --from=build-java-env /project/target/site/ /var/www/html/
@@ -87,4 +88,6 @@ You may want to use one of the following specialised images for your algorithm i
 * COMPUTE_OUT: the output directory to use to store the output files
 * COMPUTE_TMP: the directory to use to store temporary files
 * SRC: the directory containing the sources
-* JAR_PATH: the path to the executable jar
+* JAVA_CLASSPATH: the Java classpath
+* JAVA_MAINCLASS: the main class of the Java application
+* JAVA_ARGS: arguments to pass to the main class

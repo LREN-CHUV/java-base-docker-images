@@ -211,12 +211,17 @@
               <transformers>
                 <transformer implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">
                   <manifestEntries>
-                    <X-Compile-Source-JDK>${maven.compile.source}</X-Compile-Source-JDK>
-                    <X-Compile-Target-JDK>${maven.compile.target}</X-Compile-Target-JDK>
+                    <Main-Class>eu.hbp.mip.container.rapidminer.Main</Main-Class>
+                    <X-Compile-Source-JDK>${jdk.version}</X-Compile-Source-JDK>
+                    <X-Compile-Target-JDK>${jdk.version}</X-Compile-Target-JDK>
                   </manifestEntries>
                 </transformer>
                 <transformer implementation="org.apache.maven.plugins.shade.resource.DontIncludeResourceTransformer">
-                  <resource>META-INF/JARSIGN_.SF</resource>
+                  <resources>
+                    <resource>.SF</resource>
+                    <resource>.DSA</resource>
+                    <resource>.RSA</resource>
+                  </resources>
                 </transformer>
               </transformers>
               <artifactSet>
@@ -227,7 +232,6 @@
                   <exclude>org.swinglabs.swingx:*</exclude>
                   <exclude>com.thoughtworks.xstream:*</exclude>
                   <exclude>org.apache.xmlrpc:*</exclude>
-                  <exclude>org.apache.poi:*</exclude>
                 </excludes>
               </artifactSet>
             </configuration>

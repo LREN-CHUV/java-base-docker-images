@@ -22,7 +22,7 @@ Dockerfile
 
   # Repeating the file copy works better. I dunno why.
   RUN cp /usr/share/maven/ref/settings-docker.xml /root/.m2/settings.xml \
-      && mvn package assembly:single site
+      && mvn package site
 
   FROM hbpmip/java-rapidminer:0.3.4
 

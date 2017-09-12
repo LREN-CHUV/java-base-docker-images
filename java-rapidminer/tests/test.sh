@@ -39,7 +39,9 @@ trap _cleanup EXIT INT TERM
 echo "Starting the databases..."
 $DOCKER_COMPOSE up -d it_db
 echo "Build Docker images while databases are starting..."
-$DOCKER_COMPOSE build java_rapidminer_test
+$DOCKER_COMPOSE build java_rapidminer_test_suite
+$DOCKER_COMPOSE build rpm_default_compute
+$DOCKER_COMPOSE build rpm_default_compute_check
 $DOCKER_COMPOSE run wait_dbs
 $DOCKER_COMPOSE run create_dbs
 
@@ -49,9 +51,17 @@ $DOCKER_COMPOSE run sample_data_db_setup
 $DOCKER_COMPOSE run woken_db_setup
 
 echo
-echo "Run the test java-mip job..."
-$DOCKER_COMPOSE run java_rapidminer_test compute
+echo "Run the test suite for java-rapidminer job..."
+$DOCKER_COMPOSE run java_rapidminer_test_suite compute
+
+echo
+echo "Run the sample rapidminer job..."
+$DOCKER_COMPOSE run rpm_default_compute compute
+
+echo
+echo "Test the results of the sample rapidminer job..."
+$DOCKER_COMPOSE run rpm_default_compute_check
 
 echo
 # Cleanup
- _cleanup
+_cleanup

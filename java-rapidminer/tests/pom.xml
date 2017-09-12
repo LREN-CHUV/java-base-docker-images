@@ -15,13 +15,10 @@
     <compiler.plugin.version>3.6.2</compiler.plugin.version>
     <jar.plugin.version>3.0.2</jar.plugin.version>
     <surefire.plugin.version>2.20</surefire.plugin.version>
-    <assembly.plugin.version>3.1.0</assembly.plugin.version>
     <site.plugin.version>3.6</site.plugin.version>
     <info.reports.plugin.version>2.9</info.reports.plugin.version>
     <surefire.report.plugin.version>2.20</surefire.report.plugin.version>
     <jxr.plugin.version>2.5</jxr.plugin.version>
-    <version.rapidminer>7.0.1</version.rapidminer>
-    <version.antlr>4.5</version.antlr>
   </properties>
 
   <repositories>
@@ -68,60 +65,7 @@
       <groupId>com.opendatagroup</groupId>
       <artifactId>hadrian</artifactId>
       <version>0.8.4</version>
-    </dependency>
-
-    <dependency>
-      <groupId>com.rapidminer.studio</groupId>
-      <artifactId>rapidminer-studio-core</artifactId>
-      <version>${version.rapidminer}</version>
-    </dependency>
-
-    <dependency>
-      <groupId>com.rapidminer</groupId>
-      <artifactId>rapidminer-api</artifactId>
-      <version>0.2.0</version>
-    </dependency>
-
-    <dependency>
-      <groupId>com.rapidminer.external</groupId>
-      <artifactId>vldocking</artifactId>
-      <version>1.1.0</version>
-    </dependency>
-
-    <dependency>
-      <groupId>org.antlr</groupId>
-      <artifactId>antlr4-runtime</artifactId>
-      <version>${version.antlr}</version>
-    </dependency>
-
-    <dependency>
-      <groupId>org.postgresql</groupId>
-      <artifactId>postgresql</artifactId>
-      <version>9.4.1208.jre7</version>
-    </dependency>
-
-    <dependency>
-      <groupId>net.sourceforge.collections</groupId>
-      <artifactId>collections-generic</artifactId>
-      <version>4.01</version>
-    </dependency>
-
-    <dependency>
-      <groupId>com.fasterxml.jackson.core</groupId>
-      <artifactId>jackson-core</artifactId>
-      <version>2.7.0</version>
-    </dependency>
-
-    <dependency>
-      <groupId>com.fasterxml.jackson.core</groupId>
-      <artifactId>jackson-databind</artifactId>
-      <version>2.7.0</version>
-    </dependency>
-
-    <dependency>
-      <groupId>com.fasterxml.jackson.core</groupId>
-      <artifactId>jackson-annotations</artifactId>
-      <version>2.7.0</version>
+      <scope>test</scope>
     </dependency>
 
     <dependency>
@@ -171,15 +115,6 @@
             <version>${surefire.plugin.version}</version>
           </dependency>
         </dependencies>
-      </plugin>
-      <plugin>
-        <artifactId>maven-assembly-plugin</artifactId>
-        <version>${assembly.plugin.version}</version>
-        <configuration>
-          <descriptorRefs>
-            <descriptorRef>jar-with-dependencies</descriptorRef>
-          </descriptorRefs>
-        </configuration>
       </plugin>
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
