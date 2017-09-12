@@ -21,3 +21,16 @@ COPY --from=build-java-env /project/target/site/ /mip/java-rapidminer/docs/
 COPY src/ /mip/java-rapidminer/src/
 
 RUN chown -R compute:compute /mip/
+
+LABEL org.label-schema.build-date=$BUILD_DATE \
+      org.label-schema.name="hbpmip/java-rapidminer" \
+      org.label-schema.description="Execute RapidMiner algorithms in MIP Woken environment" \
+      org.label-schema.url="https://github.com/LREN-CHUV/java-base-docker-images" \
+      org.label-schema.vcs-type="git" \
+      org.label-schema.vcs-url="https://github.com/LREN-CHUV/java-base-docker-images.git" \
+      org.label-schema.vcs-ref=$VCS_REF \
+      org.label-schema.version="$VERSION" \
+      org.label-schema.vendor="LREN CHUV" \
+      org.label-schema.license="AGPLv3" \
+      org.label-schema.docker.dockerfile="Dockerfile" \
+      org.label-schema.schema-version="1.0"
