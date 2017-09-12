@@ -14,11 +14,11 @@ Dockerfile
 ```
   FROM hbpmip/scala-base-build:0.13.16-1 as scala-build-env
 
-  COPY build.sbt project/ src/ /build
+  COPY build.sbt /build/
+  COPY project/ /build/project/
+  COPY src/ /build/src/
 
-  # Repeating the file copy works better. I dunno why.
-  RUN cp /usr/share/maven/ref/settings-docker.xml /root/.m2/settings.xml \
-      && mvn clean package
+  RUN sbt package
 
   FROM hbpmip/java-base:8u131-1
 
