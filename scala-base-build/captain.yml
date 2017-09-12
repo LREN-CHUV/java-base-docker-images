@@ -1,4 +1,4 @@
-scala-base-build:
+target_image:
   build: Dockerfile
   image: hbpmip/scala-base-build
   pre:
