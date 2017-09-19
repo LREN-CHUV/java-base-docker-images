@@ -10,7 +10,7 @@ RUN cp /usr/share/maven/ref/settings-docker.xml /root/.m2/settings.xml \
 FROM hbpmip/java-rapidminer:latest
 
 ENV JAVA_CLASSPATH=${JAVA_CLASSPATH}:/usr/share/jars/java-rapidminer-test.jar
-ENV JAVA_ARGS=eu.hbp.mip.container.rapidminer.tests.models.RPMDefault
+ENV JAVA_ARGS=RPMDefault
 ENV MODEL rpm
 ENV FUNCTION java-rapidminer-rpm
 
