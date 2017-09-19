@@ -97,7 +97,7 @@ public class InputData {
 		ResultSet rs = connector.connect();
 
 		// Create attribute list
-		ResultSetMetaData rsmd = null;
+		ResultSetMetaData rsmd;
 		List<Attribute> attributes = new ArrayList<>();
 		try {
 			rsmd = rs.getMetaData();

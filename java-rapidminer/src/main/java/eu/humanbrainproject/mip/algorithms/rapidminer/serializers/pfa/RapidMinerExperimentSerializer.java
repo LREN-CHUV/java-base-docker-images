@@ -3,7 +3,6 @@ package eu.humanbrainproject.mip.algorithms.rapidminer.serializers.pfa;
 import java.io.IOException;
 
 import com.fasterxml.jackson.core.JsonGenerator;
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonSerializer;
 import com.fasterxml.jackson.databind.SerializerProvider;
 
@@ -20,7 +19,7 @@ public class RapidMinerExperimentSerializer extends JsonSerializer<RapidMinerExp
 
     @Override
     public void serialize(RapidMinerExperiment value, JsonGenerator jgen, SerializerProvider provider)
-            throws IOException, JsonProcessingException {
+            throws IOException {
 
         jgen.writeStartObject();
             jgen.writeStringField("name", value.name);
