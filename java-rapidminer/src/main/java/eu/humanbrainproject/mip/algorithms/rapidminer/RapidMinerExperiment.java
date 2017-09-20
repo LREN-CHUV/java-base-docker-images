@@ -1,6 +1,7 @@
 package eu.humanbrainproject.mip.algorithms.rapidminer;
 
 import java.io.IOException;
+import java.util.logging.Logger;
 
 import com.fasterxml.jackson.core.Version;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -16,7 +17,6 @@ import eu.humanbrainproject.mip.algorithms.rapidminer.serializers.pfa.RapidMiner
 
 
 /**
- *
  * Default experiment consisting of training and validating a specific models
  * The models is:
  * 1) Trained using all the data
@@ -25,9 +25,10 @@ import eu.humanbrainproject.mip.algorithms.rapidminer.serializers.pfa.RapidMiner
  */
 public class RapidMinerExperiment {
 
+    private static final Logger LOGGER = Logger.getLogger(RapidMinerExperiment.class.getName());
+
     public final String name = "rapidminer";
     public final String doc = "RapidMiner Model\n";
-    public final String docker_image = System.getProperty("DOCKER_IMAGE", System.getenv().getOrDefault("DOCKER_IMAGE", "hbpmip/java-rapidminer:latest"));
 
     private static boolean isRPMInit = false;
 
@@ -41,7 +42,6 @@ public class RapidMinerExperiment {
     }
 
     /**
-     *
      * @param input
      * @param model
      */
@@ -51,56 +51,21 @@ public class RapidMinerExperiment {
     }
 
     /**
-     * Connect the output-port <code>fromPortName</code> from Operator
-     * <code>from</code> with the input-port <code>toPortName</code> of Operator
-     * <code>to</code>.
-     */
-    private static void connect(Operator from, String fromPortName,
-                                Operator to, String toPortName) {
-        from.getOutputPorts().getPortByName(fromPortName).connectTo(
-                to.getInputPorts().getPortByName(toPortName));
-    }
-
-    /**
-     * Connect the output-port <code>fromPortName</code> from Subprocess
-     * <code>from</code> with the input-port <code>toPortName</code> of Operator
-     * <code>to</code>.
-     */
-    private static void connect(ExecutionUnit from, String fromPortName,
-                                Operator to, String toPortName) {
-        from.getInnerSources().getPortByName(fromPortName).connectTo(
-                to.getInputPorts().getPortByName(toPortName));
-    }
-
-    /**
-     * Connect the output-port <code>fromPortName</code> from Operator
-     * <code>from</code> with the input-port <code>toPortName</code> of
-     * Subprocess <code>to</code>.
-     */
-    private static void connect(Operator from, String fromPortName,
-                                ExecutionUnit to, String toPortName) {
-        from.getOutputPorts().getPortByName(fromPortName).connectTo(
-                to.getInnerSinks().getPortByName(toPortName));
-    }
-
-    /**
-     *
      * @throws RapidMinerException
      */
-    public void run() {
-
-        if(!isRPMInit) {
-            initializeRPM();
-        }
-
-        if(model.isAlreadyTrained() || exception != null) {
-            System.out.println("This experiment was already run!");
-            return;
-        }
+    public void run() throws RapidMinerException, DBException {
 
         try {
+            if (!isRPMInit) {
+                initializeRPM();
+            }
 
-            if(input == null) {
+            if (model.isAlreadyTrained() || exception != null) {
+                LOGGER.warning("This experiment was already executed!");
+                return;
+            }
+
+            if (input == null) {
                 input = InputData.fromEnv();
             }
 
@@ -108,9 +73,13 @@ public class RapidMinerExperiment {
             model.train(input);
 
         } catch (OperatorCreationException | OperatorException | ClassCastException ex) {
-            this.exception = new RapidMinerException(ex);
+            final RapidMinerException rapidMinerException = new RapidMinerException(ex);
+            this.exception = rapidMinerException;
+            throw rapidMinerException;
+
         } catch (DBException | RapidMinerException ex) {
             this.exception = ex;
+            throw ex;
         }
     }
 
@@ -124,11 +93,10 @@ public class RapidMinerExperiment {
 
         RapidMiner.setExecutionMode(RapidMiner.ExecutionMode.COMMAND_LINE);
         RapidMiner.init();
-        isRPMInit= true;
+        isRPMInit = true;
     }
 
     /**
-     *
      * Generate the RMP representation of the experiment
      * which is the native xml format used by RapidMiner
      *
@@ -145,10 +113,7 @@ public class RapidMinerExperiment {
      * @throws IOException
      */
     public String toPFA() throws IOException {
-        ObjectMapper myObjectMapper = new ObjectMapper();
-        SimpleModule module = new SimpleModule("RapidMiner", new Version(1, 0, 0, null, null, null));
-        module.addSerializer(RapidMinerExperiment.class, new RapidMinerExperimentSerializer());
-        myObjectMapper.registerModule(module);
+        ObjectMapper myObjectMapper = getObjectMapper();
         return myObjectMapper.writeValueAsString(this);
     }
 
@@ -159,15 +124,19 @@ public class RapidMinerExperiment {
      * @throws IOException
      */
     public String toPrettyPFA() throws IOException {
+        ObjectMapper myObjectMapper = getObjectMapper();
+        return myObjectMapper.writerWithDefaultPrettyPrinter().writeValueAsString(this);
+    }
+
+    private ObjectMapper getObjectMapper() {
         ObjectMapper myObjectMapper = new ObjectMapper();
         SimpleModule module = new SimpleModule("RapidMiner", new Version(1, 0, 0, null, null, null));
         module.addSerializer(RapidMinerExperiment.class, new RapidMinerExperimentSerializer());
         myObjectMapper.registerModule(module);
-        return myObjectMapper.writerWithDefaultPrettyPrinter().writeValueAsString(this);
+        return myObjectMapper;
     }
 
     /**
-     *
      * @return
      */
     public InputData getInput() {
@@ -175,7 +144,6 @@ public class RapidMinerExperiment {
     }
 
     /**
-     *
      * @return
      */
     public RapidMinerModel getModel() {

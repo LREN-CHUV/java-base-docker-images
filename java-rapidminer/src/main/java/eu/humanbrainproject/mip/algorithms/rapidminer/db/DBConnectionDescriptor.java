@@ -4,7 +4,21 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 
-class DBConnectionDescriptor implements DBConnectionFactory {
+public class DBConnectionDescriptor {
+
+    public static DBConnectionDescriptor inputConnector() {
+        return new DBConnectionDescriptor(
+                env("IN_JDBC_URL"),
+                env("IN_JDBC_USER"),
+                env("IN_JDBC_PASSWORD"));
+    }
+
+    public static DBConnectionDescriptor outputConnector() {
+        return new DBConnectionDescriptor(
+                env("OUT_JDBC_URL"),
+                env("OUT_JDBC_USER"),
+                env("OUT_JDBC_PASSWORD"));
+    }
 
     private final String url;
     private final String user;
@@ -18,6 +32,10 @@ class DBConnectionDescriptor implements DBConnectionFactory {
 
     public Connection getConnection() throws SQLException {
         return DriverManager.getConnection(url, user, pass);
+    }
+
+    private static String env(String s) {
+        return System.getenv(s);
     }
 
 }

@@ -1,40 +1,48 @@
 package eu.humanbrainproject.mip.algorithms.rapidminer;
 
 import java.io.IOException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
-import eu.humanbrainproject.mip.algorithms.rapidminer.db.DBConnector;
 import eu.humanbrainproject.mip.algorithms.rapidminer.db.DBException;
+import eu.humanbrainproject.mip.algorithms.rapidminer.db.OutputDataConnector;
+import eu.humanbrainproject.mip.algorithms.rapidminer.exceptions.RapidMinerException;
 import eu.humanbrainproject.mip.algorithms.rapidminer.models.RapidMinerModel;
 
 
 /**
- *
  * Entrypoint
  *
  * @author Arnaud Jutzeler
- *
  */
 public class Main {
+    private static final Logger LOGGER = Logger.getLogger(Main.class.getName());
 
-	public static void main(String[] args) {
+    public static void main(String[] args) {
 
-		try {
-			Class modelClass = Class.forName(args[0]);
-			RapidMinerModel model = (RapidMinerModel) modelClass.newInstance();
+        try {
+            Class modelClass = Class.forName(args[0]);
+            RapidMinerModel model = (RapidMinerModel) modelClass.newInstance();
 
-			// Run experiment
-			RapidMinerExperiment experiment = new RapidMinerExperiment(model);
-			experiment.run();
+            // Run experiment
+            RapidMinerExperiment experiment = new RapidMinerExperiment(model);
 
-			// Write results PFA in DB
-			String pfa = experiment.toPFA();
-			DBConnector.saveResults(experiment);
+            try {
+                experiment.run();
+            } finally {
 
-		} catch (ClassNotFoundException e) {
-			System.err.println(e.getMessage());
-		} catch (InstantiationException | IllegalAccessException |
-				IOException | DBException | ClassCastException e) {
-			e.printStackTrace();
-		}
-	}
+                // Write results PFA in DB - it can represent also an error
+                String pfa = experiment.toPFA();
+                OutputDataConnector out = new OutputDataConnector();
+                out.saveResults(pfa, OutputDataConnector.ResultsFormat.PFA_JSON);
+            }
+
+        } catch (ClassNotFoundException e) {
+            LOGGER.severe(e.getMessage());
+
+        } catch (InstantiationException | IllegalAccessException |
+                IOException | DBException | ClassCastException | RapidMinerException e) {
+            LOGGER.log(Level.SEVERE, "Cannot execute the algorithm", e);
+        }
+    }
 }
