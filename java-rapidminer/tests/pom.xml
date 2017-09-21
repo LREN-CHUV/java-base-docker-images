@@ -19,6 +19,7 @@
     <info.reports.plugin.version>2.9</info.reports.plugin.version>
     <surefire.report.plugin.version>2.20</surefire.report.plugin.version>
     <jxr.plugin.version>2.5</jxr.plugin.version>
+    <mip.rapidminer.version>0.6.2</mip.rapidminer.version>
   </properties>
 
   <repositories>
@@ -58,7 +59,7 @@
     <dependency>
       <groupId>eu.humanbrainproject.mip.algorithms</groupId>
       <artifactId>rapidminer</artifactId>
-      <version>0.6.2</version><!-- bumpversion -->
+      <version>${mip.rapidminer.version}</version>
     </dependency>
 
     <dependency>
