@@ -56,8 +56,8 @@
   <dependencies>
 
     <dependency>
-      <groupId>eu.hbp.mip.container</groupId>
-      <artifactId>mip-rapidminer</artifactId>
+      <groupId>eu.humanbrainproject.mip.algorithms</groupId>
+      <artifactId>rapidminer</artifactId>
       <version>0.5.0</version><!-- bumpversion -->
     </dependency>
 
