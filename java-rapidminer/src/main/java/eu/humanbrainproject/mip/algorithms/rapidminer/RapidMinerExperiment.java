@@ -10,7 +10,8 @@ import com.fasterxml.jackson.databind.module.SimpleModule;
 import com.rapidminer.RapidMiner;
 import com.rapidminer.operator.*;
 
-import eu.humanbrainproject.mip.algorithms.rapidminer.db.DBException;
+import eu.humanbrainproject.mip.algorithms.Experiment;
+import eu.humanbrainproject.mip.algorithms.db.DBException;
 import eu.humanbrainproject.mip.algorithms.rapidminer.exceptions.RapidMinerException;
 import eu.humanbrainproject.mip.algorithms.rapidminer.models.RapidMinerModel;
 import eu.humanbrainproject.mip.algorithms.rapidminer.serializers.pfa.RapidMinerExperimentSerializer;
@@ -23,12 +24,12 @@ import eu.humanbrainproject.mip.algorithms.rapidminer.serializers.pfa.RapidMiner
  *
  * @author Arnaud Jutzeler
  */
-public class RapidMinerExperiment {
+public class RapidMinerExperiment implements Experiment {
 
     private static final Logger LOGGER = Logger.getLogger(RapidMinerExperiment.class.getName());
 
-    public final String name = "rapidminer";
-    public final String doc = "RapidMiner Model\n";
+    public static final String NAME = "rapidminer";
+    public static final String DOCUMENTATION = "RapidMiner Model";
 
     private static boolean isRPMInit = false;
 
@@ -48,6 +49,30 @@ public class RapidMinerExperiment {
     public RapidMinerExperiment(InputData input, RapidMinerModel model) {
         this.input = input;
         this.model = model;
+    }
+
+    @Override
+    public String getName() {
+        return NAME;
+    }
+
+    @Override
+    public String getDocumentation() {
+        return DOCUMENTATION;
+    }
+
+    /**
+     * @return
+     */
+    public InputData getInput() {
+        return input;
+    }
+
+    /**
+     * @return
+     */
+    public RapidMinerModel getModel() {
+        return model;
     }
 
     /**
@@ -81,19 +106,6 @@ public class RapidMinerExperiment {
             this.exception = ex;
             throw ex;
         }
-    }
-
-    /**
-     * Initialize RapidMiner
-     * Must be run only once
-     */
-    private static void initializeRPM() {
-        // Init RapidMiner
-        System.setProperty("rapidminer.home", System.getProperty("user.dir"));
-
-        RapidMiner.setExecutionMode(RapidMiner.ExecutionMode.COMMAND_LINE);
-        RapidMiner.init();
-        isRPMInit = true;
     }
 
     /**
@@ -137,16 +149,16 @@ public class RapidMinerExperiment {
     }
 
     /**
-     * @return
+     * Initialize RapidMiner
+     * Must be run only once
      */
-    public InputData getInput() {
-        return input;
+    private static void initializeRPM() {
+        // Init RapidMiner
+        System.setProperty("rapidminer.home", System.getProperty("user.dir"));
+
+        RapidMiner.setExecutionMode(RapidMiner.ExecutionMode.COMMAND_LINE);
+        RapidMiner.init();
+        isRPMInit = true;
     }
 
-    /**
-     * @return
-     */
-    public RapidMinerModel getModel() {
-        return model;
-    }
 }

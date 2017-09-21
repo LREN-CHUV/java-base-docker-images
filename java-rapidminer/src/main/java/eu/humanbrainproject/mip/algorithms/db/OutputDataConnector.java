@@ -1,4 +1,7 @@
-package eu.humanbrainproject.mip.algorithms.rapidminer.db;
+package eu.humanbrainproject.mip.algorithms.db;
+
+import eu.humanbrainproject.mip.algorithms.Configuration;
+import eu.humanbrainproject.mip.algorithms.ResultsFormat;
 
 import java.sql.*;
 import java.util.logging.Level;
@@ -7,16 +10,22 @@ import java.util.logging.Logger;
 public class OutputDataConnector extends DBConnector {
     private static final Logger LOGGER = Logger.getLogger(OutputDataConnector.class.getName());
 
-    private final String outTable;
-
-    public OutputDataConnector(DBConnectionDescriptor dbConnectionDescriptor, String outTable) {
-        super(dbConnectionDescriptor);
-        this.outTable = outTable;
+    /**
+     * @return the output data connector defined by the configuration
+     */
+    public static OutputDataConnector fromEnv() {
+        final Configuration conf = Configuration.INSTANCE;
+        return new OutputDataConnector(
+                conf.outputResultTable(),
+                DBConnectionDescriptor.outputConnectorFromEnv());
     }
 
-    public OutputDataConnector() {
-        this(DBConnectionDescriptor.outputConnector(),
-                System.getenv().getOrDefault("RESULT_TABLE", "job_result"));
+
+    private final String outTable;
+
+    public OutputDataConnector(String outTable, DBConnectionDescriptor dbConnectionDescriptor) {
+        super(dbConnectionDescriptor);
+        this.outTable = outTable;
     }
 
     public JobResults getJobResults(String jobId) throws DBException {
@@ -38,14 +47,15 @@ public class OutputDataConnector extends DBConnector {
         }
     }
 
+    /**
+     * Save results, using configuration from the environment for jobId, executionMode and function parameters.
+     */
     public void saveResults(String results, ResultsFormat resultsFormat)
             throws DBException {
 
-        String jobId = System.getProperty("JOB_ID", System.getenv("JOB_ID"));
-        String executionNode = System.getenv("NODE");
-        String function = System.getenv().getOrDefault("FUNCTION", "JAVA");
+        final Configuration conf = Configuration.INSTANCE;
 
-        saveResults(results, resultsFormat, jobId, executionNode, function);
+        saveResults(results, resultsFormat, conf.jobId(), conf.executionNode(), conf.function());
     }
 
     public void saveResults(String results, ResultsFormat resultsFormat, String jobId, String executionNode, String function)
@@ -93,32 +103,6 @@ public class OutputDataConnector extends DBConnector {
         public String getResults() {
             return results;
         }
-    }
-
-    public enum ResultsFormat {
-        PFA_JSON("pfa_json", "application/pfa+json"),
-        PFA_YAML("pfa_yaml", "application/pfa+yaml"),
-        HIGHCHARTS("highcharts_json", "application/highcharts+json"),
-        JAVASCRIPT_VISJS("visjs", "application/visjs+javascript"),
-        PNG_IMAGE("png_image", "image/png;base64"),
-        SVG_IMAGE("svg_image", "image/svg+xml");
-
-        private final String shape;
-        private final String mimeType;
-
-        ResultsFormat(String shape, String mimeType) {
-            this.shape = shape;
-            this.mimeType = mimeType;
-        }
-
-        public String getShape() {
-            return shape;
-        }
-
-        public String getMimeType() {
-            return mimeType;
-        }
-
     }
 
     private static ResultsFormat shapeToResultsFormat(String shape) {

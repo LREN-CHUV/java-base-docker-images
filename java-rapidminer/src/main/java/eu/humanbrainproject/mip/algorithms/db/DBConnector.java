@@ -1,4 +1,4 @@
-package eu.humanbrainproject.mip.algorithms.rapidminer.db;
+package eu.humanbrainproject.mip.algorithms.db;
 
 import java.sql.* ;
 import java.util.logging.Level;

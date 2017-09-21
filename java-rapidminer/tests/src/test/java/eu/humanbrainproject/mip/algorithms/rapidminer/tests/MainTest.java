@@ -1,8 +1,8 @@
 package eu.humanbrainproject.mip.algorithms.rapidminer.tests;
 
 import eu.humanbrainproject.mip.algorithms.rapidminer.Main;
-import eu.humanbrainproject.mip.algorithms.rapidminer.db.DBException;
-import eu.humanbrainproject.mip.algorithms.rapidminer.db.DBConnector;
+import eu.humanbrainproject.mip.algorithms.db.DBException;
+import eu.humanbrainproject.mip.algorithms.db.DBConnector;
 import org.junit.Test;
 import static junit.framework.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;

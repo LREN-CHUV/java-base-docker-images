@@ -4,8 +4,9 @@ import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import eu.humanbrainproject.mip.algorithms.rapidminer.db.DBException;
-import eu.humanbrainproject.mip.algorithms.rapidminer.db.OutputDataConnector;
+import eu.humanbrainproject.mip.algorithms.ResultsFormat;
+import eu.humanbrainproject.mip.algorithms.db.DBException;
+import eu.humanbrainproject.mip.algorithms.db.OutputDataConnector;
 import eu.humanbrainproject.mip.algorithms.rapidminer.exceptions.RapidMinerException;
 import eu.humanbrainproject.mip.algorithms.rapidminer.models.RapidMinerModel;
 
@@ -33,8 +34,8 @@ public class Main {
 
                 // Write results PFA in DB - it can represent also an error
                 String pfa = experiment.toPFA();
-                OutputDataConnector out = new OutputDataConnector();
-                out.saveResults(pfa, OutputDataConnector.ResultsFormat.PFA_JSON);
+                OutputDataConnector out = OutputDataConnector.fromEnv();
+                out.saveResults(pfa, ResultsFormat.PFA_JSON);
             }
 
         } catch (ClassNotFoundException e) {
