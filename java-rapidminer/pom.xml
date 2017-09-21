@@ -16,6 +16,7 @@
     <jar.plugin.version>3.0.2</jar.plugin.version>
     <install.plugin.version>2.5.2</install.plugin.version>
     <surefire.plugin.version>2.20</surefire.plugin.version>
+    <assembly.plugin.version>3.1.0</assembly.plugin.version>
     <site.plugin.version>3.6</site.plugin.version>
     <info.reports.plugin.version>2.9</info.reports.plugin.version>
     <surefire.report.plugin.version>2.20</surefire.report.plugin.version>
@@ -182,6 +183,15 @@
         </dependencies>
       </plugin>
       <plugin>
+        <artifactId>maven-assembly-plugin</artifactId>
+        <version>${assembly.plugin.version}</version>
+        <configuration>
+          <descriptorRefs>
+            <descriptorRef>jar-with-dependencies</descriptorRef>
+          </descriptorRefs>
+        </configuration>
+      </plugin>
+      <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-site-plugin</artifactId>
         <version>${site.plugin.version}</version>
@@ -255,7 +265,8 @@
     <repository>
       <id>bintray-hbpmedical-maven</id>
       <name>hbpmedical-maven</name>
-      <url>https://api.bintray.com/maven/hbpmedical/maven/eu.humanbrainproject.mip.algorithms:rapidminer/;publish=1</url>
+      <url>https://api.bintray.com/maven/hbpmedical/maven/eu.humanbrainproject.mip.algorithms:rapidminer/;publish=1
+      </url>
     </repository>
   </distributionManagement>
 
