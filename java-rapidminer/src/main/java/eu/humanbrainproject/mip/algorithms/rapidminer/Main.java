@@ -1,15 +1,12 @@
 package eu.humanbrainproject.mip.algorithms.rapidminer;
 
-import java.io.IOException;
-import java.lang.reflect.InvocationTargetException;
 import java.util.Properties;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import com.rapidminer.operator.learner.PredictionModel;
 import eu.humanbrainproject.mip.algorithms.ResultsFormat;
-import eu.humanbrainproject.mip.algorithms.db.DBException;
 import eu.humanbrainproject.mip.algorithms.db.OutputDataConnector;
-import eu.humanbrainproject.mip.algorithms.rapidminer.exceptions.RapidMinerException;
 import eu.humanbrainproject.mip.algorithms.rapidminer.models.RapidMinerModel;
 import eu.humanbrainproject.mip.algorithms.rapidminer.serializers.pfa.RapidMinerAlgorithmSerializer;
 import eu.humanbrainproject.mip.algorithms.rapidminer.serializers.pfa.RapidMinerModelSerializer;
@@ -54,11 +51,11 @@ public class Main {
 
     public void run() {
         try {
-            Class modelClass = Class.forName(modelClassName);
-            RapidMinerModel model = (RapidMinerModel) modelClass.newInstance();
+            Class<?> modelClass = Class.forName(modelClassName);
+            @SuppressWarnings("unchecked") RapidMinerModel<PredictionModel> model = (RapidMinerModel<PredictionModel>) modelClass.newInstance();
 
-            Class modelSerializerClass = Class.forName(modelSerializerClassName);
-            RapidMinerModelSerializer modelSerializer = (RapidMinerModelSerializer) modelSerializerClass.newInstance();
+            Class<?> modelSerializerClass = Class.forName(modelSerializerClassName);
+            @SuppressWarnings("unchecked") RapidMinerModelSerializer<PredictionModel> modelSerializer = (RapidMinerModelSerializer<PredictionModel>) modelSerializerClass.newInstance();
 
             Class<?> algorithmSerializerClass = Class.forName(algorithmSerializerClassName);
             RapidMinerAlgorithmSerializer algorithmSerializer = (RapidMinerAlgorithmSerializer) algorithmSerializerClass.getConstructor(RapidMinerModelSerializer.class).newInstance(modelSerializer);
@@ -66,7 +63,7 @@ public class Main {
             InputData inputData = InputData.fromEnv();
 
             // Run experiment
-            RapidMinerExperiment experiment = new RapidMinerExperiment(inputData, model, algorithmSerializer);
+            RapidMinerAlgorithm<?> experiment = new RapidMinerAlgorithm<>(inputData, model, algorithmSerializer);
 
             try {
                 experiment.run();

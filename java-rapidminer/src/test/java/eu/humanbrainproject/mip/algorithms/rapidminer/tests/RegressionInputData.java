@@ -8,7 +8,6 @@ import com.rapidminer.example.table.MemoryExampleTable;
 import com.rapidminer.tools.Ontology;
 import eu.humanbrainproject.mip.algorithms.db.DBException;
 import eu.humanbrainproject.mip.algorithms.rapidminer.InputData;
-import eu.humanbrainproject.mip.algorithms.rapidminer.exceptions.RapidMinerException;
 
 import java.util.LinkedList;
 import java.util.List;
@@ -18,14 +17,14 @@ class RegressionInputData extends InputData {
     private final double[][] sampleData;
     private final double[] labels;
 
-    RegressionInputData(String[] featuresNames, String variableName, double[][] sampleData, double[] labels) throws DBException, RapidMinerException {
+    RegressionInputData(String[] featuresNames, String variableName, double[][] sampleData, double[] labels) {
         super(featuresNames, variableName, null);
 
         this.sampleData = sampleData;
         this.labels = labels;
     }
 
-    protected ExampleSet createExampleSet() throws RapidMinerException, DBException {
+    protected ExampleSet createExampleSet() throws DBException {
 
         List<Attribute> attributes = new LinkedList<>();
         for (String featuresName : getFeaturesNames()) {

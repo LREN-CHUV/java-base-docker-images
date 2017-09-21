@@ -31,20 +31,20 @@ public class OutputDataConnector extends DBConnector {
     public JobResults getJobResults(String jobId) throws DBException {
         String query = String.format("SELECT node, data, shape FROM %s WHERE job_id ='%s'", outTable, jobId);
 
-        try (ResultSet rs = select(query)) {
-
-            if (rs.next()) {
-                return new JobResults(rs.getString("node"),
-                        rs.getString("shape"),
-                        rs.getString("data"));
-            } else {
-                throw new SQLException("Job " + jobId + " not found");
+        return select(query, resultSet -> {
+            try {
+                if (resultSet.next()) {
+                    return new JobResults(resultSet.getString("node"),
+                            resultSet.getString("shape"),
+                            resultSet.getString("data"));
+                } else {
+                    throw new SQLException("Job " + jobId + " not found");
+                }
+            } catch (SQLException e) {
+                LOGGER.log(Level.SEVERE, "Cannot query job results", e);
+                throw new RuntimeException(e);
             }
-
-        } catch (SQLException e) {
-            LOGGER.log(Level.SEVERE, "Cannot read results for job " + jobId, e);
-            throw new DBException(e);
-        }
+        });
     }
 
     /**
@@ -62,6 +62,7 @@ public class OutputDataConnector extends DBConnector {
             throws DBException {
 
         try (Connection conn = getConnection()) {
+            conn.setAutoCommit(false);
 
             String insertRequest = String.format("INSERT INTO %s (job_id, node, data, shape, function) VALUES (?, ?, ?, ?, ?)", outTable);
 

@@ -1,6 +1,7 @@
 package eu.humanbrainproject.mip.algorithms.rapidminer.tests;
 
-import eu.humanbrainproject.mip.algorithms.rapidminer.RapidMinerExperiment;
+import com.rapidminer.operator.learner.lazy.DefaultModel;
+import eu.humanbrainproject.mip.algorithms.rapidminer.RapidMinerAlgorithm;
 import eu.humanbrainproject.mip.algorithms.rapidminer.models.RapidMinerModel;
 
 import eu.humanbrainproject.mip.algorithms.rapidminer.serializers.pfa.RapidMinerAlgorithmSerializer;
@@ -12,11 +13,11 @@ import org.junit.Test;
 import static org.junit.Assert.assertTrue;
 
 /**
- * Tests for RapidMinerExperiment
+ * Tests for RapidMinerAlgorithm
  *
  * @author Arnaud Jutzeler
  */
-public class RapidMinerExperimentTest {
+public class RapidMinerAlgorithmTest {
 
     @Test
     public void test_classification() throws Exception {
@@ -35,11 +36,11 @@ public class RapidMinerExperimentTest {
 
         // Get experiment input
         ClassificationInputData input = new ClassificationInputData(featureNames, variableName, data, labels);
-        RapidMinerModel model = new RPMDefault("mode");
+        RapidMinerModel<DefaultModel> model = new RPMDefault("mode");
 
         // Run experiment
-        final RapidMinerAlgorithmSerializer serializer = new RapidMinerAlgorithmSerializer(new RPMDefaultSerializer());
-        final RapidMinerExperiment experiment = new RapidMinerExperiment(input, model, serializer);
+        final RapidMinerAlgorithmSerializer<DefaultModel> serializer = new RapidMinerAlgorithmSerializer<>(new RPMDefaultSerializer());
+        final RapidMinerAlgorithm<DefaultModel> experiment = new RapidMinerAlgorithm<>(input, model, serializer);
         experiment.run();
 
         System.out.println(experiment.toRMP());
@@ -67,11 +68,11 @@ public class RapidMinerExperimentTest {
 
         // Get experiment input
         RegressionInputData input = new RegressionInputData(featureNames, variableName, data, labels);
-        RapidMinerModel model = new RPMDefault("median");
+        RapidMinerModel<DefaultModel> model = new RPMDefault("median");
 
         // Run experiment
-        final RapidMinerAlgorithmSerializer serializer = new RapidMinerAlgorithmSerializer(new RPMDefaultSerializer());
-        final RapidMinerExperiment experiment = new RapidMinerExperiment(input, model, serializer);
+        final RapidMinerAlgorithmSerializer<DefaultModel> serializer = new RapidMinerAlgorithmSerializer<>(new RPMDefaultSerializer());
+        final RapidMinerAlgorithm<DefaultModel> experiment = new RapidMinerAlgorithm<>(input, model, serializer);
         experiment.run();
 
         System.out.println(experiment.toRMP());

@@ -6,6 +6,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.function.Function;
 
 public class InputDataConnector extends DBConnector {
 
@@ -33,8 +34,8 @@ public class InputDataConnector extends DBConnector {
         return query;
     }
 
-    public ResultSet fetchInputData() throws DBException {
-        return select(query);
+    public <M> M fetchData(Function<ResultSet, M> transform) throws DBException {
+        return select(getQuery(), transform);
     }
 
     void beforeSelect(Connection conn) throws SQLException {
@@ -46,7 +47,6 @@ public class InputDataConnector extends DBConnector {
 
     void afterSelect(Connection conn) throws SQLException {
         conn.commit();
-        conn.setAutoCommit(true);
     }
 
 }

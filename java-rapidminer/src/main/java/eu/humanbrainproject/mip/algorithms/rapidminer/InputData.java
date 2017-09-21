@@ -12,7 +12,6 @@ import com.rapidminer.operator.OperatorException;
 import com.rapidminer.tools.Ontology;
 
 import eu.humanbrainproject.mip.algorithms.Configuration;
-import eu.humanbrainproject.mip.algorithms.db.DBConnectionDescriptor;
 import eu.humanbrainproject.mip.algorithms.db.DBException;
 import eu.humanbrainproject.mip.algorithms.db.InputDataConnector;
 import eu.humanbrainproject.mip.algorithms.rapidminer.exceptions.RapidMinerException;
@@ -39,10 +38,8 @@ public class InputData {
         // Read first system property then env variables
         final String labelName = conf.variables()[0];
         final String[] featuresNames = conf.covariables();
-        final String query = conf.inputSqlQuery();
-        final double seed = conf.randomSeed();
 
-        final InputDataConnector connector = new InputDataConnector(query, seed, DBConnectionDescriptor.inputConnectorFromEnv());
+        final InputDataConnector connector = InputDataConnector.fromEnv();
 
         return new InputData(featuresNames, labelName, connector);
     }
@@ -92,44 +89,42 @@ public class InputData {
     /**
      * Get the data from DB
      */
-    protected ExampleSet createExampleSet() throws RapidMinerException, DBException {
-        MemoryExampleTable table;
+    protected ExampleSet createExampleSet() throws DBException {
 
-        try (ResultSet rs = connector.fetchInputData()) {
+        return connector.fetchData(resultSet -> {
+            try {
 
-            // Create attribute list
-            ResultSetMetaData rsmd = rs.getMetaData();
-            List<Attribute> attributes = new ArrayList<>();
+                // Create attribute list
+                ResultSetMetaData rsmd = resultSet.getMetaData();
+                List<Attribute> attributes = new ArrayList<>();
 
-            for (int i = 1; i <= rsmd.getColumnCount(); i++) {
-                String name = rsmd.getColumnName(i);
-                String typeName = rsmd.getColumnTypeName(i);
+                for (int i = 1; i <= rsmd.getColumnCount(); i++) {
+                    String name = rsmd.getColumnName(i);
+                    String typeName = rsmd.getColumnTypeName(i);
 
-                int type = getOntology(typeName);
-                //types.put(name, type);
-                attributes.add(AttributeFactory.createAttribute(name, type));
+                    int type = getOntology(typeName);
+                    //types.put(name, type);
+                    attributes.add(AttributeFactory.createAttribute(name, type));
+                }
+
+                // Create table
+                MemoryExampleTable table = new MemoryExampleTable(attributes);
+
+                DataRowFactory dataRowFactory = new DataRowFactory(DataRowFactory.TYPE_DOUBLE_ARRAY, '.');
+                ResultSetDataRowReader reader = new ResultSetDataRowReader(dataRowFactory, attributes, resultSet);
+                while (reader.hasNext()) {
+                    table.addDataRow(reader.next());
+                }
+
+                // Create example set
+                return table.createExampleSet(table.findAttribute(variableName));
+
+            } catch (SQLException | OperatorException e) {
+                throw new RuntimeException(e);
             }
 
-            // Create table
-            table = new MemoryExampleTable(attributes);
+        });
 
-            DataRowFactory dataRowFactory = new DataRowFactory(DataRowFactory.TYPE_DOUBLE_ARRAY, '.');
-            ResultSetDataRowReader reader = new ResultSetDataRowReader(dataRowFactory, attributes, rs);
-            while (reader.hasNext()) {
-                table.addDataRow(reader.next());
-            }
-        } catch (SQLException e) {
-            throw new DBException(e);
-        }
-
-        connector.disconnect();
-
-        // Create example set
-        try {
-            return table.createExampleSet(table.findAttribute(variableName));
-        } catch (OperatorException e) {
-            throw new RapidMinerException(e);
-        }
     }
 
     /**

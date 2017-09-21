@@ -8,8 +8,8 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.module.SimpleModule;
 
 import com.rapidminer.RapidMiner;
-import com.rapidminer.operator.*;
 
+import com.rapidminer.operator.learner.PredictionModel;
 import eu.humanbrainproject.mip.algorithms.Algorithm;
 import eu.humanbrainproject.mip.algorithms.db.DBException;
 import eu.humanbrainproject.mip.algorithms.rapidminer.exceptions.RapidMinerException;
@@ -24,9 +24,9 @@ import eu.humanbrainproject.mip.algorithms.rapidminer.serializers.pfa.RapidMiner
  *
  * @author Arnaud Jutzeler
  */
-public class RapidMinerExperiment implements Algorithm {
+public class RapidMinerAlgorithm<M extends PredictionModel> implements Algorithm {
 
-    private static final Logger LOGGER = Logger.getLogger(RapidMinerExperiment.class.getName());
+    private static final Logger LOGGER = Logger.getLogger(RapidMinerAlgorithm.class.getName());
 
     private static final String NAME = "rapidminer";
     private static final String DOCUMENTATION = "RapidMiner Model";
@@ -34,7 +34,7 @@ public class RapidMinerExperiment implements Algorithm {
     private static boolean isRPMInit = false;
 
     private InputData input;
-    private RapidMinerModel model;
+    private RapidMinerModel<M> model;
     private RapidMinerAlgorithmSerializer serializer;
 
     public Exception exception;
@@ -43,7 +43,7 @@ public class RapidMinerExperiment implements Algorithm {
      * @param input
      * @param model
      */
-    public RapidMinerExperiment(InputData input, RapidMinerModel model, RapidMinerAlgorithmSerializer serializer) {
+    public RapidMinerAlgorithm(InputData input, RapidMinerModel<M> model, RapidMinerAlgorithmSerializer serializer) {
         this.input = input;
         this.model = model;
         this.serializer = serializer;
@@ -78,7 +78,7 @@ public class RapidMinerExperiment implements Algorithm {
     /**
      * @return
      */
-    public RapidMinerModel getModel() {
+    public RapidMinerModel<M> getModel() {
         return model;
     }
 
@@ -150,7 +150,7 @@ public class RapidMinerExperiment implements Algorithm {
     private ObjectMapper getObjectMapper() {
         ObjectMapper myObjectMapper = new ObjectMapper();
         SimpleModule module = new SimpleModule("RapidMiner", new Version(1, 0, 0, null, null, null));
-        module.addSerializer(RapidMinerExperiment.class, serializer);
+        module.addSerializer(RapidMinerAlgorithm.class, serializer);
         myObjectMapper.registerModule(module);
         return myObjectMapper;
     }
