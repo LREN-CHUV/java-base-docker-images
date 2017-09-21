@@ -8,6 +8,8 @@ import eu.humanbrainproject.mip.algorithms.rapidminer.tests.models.RPMDefault;
 import eu.humanbrainproject.mip.algorithms.rapidminer.tests.models.RPMDefaultSerializer;
 import org.junit.Test;
 
+import java.sql.SQLException;
+
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
@@ -120,7 +122,7 @@ public class MainTest {
             out.getJobResults(jobId);
             fail("Should not be able to fetch results");
         } catch (RuntimeException e) {
-            assertEquals(e.getCause().getClass(), DBException.class);
+            assertEquals(SQLException.class, e.getCause().getClass());
         }
     }
 }
