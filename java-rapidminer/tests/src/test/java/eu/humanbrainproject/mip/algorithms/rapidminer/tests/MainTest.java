@@ -10,6 +10,7 @@ import org.junit.Test;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
 
 
 /**
@@ -115,8 +116,11 @@ public class MainTest {
         main.run();
 
         OutputDataConnector out = OutputDataConnector.fromEnv();
-        OutputDataConnector.JobResults results = out.getJobResults(jobId);
-
-        assertTrue(results == null);
+        try {
+            out.getJobResults(jobId);
+            fail("Should not be able to fetch results");
+        } catch (RuntimeException e) {
+            assertEquals(e.getCause().getClass(), DBException.class);
+        }
     }
 }
