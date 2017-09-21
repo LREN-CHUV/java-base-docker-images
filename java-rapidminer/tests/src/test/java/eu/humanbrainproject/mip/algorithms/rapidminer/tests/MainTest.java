@@ -1,10 +1,14 @@
 package eu.humanbrainproject.mip.algorithms.rapidminer.tests;
 
+import eu.humanbrainproject.mip.algorithms.db.OutputDataConnector;
 import eu.humanbrainproject.mip.algorithms.rapidminer.Main;
 import eu.humanbrainproject.mip.algorithms.db.DBException;
-import eu.humanbrainproject.mip.algorithms.db.DBConnector;
+import eu.humanbrainproject.mip.algorithms.rapidminer.serializers.pfa.RapidMinerAlgorithmSerializer;
+import eu.humanbrainproject.mip.algorithms.rapidminer.tests.models.RPMDefault;
+import eu.humanbrainproject.mip.algorithms.rapidminer.tests.models.RPMDefaultSerializer;
 import org.junit.Test;
-import static junit.framework.Assert.assertEquals;
+
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
 
@@ -12,86 +16,107 @@ import static org.junit.Assert.assertTrue;
  * Quasi-end-to-end tests
  *
  * @author Arnaud Jutzeler
- *
  */
 public class MainTest {
 
-	@Test
-	public void testOneVarOneCovar() throws DBException {
+    @Test
+    public void testOneVarOneCovar() throws DBException {
 
-		System.out.println("We can perform RPMDefault on one variable, one covariable");
+        System.out.println("We can perform RPMDefault on one variable, one covariable");
 
-		String jobId = "001";
+        String jobId = "001";
 
-		System.setProperty("JOB_ID", jobId);
-		System.setProperty("PARAM_query", "select iq, response_time_task2 from sample_data");
-		System.setProperty("PARAM_variables", "iq");
-		System.setProperty("PARAM_covariables", "response_time_task2");
-		System.setProperty("PARAM_grouping", "");
+        System.setProperty("JOB_ID", jobId);
+        System.setProperty("PARAM_query", "select iq, response_time_task2 from sample_data");
+        System.setProperty("PARAM_variables", "iq");
+        System.setProperty("PARAM_covariables", "response_time_task2");
+        System.setProperty("PARAM_grouping", "");
 
-		System.setProperty("PARAM_MODEL_method", "median");
+        System.setProperty("PARAM_MODEL_method", "median");
 
-		String[] args = {"RPMDefault"};
-		Main.main(args);
+        Main main = new Main(
+                RPMDefault.class.getName(),
+                RPMDefaultSerializer.class.getName(),
+                RapidMinerAlgorithmSerializer.class.getName()
+        );
 
-		DBConnector.DBResults results = DBConnector.getDBResult(jobId);
+        main.run();
 
-		assertTrue(results != null);
-		assertEquals("job_test", results.node);
-		assertEquals("pfa_json", results.shape);
-		System.out.println(results.data);
-		assertTrue(!results.data.contains("error"));
+        OutputDataConnector out = OutputDataConnector.fromEnv();
+        OutputDataConnector.JobResults results = out.getJobResults(jobId);
 
-		// TODO Validate PFA
-	}
+        assertTrue(results != null);
+        assertEquals("job_test", results.getNode());
+        assertEquals("pfa_json", results.getResultsFormat().getShape());
+        System.out.println(results.getResults());
+        assertTrue(!results.getResults().contains("error"));
+        assertTrue(results.getResults().contains("\"model\""));
+        assertTrue(results.getResults().contains("\"action\""));
 
-	@Test
-	public void testOneVarTwoCovars() throws DBException {
+        // TODO Validate PFA
+    }
 
-		System.out.println("We can perform RPMDefault on one variable, two covariables");
+    @Test
+    public void testOneVarTwoCovars() throws DBException {
 
-		String jobId = "002";
+        System.out.println("We can perform RPMDefault on one variable, two covariables");
 
-		System.setProperty("JOB_ID", jobId);
-		System.setProperty("PARAM_query", "select iq, response_time_task2, college_math from sample_data");
-		System.setProperty("PARAM_variables", "iq");
-		System.setProperty("PARAM_covariables", "response_time_task2,college_math");
-		System.setProperty("PARAM_grouping", "");
+        String jobId = "002";
 
-		System.setProperty("PARAM_MODEL_method", "median");
+        System.setProperty("JOB_ID", jobId);
+        System.setProperty("PARAM_query", "select iq, response_time_task2, college_math from sample_data");
+        System.setProperty("PARAM_variables", "iq");
+        System.setProperty("PARAM_covariables", "response_time_task2,college_math");
+        System.setProperty("PARAM_grouping", "");
 
-		String[] args = {"RPMDefault"};
-		Main.main(args);
+        System.setProperty("PARAM_MODEL_method", "median");
 
-		DBConnector.DBResults results = DBConnector.getDBResult(jobId);
+        Main main = new Main(
+                RPMDefault.class.getName(),
+                RPMDefaultSerializer.class.getName(),
+                RapidMinerAlgorithmSerializer.class.getName()
+        );
 
-		assertTrue(results != null);
-		assertEquals("job_test", results.node);
-		assertEquals("pfa_json", results.shape);
-		System.out.println(results.data);
-		assertTrue(!results.data.contains("error"));
-	}
+        main.run();
 
-	@Test
-	public void testInvalidModel() throws DBException {
+        OutputDataConnector out = OutputDataConnector.fromEnv();
+        OutputDataConnector.JobResults results = out.getJobResults(jobId);
 
-		System.out.println("We cannot perform classification with invalid model");
+        assertTrue(results != null);
+        assertEquals("job_test", results.getNode());
+        assertEquals("pfa_json", results.getResultsFormat().getShape());
+        System.out.println(results.getResults());
+        assertTrue(!results.getResults().contains("error"));
+        assertTrue(results.getResults().contains("\"model\""));
+        assertTrue(results.getResults().contains("\"action\""));
+    }
 
-		String jobId = "004";
+    @Test
+    public void testInvalidModel() throws DBException {
 
-		System.setProperty("JOB_ID", jobId);
-		System.setProperty("PARAM_query", "select iq, response_time_task2, college_math from sample_data");
-		System.setProperty("PARAM_variables", "iq");
-		System.setProperty("PARAM_covariables", "response_time_task2,college_math");
-		System.setProperty("PARAM_grouping", "");
+        System.out.println("We cannot perform classification with invalid model");
 
-		System.setProperty("PARAM_MODEL_method", "median");
+        String jobId = "004";
 
-		String[] args = {"eu.hbp.mip.container.rapidminer.tests.models.sjkhdfj"};
-		Main.main(args);
+        System.setProperty("JOB_ID", jobId);
+        System.setProperty("PARAM_query", "select iq, response_time_task2, college_math from sample_data");
+        System.setProperty("PARAM_variables", "iq");
+        System.setProperty("PARAM_covariables", "response_time_task2,college_math");
+        System.setProperty("PARAM_grouping", "");
 
-		DBConnector.DBResults results = DBConnector.getDBResult(jobId);
+        System.setProperty("PARAM_MODEL_method", "median");
 
-		assertTrue(results == null);
-	}
+        Main main = new Main(
+                "eu.hbp.mip.container.rapidminer.tests.models.sjkhdfj",
+                "eu.hbp.mip.container.rapidminer.tests.models.sjkhdfj.serialize",
+                RapidMinerAlgorithmSerializer.class.getName()
+        );
+
+        main.run();
+
+        OutputDataConnector out = OutputDataConnector.fromEnv();
+        OutputDataConnector.JobResults results = out.getJobResults(jobId);
+
+        assertTrue(results == null);
+    }
 }

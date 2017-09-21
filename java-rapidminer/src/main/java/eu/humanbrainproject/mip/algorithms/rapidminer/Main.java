@@ -1,6 +1,8 @@
 package eu.humanbrainproject.mip.algorithms.rapidminer;
 
 import java.io.IOException;
+import java.lang.reflect.InvocationTargetException;
+import java.util.Properties;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -9,6 +11,8 @@ import eu.humanbrainproject.mip.algorithms.db.DBException;
 import eu.humanbrainproject.mip.algorithms.db.OutputDataConnector;
 import eu.humanbrainproject.mip.algorithms.rapidminer.exceptions.RapidMinerException;
 import eu.humanbrainproject.mip.algorithms.rapidminer.models.RapidMinerModel;
+import eu.humanbrainproject.mip.algorithms.rapidminer.serializers.pfa.RapidMinerAlgorithmSerializer;
+import eu.humanbrainproject.mip.algorithms.rapidminer.serializers.pfa.RapidMinerModelSerializer;
 
 
 /**
@@ -22,11 +26,47 @@ public class Main {
     public static void main(String[] args) {
 
         try {
-            Class modelClass = Class.forName(args[0]);
+            String settingsPath = (args.length == 0) ? "settings.properties" : args[0];
+
+            Properties settings = new Properties();
+            settings.load(Main.class.getResourceAsStream(settingsPath));
+
+            Main main = new Main(settings.getProperty("model"),
+                    settings.getProperty("modelSerializer"),
+                    settings.getProperty("algorithmSerializer", RapidMinerAlgorithmSerializer.class.getName()));
+
+            main.run();
+
+        } catch (Exception e) {
+            LOGGER.log(Level.SEVERE, "Cannot execute the algorithm", e);
+        }
+    }
+
+    private final String modelClassName;
+    private final String modelSerializerClassName;
+    private final String algorithmSerializerClassName;
+
+    public Main(String modelClassName, String modelSerializerClassName, String algorithmSerializerClassName) {
+        this.modelClassName = modelClassName;
+        this.modelSerializerClassName = modelSerializerClassName;
+        this.algorithmSerializerClassName = algorithmSerializerClassName;
+    }
+
+    public void run() {
+        try {
+            Class modelClass = Class.forName(modelClassName);
             RapidMinerModel model = (RapidMinerModel) modelClass.newInstance();
 
+            Class modelSerializerClass = Class.forName(modelSerializerClassName);
+            RapidMinerModelSerializer modelSerializer = (RapidMinerModelSerializer) modelSerializerClass.newInstance();
+
+            Class<?> algorithmSerializerClass = Class.forName(algorithmSerializerClassName);
+            RapidMinerAlgorithmSerializer algorithmSerializer = (RapidMinerAlgorithmSerializer) algorithmSerializerClass.getConstructor(RapidMinerModelSerializer.class).newInstance(modelSerializer);
+
+            InputData inputData = InputData.fromEnv();
+
             // Run experiment
-            RapidMinerExperiment experiment = new RapidMinerExperiment(model);
+            RapidMinerExperiment experiment = new RapidMinerExperiment(inputData, model, algorithmSerializer);
 
             try {
                 experiment.run();
@@ -41,8 +81,7 @@ public class Main {
         } catch (ClassNotFoundException e) {
             LOGGER.severe(e.getMessage());
 
-        } catch (InstantiationException | IllegalAccessException |
-                IOException | DBException | ClassCastException | RapidMinerException e) {
+        } catch (Exception e) {
             LOGGER.log(Level.SEVERE, "Cannot execute the algorithm", e);
         }
     }

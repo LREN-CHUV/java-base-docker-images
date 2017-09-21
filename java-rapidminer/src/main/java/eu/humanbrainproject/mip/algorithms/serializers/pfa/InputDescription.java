@@ -2,12 +2,11 @@ package eu.humanbrainproject.mip.algorithms.serializers.pfa;
 
 import com.fasterxml.jackson.core.JsonGenerator;
 
-import java.io.IOException;
 import java.util.List;
 
 public abstract class InputDescription {
 
-    public void writePfaInput(JsonGenerator jgen) throws IOException {
+    public void writePfaInput(JsonGenerator jgen) throws Exception {
 
         // Input
         jgen.writeObjectFieldStart("input");
@@ -42,7 +41,7 @@ public abstract class InputDescription {
         jgen.writeEndObject();
     }
 
-    public void writePfaOutput(JsonGenerator jgen) throws IOException {
+    public void writePfaOutput(JsonGenerator jgen) throws Exception {
 
         // Output
         jgen.writeObjectFieldStart("output");
@@ -84,7 +83,7 @@ public abstract class InputDescription {
         jgen.writeEndObject();
     }
 
-    public void writeQuery(JsonGenerator jgen) throws IOException {
+    public void writeQuery(JsonGenerator jgen) throws Exception {
 
         // Query
         jgen.writeObjectFieldStart("query");
@@ -164,13 +163,13 @@ public abstract class InputDescription {
         jgen.writeEndObject();
     }
 
-    protected abstract VariableType getType(String variable);
+    protected abstract VariableType getType(String variable) throws Exception;
 
-    protected abstract List<String> getCategoricalValues(String variable);
+    protected abstract List<String> getCategoricalValues(String variable) throws Exception;
 
     protected abstract String getQuery();
 
-    protected abstract int getDataSize();
+    protected abstract int getDataSize() throws Exception;
 
     protected abstract String[] getVariables();
 

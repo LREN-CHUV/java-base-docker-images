@@ -26,10 +26,9 @@ public class InputData {
     private final InputDataConnector connector;
     private final String[] featuresNames;
     private final String variableName;
+    private ExampleSet data;
 
     //protected Map<String, Integer> types;
-
-    protected final ExampleSet data;
 
     /**
      * @return the input data initialised from the environment variables
@@ -48,13 +47,12 @@ public class InputData {
         return new InputData(featuresNames, labelName, connector);
     }
 
-    public InputData(String[] featuresNames, String variableName, InputDataConnector connector) throws DBException, RapidMinerException {
+    public InputData(String[] featuresNames, String variableName, InputDataConnector connector) {
         this.featuresNames = featuresNames;
         this.variableName = variableName;
         //this.types = new HashMap<>();
 
         this.connector = connector;
-        this.data = createExampleSet();
     }
 
     /**
@@ -62,7 +60,10 @@ public class InputData {
      *
      * @return the input data as an ExampleSet to train RapidMiner algorithms
      */
-    public ExampleSet getData() {
+    public ExampleSet getData() throws DBException, RapidMinerException {
+        if (data == null) {
+           data = createExampleSet();
+        }
         return data;
     }
 
@@ -81,13 +82,17 @@ public class InputData {
      * @return the SQL query
      */
     public String getQuery() {
-        return connector.getQuery();
+        if (connector == null) {
+            return "";
+        } else {
+            return connector.getQuery();
+        }
     }
 
     /**
      * Get the data from DB
      */
-    private ExampleSet createExampleSet() throws RapidMinerException, DBException {
+    protected ExampleSet createExampleSet() throws RapidMinerException, DBException {
         MemoryExampleTable table;
 
         try (ResultSet rs = connector.fetchInputData()) {

@@ -1,10 +1,9 @@
 package eu.humanbrainproject.mip.algorithms.rapidminer.models;
 
-import java.io.IOException;
 import java.util.Map;
 
+import eu.humanbrainproject.mip.algorithms.db.DBException;
 import eu.humanbrainproject.mip.algorithms.rapidminer.InputData;
-import com.fasterxml.jackson.core.JsonGenerator;
 
 import com.rapidminer.example.ExampleSet;
 import com.rapidminer.operator.IOContainer;
@@ -15,6 +14,7 @@ import com.rapidminer.operator.learner.AbstractLearner;
 import com.rapidminer.operator.learner.PredictionModel;
 import com.rapidminer.tools.OperatorService;
 import com.rapidminer.Process;
+import eu.humanbrainproject.mip.algorithms.rapidminer.exceptions.RapidMinerException;
 
 
 /**
@@ -29,69 +29,66 @@ public abstract class RapidMinerModel<M extends PredictionModel> {
 
     private Class<? extends AbstractLearner> learnerClass;
 
-    // Remark: This should be private, but we need the IOObject
-    // to build the PFA representation for some models as they all have private fields...
-    protected Process process;
+    private Process process;
 
-    protected M trainedModel;
+    private M trainedModel;
 
     public RapidMinerModel(Class<? extends AbstractLearner> learnerClass) {
         this.learnerClass = learnerClass;
     }
 
     @SuppressWarnings("unchecked")
-    public void train(InputData trainingData) throws OperatorCreationException, OperatorException {
+    public void train(InputData trainingData) throws DBException, RapidMinerException {
 
         // Create the RapidMiner process
-        process = new Process();
+        this.process = new Process();
 
-        // Model training
-        Operator modelOp = OperatorService.createOperator(this.learnerClass);
-        Map<String, String> parameters = getParameters();
-        for (Map.Entry<String, String> entry : parameters.entrySet()) {
-            modelOp.setParameter(entry.getKey(), entry.getValue());
+        try {
+
+            // Model training
+            Operator modelOp = OperatorService.createOperator(this.learnerClass);
+            Map<String, String> parameters = getParameters();
+            for (Map.Entry<String, String> entry : parameters.entrySet()) {
+                modelOp.setParameter(entry.getKey(), entry.getValue());
+            }
+            getProcess().getRootOperator().getSubprocess(0).addOperator(modelOp);
+            getProcess().getRootOperator()
+                    .getSubprocess(0)
+                    .getInnerSources()
+                    .getPortByIndex(0)
+                    .connectTo(modelOp.getInputPorts().getPortByName("training set"));
+            modelOp.getOutputPorts().getPortByName("model").connectTo(getProcess().getRootOperator()
+                    .getSubprocess(0)
+                    .getInnerSinks()
+                    .getPortByIndex(0));
+
+            // Run process
+            ExampleSet exampleSet = trainingData.getData();
+            IOContainer ioResult = getProcess().run(new IOContainer(exampleSet, exampleSet, exampleSet));
+
+            trainedModel = (M) ioResult.get(PredictionModel.class, 0);
+
+        } catch (OperatorException | OperatorCreationException e) {
+            throw new RapidMinerException(e);
         }
-        process.getRootOperator().getSubprocess(0).addOperator(modelOp);
-        process.getRootOperator()
-                .getSubprocess(0)
-                .getInnerSources()
-                .getPortByIndex(0)
-                .connectTo(modelOp.getInputPorts().getPortByName("training set"));
-        modelOp.getOutputPorts().getPortByName("model").connectTo(process.getRootOperator()
-                .getSubprocess(0)
-                .getInnerSinks()
-                .getPortByIndex(0));
-
-        // Run process
-        ExampleSet exampleSet = trainingData.getData();
-        IOContainer ioResult = process.run(new IOContainer(exampleSet, exampleSet, exampleSet));
-
-        trainedModel = (M) ioResult.get(PredictionModel.class, 0);
     }
 
     protected abstract Map<String,String> getParameters();
 
-    public void writeRepresentation(JsonGenerator jgen) throws IOException {
-        if (trainedModel != null) {
-            writeModelRepresentation(jgen);
-        }
-    }
-
     public String toRMP() {
-        return process.getRootOperator().getXML(false);
+        return getProcess().getRootOperator().getXML(false);
     }
-
-    /**
-     *
-     * Give jgen in cells context to be able to write representation
-     * and then the action
-     *
-     * @param jgen
-     * @throws IOException
-     */
-    protected abstract void writeModelRepresentation(JsonGenerator jgen) throws IOException;
 
     public boolean isAlreadyTrained() {
-        return trainedModel != null;
+        return getTrainedModel() != null;
     }
+
+    protected Process getProcess() {
+        return process;
+    }
+
+    public M getTrainedModel() {
+        return trainedModel;
+    }
+
 }

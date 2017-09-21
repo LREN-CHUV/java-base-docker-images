@@ -10,11 +10,11 @@ import com.fasterxml.jackson.databind.module.SimpleModule;
 import com.rapidminer.RapidMiner;
 import com.rapidminer.operator.*;
 
-import eu.humanbrainproject.mip.algorithms.Experiment;
+import eu.humanbrainproject.mip.algorithms.Algorithm;
 import eu.humanbrainproject.mip.algorithms.db.DBException;
 import eu.humanbrainproject.mip.algorithms.rapidminer.exceptions.RapidMinerException;
 import eu.humanbrainproject.mip.algorithms.rapidminer.models.RapidMinerModel;
-import eu.humanbrainproject.mip.algorithms.rapidminer.serializers.pfa.RapidMinerExperimentSerializer;
+import eu.humanbrainproject.mip.algorithms.rapidminer.serializers.pfa.RapidMinerAlgorithmSerializer;
 
 
 /**
@@ -24,31 +24,29 @@ import eu.humanbrainproject.mip.algorithms.rapidminer.serializers.pfa.RapidMiner
  *
  * @author Arnaud Jutzeler
  */
-public class RapidMinerExperiment implements Experiment {
+public class RapidMinerExperiment implements Algorithm {
 
     private static final Logger LOGGER = Logger.getLogger(RapidMinerExperiment.class.getName());
 
-    public static final String NAME = "rapidminer";
-    public static final String DOCUMENTATION = "RapidMiner Model";
+    private static final String NAME = "rapidminer";
+    private static final String DOCUMENTATION = "RapidMiner Model";
 
     private static boolean isRPMInit = false;
 
     private InputData input;
     private RapidMinerModel model;
+    private RapidMinerAlgorithmSerializer serializer;
 
     public Exception exception;
-
-    public RapidMinerExperiment(RapidMinerModel model) {
-        this(null, model);
-    }
 
     /**
      * @param input
      * @param model
      */
-    public RapidMinerExperiment(InputData input, RapidMinerModel model) {
+    public RapidMinerExperiment(InputData input, RapidMinerModel model, RapidMinerAlgorithmSerializer serializer) {
         this.input = input;
         this.model = model;
+        this.serializer = serializer;
     }
 
     @Override
@@ -59,6 +57,15 @@ public class RapidMinerExperiment implements Experiment {
     @Override
     public String getDocumentation() {
         return DOCUMENTATION;
+    }
+
+    @Override
+    public String getErrorMessage() {
+        if (exception != null) {
+            return exception.getMessage();
+        } else {
+            return null;
+        }
     }
 
     /**
@@ -97,7 +104,7 @@ public class RapidMinerExperiment implements Experiment {
             // Train the model
             model.train(input);
 
-        } catch (OperatorCreationException | OperatorException | ClassCastException ex) {
+        } catch (ClassCastException ex) {
             final RapidMinerException rapidMinerException = new RapidMinerException(ex);
             this.exception = rapidMinerException;
             throw rapidMinerException;
@@ -143,7 +150,7 @@ public class RapidMinerExperiment implements Experiment {
     private ObjectMapper getObjectMapper() {
         ObjectMapper myObjectMapper = new ObjectMapper();
         SimpleModule module = new SimpleModule("RapidMiner", new Version(1, 0, 0, null, null, null));
-        module.addSerializer(RapidMinerExperiment.class, new RapidMinerExperimentSerializer());
+        module.addSerializer(RapidMinerExperiment.class, serializer);
         myObjectMapper.registerModule(module);
         return myObjectMapper;
     }

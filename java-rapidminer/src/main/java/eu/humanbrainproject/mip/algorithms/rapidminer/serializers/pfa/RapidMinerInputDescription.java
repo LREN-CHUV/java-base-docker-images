@@ -1,7 +1,9 @@
 package eu.humanbrainproject.mip.algorithms.rapidminer.serializers.pfa;
 
 import com.rapidminer.tools.Ontology;
+import eu.humanbrainproject.mip.algorithms.db.DBException;
 import eu.humanbrainproject.mip.algorithms.rapidminer.InputData;
+import eu.humanbrainproject.mip.algorithms.rapidminer.exceptions.RapidMinerException;
 import eu.humanbrainproject.mip.algorithms.serializers.pfa.InputDescription;
 
 import java.util.LinkedList;
@@ -16,7 +18,7 @@ public class RapidMinerInputDescription extends InputDescription {
     }
 
     @Override
-    protected VariableType getType(String variable) {
+    protected VariableType getType(String variable) throws DBException, RapidMinerException {
         int valueType = data.getData().getAttributes().get(variable).getValueType();
         switch (valueType) {
             case Ontology.REAL: return VariableType.REAL;
@@ -25,7 +27,7 @@ public class RapidMinerInputDescription extends InputDescription {
     }
 
     @Override
-    protected List<String> getCategoricalValues(String variable) {
+    protected List<String> getCategoricalValues(String variable) throws DBException, RapidMinerException {
         try {
             return data.getData().getAttributes().get(variable).getMapping().getValues();
         } catch (UnsupportedOperationException e) {
@@ -39,7 +41,7 @@ public class RapidMinerInputDescription extends InputDescription {
     }
 
     @Override
-    protected int getDataSize() {
+    protected int getDataSize() throws DBException, RapidMinerException {
         return data.getData().size();
     }
 

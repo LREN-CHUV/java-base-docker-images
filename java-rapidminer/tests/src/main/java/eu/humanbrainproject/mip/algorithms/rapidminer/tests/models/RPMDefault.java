@@ -1,15 +1,11 @@
 package eu.humanbrainproject.mip.algorithms.rapidminer.tests.models;
 
-import java.io.IOException;
-import java.util.Map;
-
+import com.rapidminer.operator.learner.lazy.DefaultLearner;
+import com.rapidminer.operator.learner.lazy.DefaultModel;
 import eu.humanbrainproject.mip.algorithms.rapidminer.models.RapidMinerModel;
 import org.apache.commons.collections15.map.LinkedMap;
 
-import com.fasterxml.jackson.core.JsonGenerator;
-
-import com.rapidminer.operator.learner.lazy.DefaultLearner;
-import com.rapidminer.operator.learner.lazy.DefaultModel;
+import java.util.Map;
 
 
 /**
@@ -34,36 +30,9 @@ public class RPMDefault extends RapidMinerModel<DefaultModel> {
 
     @Override
     public Map<String, String> getParameters() {
-        LinkedMap map = new LinkedMap<String, String>();
+        LinkedMap<String, String> map = new LinkedMap<>();
         map.put("method", this.method);
         return map;
     }
 
-    @Override
-    public void writeModelRepresentation(JsonGenerator jgen) throws IOException {
-
-        jgen.writeObjectFieldStart("model");
-            jgen.writeObjectFieldStart("type");
-                jgen.writeStringField("doc", "The model parameter");
-                jgen.writeStringField("name", "value");
-                jgen.writeStringField("type", "double");
-            jgen.writeEndObject();
-
-            jgen.writeObjectFieldStart("init");
-                jgen.writeNumberField("value", trainedModel.getValue());
-            jgen.writeEndObject();
-
-        jgen.writeEndObject();
-
-        // End Cells
-        jgen.writeEndObject();
-
-
-        // Action
-        jgen.writeArrayFieldStart("action");
-            jgen.writeStartObject();
-                jgen.writeStringField("cell", "model");
-            jgen.writeEndObject();
-        jgen.writeEndArray();
-    }
 }

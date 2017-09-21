@@ -1,5 +1,8 @@
 package eu.humanbrainproject.mip.algorithms;
 
+/**
+ * As the algorithm results are exported as a generic text, we define here what was the format used to encode the results.
+ */
 public enum ResultsFormat {
     PFA_JSON("pfa_json", "application/pfa+json"),
     PFA_YAML("pfa_yaml", "application/pfa+yaml"),

@@ -23,7 +23,7 @@ This image provides a Java environment compatible with MIP and with the followin
 
 Run Rapidminer algorithms (experiments) in MIP platform.
 
-## hbpmip/scala-base-build
+## [hbpmip/scala-base-build](./scala-base-build/): Scala build environment, including sbt
 
 This image contains [Scala](https://www.scala-lang.org/) and [sbt](http://www.scala-sbt.org/)
 
