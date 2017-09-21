@@ -6,7 +6,7 @@
   <groupId>eu.humanbrainproject.mip.algorithms</groupId>
   <artifactId>rapidminer</artifactId>
   <packaging>jar</packaging>
-  <version>0.4.1</version><!-- bumpversion -->
+  <version>0.5.0</version><!-- bumpversion -->
   <name>mip-rapidminer</name>
 
   <properties>
