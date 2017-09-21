@@ -1,4 +1,4 @@
-package eu.humanbrainproject.mip.algorithms.rapidminer.tests.models;
+package eu.humanbrainproject.mip.algorithms.rapidminer.models.rpmdefault;
 
 import com.fasterxml.jackson.core.JsonGenerator;
 import com.rapidminer.operator.learner.lazy.DefaultModel;
@@ -10,7 +10,7 @@ import java.io.IOException;
 public class RPMDefaultSerializer extends RapidMinerModelSerializer<DefaultModel> {
 
     @Override
-    public void writeRepresentationModelConstants(RapidMinerModel<DefaultModel> model, JsonGenerator jgen) throws IOException {
+    public void writeModelConstants(RapidMinerModel<DefaultModel> model, JsonGenerator jgen) throws IOException {
         jgen.writeObjectFieldStart("model");
         {
             jgen.writeObjectFieldStart("type");

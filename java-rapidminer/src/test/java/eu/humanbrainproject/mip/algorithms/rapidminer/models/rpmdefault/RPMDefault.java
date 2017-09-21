@@ -1,4 +1,4 @@
-package eu.humanbrainproject.mip.algorithms.rapidminer.tests.models;
+package eu.humanbrainproject.mip.algorithms.rapidminer.models.rpmdefault;
 
 import java.util.Map;
 

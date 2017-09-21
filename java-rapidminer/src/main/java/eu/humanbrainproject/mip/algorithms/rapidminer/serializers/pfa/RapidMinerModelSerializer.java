@@ -8,7 +8,7 @@ import java.io.IOException;
 
 public abstract class RapidMinerModelSerializer<M extends PredictionModel> {
 
-    public abstract void writeRepresentationModelConstants(RapidMinerModel<M> model, JsonGenerator jgen) throws IOException;
+    public abstract void writeModelConstants(RapidMinerModel<M> model, JsonGenerator jgen) throws IOException;
 
     public void writePfaBegin(RapidMinerModel<M> model, JsonGenerator jgen) throws IOException {}
 

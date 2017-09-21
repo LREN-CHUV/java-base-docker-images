@@ -41,7 +41,7 @@ public class RapidMinerAlgorithmSerializer<M extends PredictionModel> extends Al
 
         // Model representation
         if (model != null) {
-            modelSerializer.writeRepresentationModelConstants(model, jgen);
+            modelSerializer.writeModelConstants(model, jgen);
         }
     }
 

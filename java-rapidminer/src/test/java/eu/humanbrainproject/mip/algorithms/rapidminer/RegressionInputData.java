@@ -1,4 +1,4 @@
-package eu.humanbrainproject.mip.algorithms.rapidminer.tests;
+package eu.humanbrainproject.mip.algorithms.rapidminer;
 
 import com.rapidminer.example.Attribute;
 import com.rapidminer.example.ExampleSet;

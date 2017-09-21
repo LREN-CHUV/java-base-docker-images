@@ -83,7 +83,7 @@ public abstract class RapidMinerModel<M extends PredictionModel> {
         return getTrainedModel() != null;
     }
 
-    protected Process getProcess() {
+    public Process getProcess() {
         return process;
     }
 
