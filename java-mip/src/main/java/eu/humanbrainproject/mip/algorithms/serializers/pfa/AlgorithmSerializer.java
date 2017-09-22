@@ -40,7 +40,7 @@ public abstract class AlgorithmSerializer<T extends Algorithm> extends JsonSeria
             String errorMessage = value.getErrorMessage();
             InputDescription inputDescription = getInputDescription(value);
 
-            if (inputDescription != null && errorMessage != null) {
+            if (inputDescription != null && errorMessage == null) {
                 try {
                     inputDescription.writePfaInput(jgen);
                     inputDescription.writePfaOutput(jgen);
@@ -82,27 +82,27 @@ public abstract class AlgorithmSerializer<T extends Algorithm> extends JsonSeria
 
                 // Begin
                 jgen.writeFieldName("begin");
-                jgen.writeStartObject();
+                jgen.writeStartArray();
                 {
                     writePfaBegin(value, jgen);
                 }
-                jgen.writeEndObject();
+                jgen.writeEndArray();
 
                 // Action
                 jgen.writeFieldName("action");
-                jgen.writeStartObject();
+                jgen.writeStartArray();
                 {
                     writePfaAction(value, jgen);
                 }
-                jgen.writeEndObject();
+                jgen.writeEndArray();
 
                 // End
                 jgen.writeFieldName("end");
-                jgen.writeStartObject();
+                jgen.writeStartArray();
                 {
                     writePfaEnd(value, jgen);
                 }
-                jgen.writeEndObject();
+                jgen.writeEndArray();
 
                 // Functions
                 jgen.writeFieldName("fcns");

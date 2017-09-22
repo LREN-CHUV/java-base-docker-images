@@ -73,7 +73,7 @@ public abstract class RapidMinerModel<M extends PredictionModel> {
         }
     }
 
-    protected abstract Map<String,String> getParameters();
+    public abstract Map<String,String> getParameters();
 
     public String toRMP() {
         return getProcess().getRootOperator().getXML(false);
@@ -90,5 +90,6 @@ public abstract class RapidMinerModel<M extends PredictionModel> {
     public M getTrainedModel() {
         return trainedModel;
     }
+
 
 }

@@ -1,11 +1,14 @@
 package eu.humanbrainproject.mip.algorithms.rapidminer.rpmdefault;
 
-import com.rapidminer.operator.learner.lazy.DefaultLearner;
-import com.rapidminer.operator.learner.lazy.DefaultModel;
+import java.util.Collections;
+import java.util.Map;
+
+import eu.humanbrainproject.mip.algorithms.Configuration;
 import eu.humanbrainproject.mip.algorithms.rapidminer.models.RapidMinerModel;
 import org.apache.commons.collections15.map.LinkedMap;
 
-import java.util.Map;
+import com.rapidminer.operator.learner.lazy.DefaultLearner;
+import com.rapidminer.operator.learner.lazy.DefaultModel;
 
 
 /**
@@ -20,7 +23,7 @@ public class RPMDefault extends RapidMinerModel<DefaultModel> {
     private String method;
 
     public RPMDefault() {
-        this(System.getProperty("PARAM_MODEL_method", System.getenv("PARAM_MODEL_method")));
+        this(Configuration.INSTANCE.algorithmParameterValues(Collections.singleton("method")).get("method"));
     }
 
     public RPMDefault(String method) {
