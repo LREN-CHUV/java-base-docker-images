@@ -25,7 +25,7 @@
     <surefire.report.plugin.version>2.20</surefire.report.plugin.version>
     <jxr.plugin.version>2.5</jxr.plugin.version>
     <postgres.version>9.4.1212.jre7</postgres.version>
-    <mip.adapter.version>0.3.4</mip.adapter.version>
+    <mip.adapter.version>0.4.0</mip.adapter.version>
     <rapidminer.version>7.0.1</rapidminer.version>
     <antlr.version>4.5</antlr.version>
   </properties>
