@@ -53,6 +53,7 @@ gpg --verify gosu-amd64.asc
 rm -f gosu-amd64.asc
 mv gosu-amd64 /usr/bin/gosu
 chmod +x /usr/bin/gosu
+pkill gpg-agent
 apk del --purge $buildDeps
 rm -rf /root/.gnupg
 rm -rf /var/cache/apk/*
