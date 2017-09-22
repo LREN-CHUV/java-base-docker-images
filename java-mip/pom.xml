@@ -6,7 +6,7 @@
   <groupId>eu.humanbrainproject.mip.algorithms</groupId>
   <artifactId>adapter</artifactId>
   <packaging>jar</packaging>
-  <version>0.2.2</version><!-- bumpversion -->
+  <version>0.3.0</version><!-- bumpversion -->
   <name>mip-adapter</name>
   <description>
     Adapts an algorithm implemented in Java into MIP Woken environment
