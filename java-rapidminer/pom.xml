@@ -8,6 +8,9 @@
   <packaging>jar</packaging>
   <version>0.6.2</version><!-- bumpversion -->
   <name>mip-rapidminer</name>
+  <description>
+    Support for the execution of RapidMiner algorithms in the MIP Woken environment.
+  </description>
 
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
