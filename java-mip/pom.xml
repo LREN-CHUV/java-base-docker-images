@@ -224,7 +224,7 @@
     <repository>
       <id>bintray-hbpmedical-maven</id>
       <name>hbpmedical-maven</name>
-      <url>https://api.bintray.com/maven/hbpmedical/maven/eu.humanbrainproject.mip.algorithms:rapidminer/;publish=1
+      <url>https://api.bintray.com/maven/hbpmedical/maven/eu.humanbrainproject.mip.algorithms:adapter/;publish=1
       </url>
     </repository>
   </distributionManagement>
