@@ -69,7 +69,7 @@
       <version>${avro.version}</version>
     </dependency>
 
-    <!-- jinjava - a Jinja template engine in Java - is provided to simplyfy writting some parts of PFA documents -->
+    <!-- jinjava - a Jinja template engine in Java - is provided to simply writing some parts of PFA documents -->
     <dependency>
       <groupId>com.hubspot.jinjava</groupId>
       <artifactId>jinjava</artifactId>
@@ -103,6 +103,7 @@
   </dependencies>
 
   <build>
+    <finalName>${project.artifactId}</finalName>
     <resources>
       <resource>
         <directory>src/main/resources</directory>
