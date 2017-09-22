@@ -1,4 +1,4 @@
-FROM hbpmip/java-base-build:3.5.0-jdk-8-6
+FROM hbpmip/java-base-build:3.5.0-jdk-8-7
 
 COPY pom.xml /project/pom.xml
 COPY src/ /project/src

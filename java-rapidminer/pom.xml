@@ -24,9 +24,6 @@
     <info.reports.plugin.version>2.9</info.reports.plugin.version>
     <surefire.report.plugin.version>2.20</surefire.report.plugin.version>
     <jxr.plugin.version>2.5</jxr.plugin.version>
-    <jackson.version>2.7.0</jackson.version>
-    <avro.version>1.7.7</avro.version>
-    <jinjava.version>2.2.9</jinjava.version>
     <postgres.version>9.4.1212.jre7</postgres.version>
     <mip.adapter.version>0.3.4</mip.adapter.version>
     <rapidminer.version>7.0.1</rapidminer.version>
@@ -145,24 +142,6 @@
       <groupId>net.sourceforge.collections</groupId>
       <artifactId>collections-generic</artifactId>
       <version>4.01</version>
-    </dependency>
-
-    <dependency>
-      <groupId>com.fasterxml.jackson.core</groupId>
-      <artifactId>jackson-core</artifactId>
-      <version>${jackson.version}</version>
-    </dependency>
-
-    <dependency>
-      <groupId>com.fasterxml.jackson.core</groupId>
-      <artifactId>jackson-databind</artifactId>
-      <version>${jackson.version}</version>
-    </dependency>
-
-    <dependency>
-      <groupId>com.fasterxml.jackson.core</groupId>
-      <artifactId>jackson-annotations</artifactId>
-      <version>${jackson.version}</version>
     </dependency>
 
   </dependencies>
