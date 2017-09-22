@@ -21,6 +21,7 @@
     <info.reports.plugin.version>2.9</info.reports.plugin.version>
     <surefire.report.plugin.version>2.20</surefire.report.plugin.version>
     <jxr.plugin.version>2.5</jxr.plugin.version>
+    <mip.adapter.version>0.3.1</mip.adapter.version>
     <rapidminer.version>7.0.1</rapidminer.version>
     <antlr.version>4.5</antlr.version>
   </properties>
@@ -46,6 +47,15 @@
       <name>Repository for RapidMiner</name>
     </repository>
 
+    <repository>
+      <snapshots>
+        <enabled>false</enabled>
+      </snapshots>
+      <id>bintray-hbpmedical-mip</id>
+      <name>bintray</name>
+      <url>https://dl.bintray.com/hbpmedical/maven</url>
+    </repository>
+
   </repositories>
 
   <dependencies>
@@ -62,6 +72,18 @@
       <artifactId>hadrian</artifactId>
       <version>0.8.4</version>
       <scope>test</scope>
+    </dependency>
+
+    <dependency>
+      <groupId>eu.humanbrainproject.mip.algorithms</groupId>
+      <artifactId>adapter</artifactId>
+      <version>${mip.adapter.version}</version>
+    </dependency>
+
+    <dependency>
+      <groupId>com.rapidminer.studio</groupId>
+      <artifactId>rapidminer-studio-core</artifactId>
+      <version>${rapidminer.version}</version>
     </dependency>
 
     <dependency>
