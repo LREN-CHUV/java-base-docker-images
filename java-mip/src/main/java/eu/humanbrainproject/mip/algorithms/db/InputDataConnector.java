@@ -38,14 +38,14 @@ public class InputDataConnector extends DBConnector {
         return select(getQuery(), transform);
     }
 
-    void beforeSelect(Connection conn) throws SQLException {
+    protected void beforeSelect(Connection conn) throws SQLException {
         conn.setAutoCommit(false);
         PreparedStatement preparedStatement = conn.prepareStatement("SELECT setseed(?)");
         preparedStatement.setDouble(1, seed);
         preparedStatement.execute();
     }
 
-    void afterSelect(Connection conn) throws SQLException {
+    protected void afterSelect(Connection conn) throws SQLException {
         conn.commit();
     }
 

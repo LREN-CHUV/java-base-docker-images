@@ -22,7 +22,7 @@ public class DBConnector implements AutoCloseable {
         this.dbConnectionDescriptor = dbConnectionDescriptor;
     }
 
-    <M> M select(String query, Function<ResultSet, M> transform) throws DBException {
+    protected <M> M select(String query, Function<ResultSet, M> transform) throws DBException {
         try {
             openConnection();
 
@@ -47,10 +47,10 @@ public class DBConnector implements AutoCloseable {
         }
     }
 
-    void beforeSelect(Connection conn) throws SQLException {
+    protected void beforeSelect(Connection conn) throws SQLException {
     }
 
-    void afterSelect(Connection conn) throws SQLException {
+    protected void afterSelect(Connection conn) throws SQLException {
     }
 
     private void openConnection() throws SQLException {
@@ -62,7 +62,7 @@ public class DBConnector implements AutoCloseable {
         }
     }
 
-    Connection getConnection() throws SQLException {
+    protected Connection getConnection() throws SQLException {
         openConnection();
         return conn;
     }

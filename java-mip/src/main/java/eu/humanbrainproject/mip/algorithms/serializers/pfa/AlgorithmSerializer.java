@@ -130,7 +130,7 @@ public abstract class AlgorithmSerializer<T extends Algorithm> extends JsonSeria
     /**
      * Write a strings to strings mapping used to describe the scoring engine or its provenance.
      */
-    protected void writePfaMetadata(T value, JsonGenerator jgen) throws IOException  {
+    protected void writePfaMetadata(T value, JsonGenerator jgen) throws IOException {
         jgen.writeStringField("docker_image", Configuration.INSTANCE.dockerImage());
     }
 
@@ -138,31 +138,36 @@ public abstract class AlgorithmSerializer<T extends Algorithm> extends JsonSeria
      * Write the expressions that are executed in the begin phase of the scoring engine’s run
      */
     protected void writePfaBegin(T value, JsonGenerator jgen) throws IOException {
+        // Empty expression, to override if necessary
     }
 
     /**
      * Write the expression or JSON array of expressions that are executed for each input datum in
-     the active phase of the scoring engine’s run
+     * the active phase of the scoring engine’s run
      */
-    protected void writePfaAction(T value, JsonGenerator jgen) throws IOException  {
+    protected void writePfaAction(T value, JsonGenerator jgen) throws IOException {
+        // Empty expression, to override if necessary
     }
 
     /**
      * Write the expressions that are executed in the end phase of the scoring engine’s run
      */
-    protected void writePfaEnd(T value, JsonGenerator jgen) throws IOException  {
+    protected void writePfaEnd(T value, JsonGenerator jgen) throws IOException {
+        // Empty expression, to override if necessary
     }
 
     /**
      * Write the JSON object fields that are function definitions, defining routines that may
      * be called by expressions in begin, action, end, or by expressions in other functions.
      */
-    protected void writePfaFunctionDefinitions(T value, JsonGenerator jgen) throws IOException  {
+    protected void writePfaFunctionDefinitions(T value, JsonGenerator jgen) throws IOException {
+        // Empty set of functions, to override if necessary
     }
 
     /**
      * Write the JSON object fields that specify dynamically allocated namespaces of typed persistent state.
      */
-    protected void writePfaPools(T value, JsonGenerator jgen) throws IOException  {
+    protected void writePfaPools(T value, JsonGenerator jgen) throws IOException {
+        // Empty set of pools, to override if necessary
     }
 }

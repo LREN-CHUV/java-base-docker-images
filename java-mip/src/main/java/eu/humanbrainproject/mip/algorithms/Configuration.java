@@ -1,5 +1,14 @@
 package eu.humanbrainproject.mip.algorithms;
 
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Set;
+
+/**
+ * Configuration of the algorithms running in MIP Woken execution runtime.
+ *
+ * The configuration is done via a set of environment variables.
+ */
 public class Configuration {
 
     public static final Configuration INSTANCE = new Configuration();
@@ -67,6 +76,32 @@ public class Configuration {
         return env("DOCKER_IMAGE", "");
     }
 
+    /**
+     * Return the values of the algorithm parameters read from the environment variables.
+     * For a parameter k, we read first the value of environment variable MODEL_PARAM_k,
+     * then for backwards compatibility the value of environment variable PARAM_MODEL_k
+     */
+    public Map<String, String> algorithmParameterValues(Set<String> algorithmParameters) {
+        HashMap<String, String> values = new HashMap<>();
+        for (String param: algorithmParameters) {
+            values.put(param, env("MODEL_PARAM_" + param, env("PARAM_MODEL_" + param)));
+        }
+        return values;
+    }
+
+    /**
+     * Return the values of the algorithm parameters read from the environment variables.
+     * For a parameter k, we read first the value of environment variable MODEL_PARAM_k,
+     * then for backwards compatibility the value of environment variable PARAM_MODEL_k.
+     * If no matching environment variable is found, then the value of k in the input map is used.
+     */
+    public Map<String, String> algorithmParameterValues(Map<String, String> algorithmParametersWithDefaultValues) {
+        HashMap<String, String> values = new HashMap<>();
+        for (String param: algorithmParametersWithDefaultValues.keySet()) {
+            values.put(param, env("MODEL_PARAM_" + param, env("PARAM_MODEL_" + param, algorithmParametersWithDefaultValues.get(param))));
+        }
+        return values;
+    }
 
     private static String env(String key) {
         // Read first system property then env variables
