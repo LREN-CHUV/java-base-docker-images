@@ -12,7 +12,7 @@ FROM hbpmip/java-mip:latest
 MAINTAINER arnaud@ahead-solutions.ch
 
 ENV JAVA_CLASSPATH=/usr/share/jars/java-mip.jar
-ENV JAVA_MAINCLASS=eu.hbp.mip.container.Main
+ENV JAVA_MAINCLASS=eu.humanbrainproject.mip.algorithms.Main
 
 COPY --from=build-java-env /project/target/java-mip-jar-with-dependencies.jar /usr/share/jars/java-mip.jar
 COPY --from=build-java-env /project/target/site/ /var/www/html/

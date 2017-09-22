@@ -116,8 +116,8 @@ public class MainTest {
         System.setProperty("PARAM_MODEL_method", "median");
 
         Main main = new Main(
-                "eu.hbp.mip.container.rapidminer.tests.models.sjkhdfj",
-                "eu.hbp.mip.container.rapidminer.tests.models.sjkhdfj.serialize",
+                "eu.humanbrainproject.mip.algorithms.rapidminer.sjkhdfj",
+                "eu.humanbrainproject.mip.algorithms.rapidminer.sjkhdfj.serialize",
                 RapidMinerAlgorithmSerializer.class.getName()
         );
 
