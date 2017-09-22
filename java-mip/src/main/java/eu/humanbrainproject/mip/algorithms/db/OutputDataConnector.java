@@ -10,17 +10,6 @@ import java.util.logging.Logger;
 public class OutputDataConnector extends DBConnector {
     private static final Logger LOGGER = Logger.getLogger(OutputDataConnector.class.getName());
 
-    /**
-     * @return the output data connector defined by the configuration
-     */
-    public static OutputDataConnector fromEnv() {
-        final Configuration conf = Configuration.INSTANCE;
-        return new OutputDataConnector(
-                conf.outputResultTable(),
-                DBConnectionDescriptor.outputConnectorFromEnv());
-    }
-
-
     private final String outTable;
 
     public OutputDataConnector(String outTable, DBConnectionDescriptor dbConnectionDescriptor) {
@@ -81,6 +70,16 @@ public class OutputDataConnector extends DBConnector {
         }
     }
 
+    /**
+     * @return the output data connector defined by the configuration
+     */
+    public static OutputDataConnector fromEnv() {
+        final Configuration conf = Configuration.INSTANCE;
+        return new OutputDataConnector(
+                conf.outputResultTable(),
+                DBConnectionDescriptor.outputConnectorFromEnv());
+    }
+
     public static class JobResults {
 
         private String node;
@@ -114,4 +113,6 @@ public class OutputDataConnector extends DBConnector {
         }
         throw new IllegalArgumentException("Unknown shape: " + shape);
     }
+
+
 }

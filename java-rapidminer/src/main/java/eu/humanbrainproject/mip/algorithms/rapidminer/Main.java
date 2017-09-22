@@ -20,25 +20,6 @@ import eu.humanbrainproject.mip.algorithms.rapidminer.serializers.pfa.RapidMiner
 public class Main {
     private static final Logger LOGGER = Logger.getLogger(Main.class.getName());
 
-    public static void main(String[] args) {
-
-        try {
-            String settingsPath = (args.length == 0) ? "settings.properties" : args[0];
-
-            Properties settings = new Properties();
-            settings.load(Main.class.getResourceAsStream(settingsPath));
-
-            Main main = new Main(settings.getProperty("model"),
-                    settings.getProperty("modelSerializer"),
-                    settings.getProperty("algorithmSerializer", RapidMinerAlgorithmSerializer.class.getName()));
-
-            main.run();
-
-        } catch (Exception e) {
-            LOGGER.log(Level.SEVERE, "Cannot execute the algorithm", e);
-        }
-    }
-
     private final String modelClassName;
     private final String modelSerializerClassName;
     private final String algorithmSerializerClassName;
@@ -82,4 +63,24 @@ public class Main {
             LOGGER.log(Level.SEVERE, "Cannot execute the algorithm", e);
         }
     }
+
+    public static void main(String[] args) {
+
+        try {
+            String settingsPath = (args.length == 0) ? "settings.properties" : args[0];
+
+            Properties settings = new Properties();
+            settings.load(Main.class.getResourceAsStream(settingsPath));
+
+            Main main = new Main(settings.getProperty("model"),
+                    settings.getProperty("modelSerializer"),
+                    settings.getProperty("algorithmSerializer", RapidMinerAlgorithmSerializer.class.getName()));
+
+            main.run();
+
+        } catch (Exception e) {
+            LOGGER.log(Level.SEVERE, "Cannot execute the algorithm", e);
+        }
+    }
+
 }

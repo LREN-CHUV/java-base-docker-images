@@ -10,17 +10,6 @@ import java.util.function.Function;
 
 public class InputDataConnector extends DBConnector {
 
-    /**
-     * @return the input data connector defined by the configuration
-     */
-    public static InputDataConnector fromEnv() {
-        final Configuration conf = Configuration.INSTANCE;
-        return new InputDataConnector(
-                conf.inputSqlQuery(),
-                conf.randomSeed(),
-                DBConnectionDescriptor.inputConnectorFromEnv());
-    }
-
     private final String query;
     private final double seed;
 
@@ -47,6 +36,17 @@ public class InputDataConnector extends DBConnector {
 
     protected void afterSelect(Connection conn) throws SQLException {
         conn.commit();
+    }
+
+    /**
+     * @return the input data connector defined by the configuration
+     */
+    public static InputDataConnector fromEnv() {
+        final Configuration conf = Configuration.INSTANCE;
+        return new InputDataConnector(
+                conf.inputSqlQuery(),
+                conf.randomSeed(),
+                DBConnectionDescriptor.inputConnectorFromEnv());
     }
 
 }

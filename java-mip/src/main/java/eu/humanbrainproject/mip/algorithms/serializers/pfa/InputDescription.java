@@ -20,7 +20,8 @@ public abstract class InputDescription {
         for (String covariable : getCovariables()) {
             jgen.writeStartObject();
             jgen.writeStringField("name", covariable);
-            switch (getType(covariable)) {
+            final VariableType type = getType(covariable);
+            switch (type) {
                 case REAL: {
                     jgen.writeStringField("type", "double");
                     break;
@@ -37,6 +38,8 @@ public abstract class InputDescription {
                     jgen.writeEndObject();
                     break;
                 }
+                default:
+                    throw new IllegalArgumentException("Unknown type: " + type);
             }
             jgen.writeEndObject();
         }
@@ -51,16 +54,19 @@ public abstract class InputDescription {
         jgen.writeStringField("doc", "Output is the estimate of the variable");
 
         if (getVariables().length == 1) {
-            switch (getType(getVariables()[0])) {
+            final VariableType type = getType(getVariables()[0]);
+            switch (type) {
                 case REAL: {
                     jgen.writeStringField("type", "double");
                     break;
                 }
                 case CATEGORICAL: {
-                    // Convert categorial output to a string
+                    // Convert categorical output to a string
                     jgen.writeStringField("type", "string");
                     break;
                 }
+                default:
+                    throw new IllegalArgumentException("Unknown type: " + type);
             }
         } else {
             jgen.writeStringField("type", "record");
@@ -68,16 +74,19 @@ public abstract class InputDescription {
             for (String variable : getVariables()) {
                 jgen.writeStartObject();
                 jgen.writeStringField("name", variable);
-                switch (getType(variable)) {
+                final VariableType type = getType(variable);
+                switch (type) {
                     case REAL: {
                         jgen.writeStringField("type", "double");
                         break;
                     }
                     case CATEGORICAL: {
-                        // Convert categorial output to a string
+                        // Convert categorical output to a string
                         jgen.writeStringField("type", "string");
                         break;
                     }
+                    default:
+                        throw new IllegalArgumentException("Unknown type: " + type);
                 }
                 jgen.writeEndObject();
             }

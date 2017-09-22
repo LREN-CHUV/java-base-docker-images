@@ -1,7 +1,6 @@
 package eu.humanbrainproject.mip.algorithms.rapidminer;
 
 import java.util.*;
-import java.sql.ResultSet;
 import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
 

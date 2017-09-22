@@ -9,6 +9,20 @@ import java.sql.SQLException;
 public class DBConnectionDescriptor {
     private static final Configuration conf = Configuration.INSTANCE;
 
+    private final String url;
+    private final String user;
+    private final String pass;
+
+    public DBConnectionDescriptor(String url, String user, String pass) {
+        this.url = url;
+        this.user = user;
+        this.pass = pass;
+    }
+
+    protected Connection getConnection() throws SQLException {
+        return DriverManager.getConnection(url, user, pass);
+    }
+
     /**
      * @return the input connector defined by the configuration
      */
@@ -27,20 +41,6 @@ public class DBConnectionDescriptor {
                 conf.outputJdbcUrl(),
                 conf.outputJdbcUser(),
                 conf.outputJdbcPassword());
-    }
-
-    private final String url;
-    private final String user;
-    private final String pass;
-
-    public DBConnectionDescriptor(String url, String user, String pass) {
-        this.url = url;
-        this.user = user;
-        this.pass = pass;
-    }
-
-    protected Connection getConnection() throws SQLException {
-        return DriverManager.getConnection(url, user, pass);
     }
 
 }

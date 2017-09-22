@@ -4,7 +4,6 @@ import java.sql.* ;
 import java.util.function.Function;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import java.lang.AutoCloseable;
 
 /**
  *
@@ -48,9 +47,11 @@ public class DBConnector implements AutoCloseable {
     }
 
     protected void beforeSelect(Connection conn) throws SQLException {
+        // Override if necessary
     }
 
     protected void afterSelect(Connection conn) throws SQLException {
+        // Override if necessary
     }
 
     private void openConnection() throws SQLException {
