@@ -1,7 +1,8 @@
-package eu.hbp.mip.tests;
+package eu.humanbrainproject.mip.algorithms.tests;
 
 import org.junit.Test;
-import static org.junit.Assert.assertTrue;
+
+import static org.junit.Assert.assertEquals;
 
 
 /**
@@ -14,6 +15,6 @@ public class DummyTest {
 
     @Test
     public void simple_test() {
-        assertTrue(true);
+        assertEquals(2, 1 + 1);
     }
 }

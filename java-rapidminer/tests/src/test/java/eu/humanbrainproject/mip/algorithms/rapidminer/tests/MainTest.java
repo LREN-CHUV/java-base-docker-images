@@ -1,5 +1,6 @@
 package eu.humanbrainproject.mip.algorithms.rapidminer.models;
 
+import com.opendatagroup.hadrian.reader.jsonToAst;
 import eu.humanbrainproject.mip.algorithms.db.OutputDataConnector;
 import eu.humanbrainproject.mip.algorithms.rapidminer.Main;
 import eu.humanbrainproject.mip.algorithms.db.DBException;
@@ -51,12 +52,15 @@ public class MainTest {
         assertTrue(results != null);
         assertEquals("job_test", results.getNode());
         assertEquals("pfa_json", results.getResultsFormat().getShape());
-        System.out.println(results.getResults());
-        assertTrue(!results.getResults().contains("error"));
-        assertTrue(results.getResults().contains("\"model\""));
-        assertTrue(results.getResults().contains("\"action\""));
+        final String pfa = results.getResults();
 
-        // TODO Validate PFA
+        System.out.println(pfa);
+        assertTrue(!pfa.contains("error"));
+        assertTrue(pfa.contains("\"model\""));
+        assertTrue(pfa.contains("\"action\""));
+
+        // Validate PFA
+        jsonToAst.apply(pfa);
     }
 
     @Test
@@ -88,10 +92,12 @@ public class MainTest {
         assertTrue(results != null);
         assertEquals("job_test", results.getNode());
         assertEquals("pfa_json", results.getResultsFormat().getShape());
-        System.out.println(results.getResults());
-        assertTrue(!results.getResults().contains("error"));
-        assertTrue(results.getResults().contains("\"model\""));
-        assertTrue(results.getResults().contains("\"action\""));
+        final String pfa = results.getResults();
+
+        System.out.println(pfa);
+        assertTrue(!pfa.contains("error"));
+        assertTrue(pfa.contains("\"model\""));
+        assertTrue(pfa.contains("\"action\""));
     }
 
     @Test

@@ -10,7 +10,7 @@ import java.io.IOException;
 public class RPMDefaultSerializer extends RapidMinerModelSerializer<DefaultModel> {
 
     @Override
-    public void writeRepresentationModelConstants(RapidMinerModel<DefaultModel> model, JsonGenerator jgen) throws IOException {
+    public void writeModelConstants(RapidMinerModel<DefaultModel> model, JsonGenerator jgen) throws IOException {
         jgen.writeObjectFieldStart("model");
         {
             jgen.writeObjectFieldStart("type");

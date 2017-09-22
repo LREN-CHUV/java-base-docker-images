@@ -1,4 +1,4 @@
-package eu.hbp.mip.container;
+package eu.humanbrainproject.mip.algorithms;
 
 /**
  *
