@@ -95,6 +95,7 @@ updated_version=$(bumpversion --dry-run --list patch | grep current_version | se
 echo "Build the project for distribution..."
 ./build.sh
 # Extract the jar from the Docker image and publish it to BinTray first to be able to execute the tests
+mkdir -p target/
 $DOCKER rm -f java-mip-published 2> /dev/null || true
 $DOCKER run -d --rm --name java-mip-published hbpmip/java-mip:latest serve
 $DOCKER container cp java-mip-published:/usr/share/jars/mip-adapter.jar target/mip-adapter-for-deploy.jar

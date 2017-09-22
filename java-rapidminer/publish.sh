@@ -96,6 +96,7 @@ updated_version=$(bumpversion --dry-run --list patch | grep current_version | se
 echo "Build the project for distribution..."
 ./build.sh
 # Extract the jar from the Docker image and publish it to BinTray first to be able to execute the tests
+mkdir -p target/
 $DOCKER rm -f java-rapidminer-published 2> /dev/null || true
 $DOCKER run -d --rm --name java-rapidminer-published hbpmip/java-rapidminer:latest serve
 $DOCKER container cp java-rapidminer-published:/usr/share/jars/mip-rapidminer.jar target/mip-rapidminer-for-deploy.jar
