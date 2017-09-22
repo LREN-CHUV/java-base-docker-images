@@ -4,6 +4,9 @@ import com.fasterxml.jackson.core.JsonGenerator;
 
 import java.util.List;
 
+/**
+ * Helper to describe algorithm inputs and outputs, including the query used during learning.
+ */
 public abstract class InputDescription {
 
     public void writePfaInput(JsonGenerator jgen) throws Exception {

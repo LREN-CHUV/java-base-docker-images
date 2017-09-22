@@ -1,4 +1,4 @@
-package eu.humanbrainproject.mip.algorithms.rapidminer.models.rpmdefault;
+package eu.humanbrainproject.mip.algorithms.rapidminer.rpmdefault;
 
 import com.fasterxml.jackson.core.JsonGenerator;
 import com.rapidminer.operator.learner.lazy.DefaultModel;

@@ -10,6 +10,11 @@ import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+/**
+ * Serialize the algorithm after training to its PFA representation.
+ *
+ * @param <T> the class of the algorithm to serialize
+ */
 public abstract class AlgorithmSerializer<T extends Algorithm> extends JsonSerializer<T> {
 
     private static final Logger LOGGER = Logger.getLogger(AlgorithmSerializer.class.getName());

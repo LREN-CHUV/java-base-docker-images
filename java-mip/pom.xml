@@ -4,10 +4,13 @@
   <modelVersion>4.0.0</modelVersion>
 
   <groupId>eu.humanbrainproject.mip.algorithms</groupId>
-  <artifactId>rapidminer</artifactId>
+  <artifactId>adapter</artifactId>
   <packaging>jar</packaging>
-  <version>0.6.2</version><!-- bumpversion -->
-  <name>mip-rapidminer</name>
+  <version>0.2.2</version><!-- bumpversion -->
+  <name>mip-adapter</name>
+  <description>
+    Adapts an algorithm implemented in Java into MIP Woken environment
+  </description>
 
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -21,8 +24,10 @@
     <info.reports.plugin.version>2.9</info.reports.plugin.version>
     <surefire.report.plugin.version>2.20</surefire.report.plugin.version>
     <jxr.plugin.version>2.5</jxr.plugin.version>
-    <rapidminer.version>7.0.1</rapidminer.version>
-    <antlr.version>4.5</antlr.version>
+    <jackson.version>2.7.0</jackson.version>
+    <avro.version>1.7.7</avro.version>
+    <jinjava.version>2.2.9</jinjava.version>
+    <postgres.version>9.4.1212.jre7</postgres.version>
   </properties>
 
   <repositories>
@@ -37,13 +42,6 @@
       <id>opendatagroup</id>
       <url>http://repository.opendatagroup.com/maven</url>
       <name>Repository for Hadrian</name>
-    </repository>
-
-    <repository>
-      <url>https://maven.rapidminer.com/content/groups/public/</url>
-      <id>rapidminer</id>
-      <layout>default</layout>
-      <name>Repository for RapidMiner</name>
     </repository>
 
   </repositories>
@@ -64,82 +62,47 @@
       <scope>test</scope>
     </dependency>
 
+    <!-- Avro provided to specify Avro types and convert them to JSON -->
     <dependency>
-      <groupId>com.rapidminer.studio</groupId>
-      <artifactId>rapidminer-studio-core</artifactId>
-      <version>${rapidminer.version}</version>
+      <groupId>org.apache.avro</groupId>
+      <artifactId>avro</artifactId>
+      <version>${avro.version}</version>
     </dependency>
 
+    <!-- jinjava - a Jinja template engine in Java - is provided to simplyfy writting some parts of PFA documents -->
     <dependency>
-      <groupId>com.rapidminer</groupId>
-      <artifactId>rapidminer-api</artifactId>
-      <version>0.2.0</version>
-    </dependency>
-
-    <dependency>
-      <groupId>com.rapidminer.external</groupId>
-      <artifactId>vldocking</artifactId>
-      <version>1.1.0</version>
-    </dependency>
-
-    <dependency>
-      <groupId>net.sourceforge.jexcelapi</groupId>
-      <artifactId>jxl</artifactId>
-      <version>2.6.12</version>
-    </dependency>
-
-    <dependency>
-      <groupId>org.apache.poi</groupId>
-      <artifactId>poi-ooxml</artifactId>
-      <version>3.10-FINAL</version>
-    </dependency>
-
-    <dependency>
-      <groupId>org.apache.poi</groupId>
-      <artifactId>poi-scratchpad</artifactId>
-      <version>3.10-FINAL</version>
-    </dependency>
-
-    <dependency>
-      <groupId>org.antlr</groupId>
-      <artifactId>antlr4-runtime</artifactId>
-      <version>${antlr.version}</version>
+      <groupId>com.hubspot.jinjava</groupId>
+      <artifactId>jinjava</artifactId>
+      <version>${jinjava.version}</version>
     </dependency>
 
     <dependency>
       <groupId>org.postgresql</groupId>
       <artifactId>postgresql</artifactId>
-      <version>9.4.1212.jre7</version>
-    </dependency>
-
-    <dependency>
-      <groupId>net.sourceforge.collections</groupId>
-      <artifactId>collections-generic</artifactId>
-      <version>4.01</version>
+      <version>${postgres.version}</version>
     </dependency>
 
     <dependency>
       <groupId>com.fasterxml.jackson.core</groupId>
       <artifactId>jackson-core</artifactId>
-      <version>2.7.0</version>
+      <version>${jackson.version}</version>
     </dependency>
 
     <dependency>
       <groupId>com.fasterxml.jackson.core</groupId>
       <artifactId>jackson-databind</artifactId>
-      <version>2.7.0</version>
+      <version>${jackson.version}</version>
     </dependency>
 
     <dependency>
       <groupId>com.fasterxml.jackson.core</groupId>
       <artifactId>jackson-annotations</artifactId>
-      <version>2.7.0</version>
+      <version>${jackson.version}</version>
     </dependency>
 
   </dependencies>
 
   <build>
-    <finalName>mip-${project.artifactId}</finalName>
     <resources>
       <resource>
         <directory>src/main/resources</directory>
@@ -227,14 +190,6 @@
               <artifactSet>
                 <excludes>
                   <exclude>org.postgresql:*</exclude>
-                  <exclude>javax.mail:*</exclude>
-                  <exclude>org.codehaus.groovy:*</exclude>
-                  <exclude>org.swinglabs.swingx:*</exclude>
-                  <exclude>com.thoughtworks.xstream:*</exclude>
-                  <exclude>org.apache.xmlrpc:*</exclude>
-                  <exclude>org.apache.avro:*</exclude>
-                  <exclude>com.hubspot.jinjava:*</exclude>
-                  <exclude>eu.humanbrainproject.mip.algorithms:adapter</exclude>
                 </excludes>
               </artifactSet>
             </configuration>

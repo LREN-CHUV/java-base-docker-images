@@ -1,9 +1,15 @@
+FROM hbpmip/java-base-build:3.5.0-jdk-8-7 as build-java-env
+
+COPY pom.xml /project/pom.xml
+COPY src/ /project/src
+
+# Repeating the file copy works better. I dunno why.
+RUN cp /usr/share/maven/ref/settings-docker.xml /root/.m2/settings.xml \
+    && mvn package site
+
 FROM hbpmip/java-base:8u131-1
 
 MAINTAINER arnaud@ahead-solutions.ch
-
-LABEL eu.humanbrainproject.version=0.2 \
-      eu.humanbrainproject.category=Java
 
 COPY docker/setup.sh /usr/local/bin/java-mip-docker-setup
 
@@ -13,11 +19,17 @@ ENV COMPUTE_IN=/data/in \
     ERROR_FILE=/data/out/errors.txt \
     OUTPUT_FILE=/data/out/output.txt \
     RESULT_TABLE=job_result \
-    SRC=/src
+    SRC=/src \
+    JAVA_CLASSPATH=/usr/share/jars/postgres-9.4.jar:/usr/share/jars/mip-adapter-deps.jar
 
 RUN /usr/local/bin/java-mip-docker-setup
 COPY docker/etc/nginx/ /etc/nginx/
 RUN /usr/sbin/nginx -t
+
+COPY --from=build-java-env /usr/share/maven/ref/repository/org/postgresql/postgresql/9.4.1212.jre7/postgresql-9.4.1212.jre7.jar /usr/share/jars/postgres-9.4.jar
+COPY --from=build-java-env /project/target/adapter.jar /usr/share/jars/mip-adapter.jar
+COPY --from=build-java-env /project/target/adapter-deps.jar /usr/share/jars/mip-adapter-deps.jar
+COPY --from=build-java-env /project/target/site/ /mip/java-adapter/docs/
 
 VOLUME /data/in
 VOLUME /data/out
@@ -28,6 +40,9 @@ ENTRYPOINT ["/docker-entrypoint.sh"]
 
 EXPOSE 80
 CMD ["compute"]
+
+LABEL eu.humanbrainproject.version=0.2 \
+      eu.humanbrainproject.category=Java
 
 LABEL org.label-schema.build-date=$BUILD_DATE \
       org.label-schema.name="hbpmip/java-mip" \

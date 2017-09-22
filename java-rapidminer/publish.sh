@@ -102,7 +102,7 @@ $DOCKER container cp java-rapidminer-published:/usr/share/jars/mip-rapidminer.ja
 $DOCKER rm -f java-rapidminer-published
 
 mvn deploy:deploy-file \
-  "-Durl=https://api.bintray.com/maven/hbpmedical/maven/eu.hbp.mip.container:mip-rapidminer/;publish=1" \
+  "-Durl=https://api.bintray.com/maven/hbpmedical/maven/eu.humanbrainproject.mip.algorithms:rapidminer/;publish=1" \
    -DrepositoryId=bintray-hbpmedical-mip -Dfile=target/mip-rapidminer-for-deploy.jar -DpomFile=pom.xml
 
 ./tests/test.sh

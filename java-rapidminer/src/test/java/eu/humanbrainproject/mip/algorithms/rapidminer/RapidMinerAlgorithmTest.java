@@ -4,9 +4,9 @@ import com.rapidminer.operator.learner.lazy.DefaultModel;
 
 import eu.humanbrainproject.mip.algorithms.rapidminer.models.RapidMinerModel;
 import eu.humanbrainproject.mip.algorithms.rapidminer.serializers.pfa.RapidMinerAlgorithmSerializer;
-import eu.humanbrainproject.mip.algorithms.rapidminer.models.rpmdefault.RPMDefault;
+import eu.humanbrainproject.mip.algorithms.rapidminer.rpmdefault.RPMDefault;
 
-import eu.humanbrainproject.mip.algorithms.rapidminer.models.rpmdefault.RPMDefaultSerializer;
+import eu.humanbrainproject.mip.algorithms.rapidminer.rpmdefault.RPMDefaultSerializer;
 import org.junit.Test;
 
 import static org.junit.Assert.assertTrue;

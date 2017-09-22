@@ -1,12 +1,11 @@
-package eu.humanbrainproject.mip.algorithms.rapidminer.models.rpmdefault;
-
-import java.util.Map;
-
-import eu.humanbrainproject.mip.algorithms.rapidminer.models.RapidMinerModel;
-import org.apache.commons.collections15.map.LinkedMap;
+package eu.humanbrainproject.mip.algorithms.rapidminer.rpmdefault;
 
 import com.rapidminer.operator.learner.lazy.DefaultLearner;
 import com.rapidminer.operator.learner.lazy.DefaultModel;
+import eu.humanbrainproject.mip.algorithms.rapidminer.models.RapidMinerModel;
+import org.apache.commons.collections15.map.LinkedMap;
+
+import java.util.Map;
 
 
 /**

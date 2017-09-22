@@ -2,6 +2,6 @@ target_image:
   build: Dockerfile
   image: hbpmip/java-mip
   pre:
-    - echo "Prepare building  java-mip"
+    - echo "Start building java-mip"
   post:
     - echo "Finished building java-mip"

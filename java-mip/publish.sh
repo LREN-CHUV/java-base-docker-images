@@ -25,10 +25,13 @@ fi
 
 if [ $NO_SUDO ]; then
   CAPTAIN="captain"
+  DOCKER="docker"
 elif groups $USER | grep &>/dev/null '\bdocker\b'; then
   CAPTAIN="captain"
+  DOCKER="docker"
 else
   CAPTAIN="sudo captain"
+  DOCKER="sudo docker"
 fi
 
 # Build
@@ -91,6 +94,15 @@ updated_version=$(bumpversion --dry-run --list patch | grep current_version | se
 # Build again to update the version
 echo "Build the project for distribution..."
 ./build.sh
+# Extract the jar from the Docker image and publish it to BinTray first to be able to execute the tests
+$DOCKER rm -f java-mip-published 2> /dev/null || true
+$DOCKER run -d --rm --name java-mip-published hbpmip/java-mip:latest serve
+$DOCKER container cp java-mip-published:/usr/share/jars/mip-adapter.jar target/mip-adapter-for-deploy.jar
+$DOCKER rm -f java-mip-published
+
+mvn deploy:deploy-file \
+  "-Durl=https://api.bintray.com/maven/hbpmedical/maven/eu.humanbrainproject.mip.algorithms:adapter/;publish=1" \
+   -DrepositoryId=bintray-hbpmedical-mip -Dfile=target/mip-rapidminer-for-deploy.jar -DpomFile=pom.xml
 ./tests/test.sh
 echo "[ok] Done"
 

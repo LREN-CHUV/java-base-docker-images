@@ -1,7 +1,7 @@
 target_image:
-   build: Dockerfile
-   image: hbpmip/java-rapidminer
-   pre:
-     - echo "Preparing building java-rapidminer"
-   post:
-     - echo "Finished building java-rapidminer"
+  build: Dockerfile
+  image: hbpmip/java-rapidminer
+  pre:
+    - echo "Start building java-rapidminer"
+  post:
+    - echo "Finished building java-rapidminer"
