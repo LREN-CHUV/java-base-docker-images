@@ -1,11 +1,9 @@
 package eu.humanbrainproject.mip.algorithms.rapidminer.rpmdefault;
 
-import java.util.Collections;
-import java.util.Map;
+import java.util.*;
 
 import eu.humanbrainproject.mip.algorithms.Configuration;
 import eu.humanbrainproject.mip.algorithms.rapidminer.models.RapidMinerModel;
-import org.apache.commons.collections15.map.LinkedMap;
 
 import com.rapidminer.operator.learner.lazy.DefaultLearner;
 import com.rapidminer.operator.learner.lazy.DefaultModel;
@@ -22,6 +20,7 @@ public class RPMDefault extends RapidMinerModel<DefaultModel> {
 
     private String method;
 
+    @SuppressWarnings("unused")
     public RPMDefault() {
         this(Configuration.INSTANCE.algorithmParameterValues(Collections.singleton("method")).get("method"));
     }
@@ -33,7 +32,8 @@ public class RPMDefault extends RapidMinerModel<DefaultModel> {
 
     @Override
     public Map<String, String> getParameters() {
-        LinkedMap<String, String> map = new LinkedMap<>();
+        HashSet<String> parameters = new HashSet<>(Arrays.asList("method", "constant", "attribute_name"));
+        HashMap<String, String> map = new HashMap<>(Configuration.INSTANCE.algorithmParameterValues(parameters));
         map.put("method", this.method);
         return map;
     }

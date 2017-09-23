@@ -11,27 +11,57 @@ public class RPMDefaultSerializer extends RapidMinerModelSerializer<DefaultModel
 
     @Override
     public void writeModelConstants(RapidMinerModel<DefaultModel> model, JsonGenerator jgen) throws IOException {
-        jgen.writeObjectFieldStart("model");
-        {
-            jgen.writeObjectFieldStart("type");
+        String method = model.getParameters().get("method");
+        if (!method.equals("attribute")) {
+            jgen.writeObjectFieldStart("model");
             {
-                jgen.writeStringField("doc", "The model parameter");
-                jgen.writeStringField("name", "value");
-                jgen.writeStringField("type", "double");
-            }
-            jgen.writeEndObject();
+                jgen.writeObjectFieldStart("type");
+                {
+                    jgen.writeStringField("doc", "The model parameter");
+                    jgen.writeStringField("name", "value");
+                    jgen.writeStringField("type", (method.equals("mode")) ? "string" : "double");
+                }
+                jgen.writeEndObject();
 
-            jgen.writeObjectFieldStart("init");
-            {
-                jgen.writeNumberField("value", model.getTrainedModel().getValue());
+                switch (method) {
+                    case "median":
+                    case "average":
+                    case "constant":
+                        jgen.writeNumberField("init", model.getTrainedModel().getValue());
+                        break;
+                    case "mode":
+                        jgen.writeStringField("init", String.valueOf(model.getTrainedModel().getValue()));
+                        break;
+                    default:
+                        throw new IllegalArgumentException("Cannot handle method: " + method);
+                }
             }
             jgen.writeEndObject();
         }
-        jgen.writeEndObject();
     }
 
     @Override
     public void writePfaAction(RapidMinerModel<DefaultModel> model, JsonGenerator jgen) throws IOException {
-        jgen.writeStringField("cell", "model");
+        String method = model.getParameters().get("method");
+        if (!method.equals("attribute")) {
+            jgen.writeStartObject();
+            {
+                jgen.writeStringField("cell", "model");
+            }
+            jgen.writeEndObject();
+        } else {
+            String attributeName = model.getParameters().get("attribute_name");
+
+            jgen.writeStartObject();
+            {
+                jgen.writeStringField("attr", "input");
+                jgen.writeArrayFieldStart("path");
+                {
+                    jgen.writeString(attributeName);
+                }
+                jgen.writeEndArray();
+            }
+            jgen.writeEndObject();
+        }
     }
 }
