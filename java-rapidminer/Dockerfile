@@ -11,7 +11,7 @@ FROM hbpmip/java-mip:0.4.1
 
 MAINTAINER arnaud@ahead-solutions.ch
 
-ENV JAVA_CLASSPATH=/usr/share/jars/postgres-9.4.jar:/usr/share/jars/mip-rapidminer-deps.jar
+ENV JAVA_CLASSPATH=${JAVA_CLASSPATH}:/usr/share/jars/mip-rapidminer-deps.jar
 ENV JAVA_MAINCLASS=eu.humanbrainproject.mip.algorithms.rapidminer.Main
 
 COPY --from=build-java-env /usr/share/maven/ref/repository/org/postgresql/postgresql/9.4.1212.jre7/postgresql-9.4.1212.jre7.jar /usr/share/jars/postgres-9.4.jar
