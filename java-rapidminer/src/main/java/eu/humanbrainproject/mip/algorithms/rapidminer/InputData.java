@@ -79,7 +79,7 @@ public class InputData {
      */
     public String getQuery() {
         if (connector == null) {
-            return "";
+            return "NO QUERY";
         } else {
             return connector.getQuery();
         }

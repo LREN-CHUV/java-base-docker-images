@@ -12,7 +12,10 @@ import eu.humanbrainproject.mip.algorithms.rapidminer.InputData;
 import java.util.LinkedList;
 import java.util.List;
 
-class ClassificationInputData extends InputData {
+/**
+ * Useful for tests
+ */
+public class ClassificationInputData extends InputData {
 
     private final double[][] sampleData;
     private final String[] labels;
