@@ -1,23 +1,15 @@
 package eu.humanbrainproject.mip.algorithms.rapidminer;
 
-import com.opendatagroup.hadrian.ast.EngineConfig;
 import com.opendatagroup.hadrian.jvmcompiler.PFAEngine;
 import com.opendatagroup.hadrian.jvmcompiler.PFAEngine$;
-import com.opendatagroup.hadrian.reader.jsonToAst;
-import com.opendatagroup.hadrian.shared.SharedState;
 import com.rapidminer.operator.learner.lazy.DefaultModel;
-
 import eu.humanbrainproject.mip.algorithms.rapidminer.models.RapidMinerModel;
-import eu.humanbrainproject.mip.algorithms.rapidminer.serializers.pfa.RapidMinerAlgorithmSerializer;
 import eu.humanbrainproject.mip.algorithms.rapidminer.rpmdefault.RPMDefault;
-
 import eu.humanbrainproject.mip.algorithms.rapidminer.rpmdefault.RPMDefaultSerializer;
-import org.codehaus.jackson.JsonNode;
+import eu.humanbrainproject.mip.algorithms.rapidminer.serializers.pfa.RapidMinerAlgorithmSerializer;
 import org.junit.Test;
 import scala.Option;
-import scala.Option$;
-import scala.collection.Map$;
-import scala.collection.immutable.Map;
+import scala.collection.immutable.HashMap;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
@@ -94,6 +86,7 @@ public class RapidMinerAlgorithmTest {
 
         System.out.println(experiment.toRMP());
         System.out.println(experiment.toPrettyPFA());
+
         String pfa = experiment.toPFA();
         assertTrue(!pfa.contains("error"));
         assertTrue(pfa.contains("\"model\""));
@@ -103,7 +96,7 @@ public class RapidMinerAlgorithmTest {
         PFAEngine<Object, Object> pfaEngine = getPFAEngine(pfa);
 
         Object result = pfaEngine.action(pfaEngine.jsonInput("{\"input1\": 1.1, \"input2\": 2.0}"));
-        assertEquals(Double.valueOf(5.7), result);
+        assertEquals(5.7, result);
 
     }
 
@@ -134,6 +127,7 @@ public class RapidMinerAlgorithmTest {
 
         System.out.println(experiment.toRMP());
         System.out.println(experiment.toPrettyPFA());
+
         String pfa = experiment.toPFA();
         assertTrue(!pfa.contains("error"));
         assertTrue(pfa.contains("\"model\""));
@@ -143,17 +137,13 @@ public class RapidMinerAlgorithmTest {
         PFAEngine<Object, Object> pfaEngine = getPFAEngine(pfa);
 
         Object result = pfaEngine.action(pfaEngine.jsonInput("{\"input1\": 1.1, \"input2\": 2.0}"));
-        assertEquals(Double.valueOf(5.7), result);
+        assertEquals(5.7, result);
 
     }
 
     private PFAEngine<Object, Object> getPFAEngine(String pfa) {
-        EngineConfig engineConfig = jsonToAst.apply(pfa);
-
-        Map<String, JsonNode> emptyMap = Map$.MODULE$.empty();
-        Option<SharedState> noSharedState = Option$.MODULE$.empty();
-        Option<ClassLoader> noClassLoader = Option$.MODULE$.empty();
-        return PFAEngine$.MODULE$.fromAst(engineConfig, emptyMap, "0.8.1", noSharedState, 1, noClassLoader, false).head();
+        return PFAEngine$.MODULE$.fromJson(pfa, new HashMap<>(), "0.8.1", Option.empty(),
+                1, Option.empty(), false).head();
     }
 
 }
