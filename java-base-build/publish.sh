@@ -111,6 +111,9 @@ BUILD_DATE=$(date -Iseconds) \
   WORKSPACE=$WORKSPACE \
   $CAPTAIN push target_image --branch-tags=false --commit-tags=false --tag $updated_version
 
+# Notify Microbadger
+curl -XPOST https://hooks.microbadger.com/images/hbpmip/java-base-build/KH4XRGe8Y_aNJWQQJh32G4EHtR8=
+
 # Notify on slack
 sed "s/USER/${USER^}/" $WORKSPACE/slack.json > $WORKSPACE/.slack.json
 sed -i.bak "s/VERSION/$updated_version/" $WORKSPACE/.slack.json
