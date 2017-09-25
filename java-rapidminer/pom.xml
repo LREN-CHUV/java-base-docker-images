@@ -28,6 +28,8 @@
     <mip.adapter.version>0.4.1</mip.adapter.version>
     <rapidminer.version>7.0.1</rapidminer.version>
     <antlr.version>4.5</antlr.version>
+    <hadrian.version>0.8.5</hadrian.version>
+    <junit.version>4.9</junit.version>
   </properties>
 
   <repositories>
@@ -67,14 +69,14 @@
     <dependency>
       <groupId>junit</groupId>
       <artifactId>junit</artifactId>
-      <version>4.9</version>
+      <version>${junit.version}</version>
       <scope>test</scope>
     </dependency>
 
     <dependency>
       <groupId>com.opendatagroup</groupId>
       <artifactId>hadrian</artifactId>
-      <version>0.8.4</version>
+      <version>${hadrian.version}</version>
       <scope>test</scope>
     </dependency>
 

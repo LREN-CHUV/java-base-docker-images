@@ -19,6 +19,8 @@
     <info.reports.plugin.version>2.9</info.reports.plugin.version>
     <surefire.report.plugin.version>2.20</surefire.report.plugin.version>
     <jxr.plugin.version>2.5</jxr.plugin.version>
+    <hadrian.version>0.8.5</hadrian.version>
+    <junit.version>4.9</junit.version>
     <mip.rapidminer.version>0.7.6</mip.rapidminer.version>
   </properties>
 
@@ -65,14 +67,14 @@
     <dependency>
       <groupId>com.opendatagroup</groupId>
       <artifactId>hadrian</artifactId>
-      <version>0.8.4</version>
+      <version>${hadrian.version}</version>
       <scope>test</scope>
     </dependency>
 
     <dependency>
       <groupId>junit</groupId>
       <artifactId>junit</artifactId>
-      <version>4.9</version>
+      <version>${junit.version}</version>
       <scope>test</scope>
     </dependency>
 
