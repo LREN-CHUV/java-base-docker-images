@@ -20,7 +20,7 @@ public class ClassificationInputData extends InputData {
     private final double[][] sampleData;
     private final String[] labels;
 
-    ClassificationInputData(String[] featuresNames, String variableName, double[][] sampleData, String[] labels) {
+    public ClassificationInputData(String[] featuresNames, String variableName, double[][] sampleData, String[] labels) {
         super(featuresNames, variableName, null);
 
         this.sampleData = sampleData;

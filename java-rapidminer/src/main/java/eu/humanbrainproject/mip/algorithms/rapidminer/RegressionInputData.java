@@ -20,7 +20,7 @@ public class RegressionInputData extends InputData {
     private final double[][] sampleData;
     private final double[] labels;
 
-    RegressionInputData(String[] featuresNames, String variableName, double[][] sampleData, double[] labels) {
+    public RegressionInputData(String[] featuresNames, String variableName, double[][] sampleData, double[] labels) {
         super(featuresNames, variableName, null);
 
         this.sampleData = sampleData;
