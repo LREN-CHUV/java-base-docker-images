@@ -24,7 +24,7 @@ Dockerfile
   RUN cp /usr/share/maven/ref/settings-docker.xml /root/.m2/settings.xml \
       && mvn package site
 
-  FROM hbpmip/java-rapidminer:0.7.3
+  FROM hbpmip/java-rapidminer:0.7.4
 
   MAINTAINER <your email>
 
