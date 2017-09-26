@@ -93,12 +93,6 @@
     </dependency>
 
     <dependency>
-      <groupId>com.rapidminer.studio</groupId>
-      <artifactId>rapidminer-studio-core</artifactId>
-      <version>${rapidminer.version}</version>
-    </dependency>
-
-    <dependency>
       <groupId>com.rapidminer</groupId>
       <artifactId>rapidminer-api</artifactId>
       <version>0.2.0</version>
