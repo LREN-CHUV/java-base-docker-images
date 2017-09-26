@@ -104,7 +104,7 @@ $DOCKER rm -f java-rapidminer-published
 
 mvn deploy:deploy-file \
   "-Durl=https://api.bintray.com/maven/hbpmedical/maven/eu.humanbrainproject.mip.algorithms:rapidminer/;publish=1" \
-   -DrepositoryId=bintray-hbpmedical-mip -Dfile=target/mip-rapidminer-for-deploy.jar -DpomFile=pom.xml
+   -DrepositoryId=bintray-hbpmedical-maven -Dfile=target/mip-rapidminer-for-deploy.jar -DpomFile=pom.xml
 
 ./tests/test.sh
 echo "[ok] Done"
