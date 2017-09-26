@@ -1,0 +1,7 @@
+target_image:
+  build: Dockerfile
+  image: hbpmip/java-weka
+  pre:
+    - echo "Start building java-weka"
+  post:
+    - echo "Finished building java-weka"
