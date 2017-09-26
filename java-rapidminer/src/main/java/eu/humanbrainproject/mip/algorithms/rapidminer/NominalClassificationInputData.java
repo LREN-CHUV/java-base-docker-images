@@ -3,6 +3,7 @@ package eu.humanbrainproject.mip.algorithms.rapidminer;
 import com.rapidminer.example.Attribute;
 import com.rapidminer.example.ExampleSet;
 import com.rapidminer.example.table.AttributeFactory;
+import com.rapidminer.example.table.DataRowFactory;
 import com.rapidminer.example.table.DoubleArrayDataRow;
 import com.rapidminer.example.table.MemoryExampleTable;
 import com.rapidminer.tools.Ontology;
@@ -30,7 +31,7 @@ public class NominalClassificationInputData extends InputData {
 
         List<Attribute> attributes = new LinkedList<>();
         for (String featuresName : getFeaturesNames()) {
-            attributes.add(AttributeFactory.createAttribute(featuresName, Ontology.REAL));
+            attributes.add(AttributeFactory.createAttribute(featuresName, Ontology.NOMINAL));
         }
 
         // Create label
@@ -43,7 +44,9 @@ public class NominalClassificationInputData extends InputData {
         // Fill the table
         for (int d = 0; d < sampleData.length; d++) {
             double[] tableData = new double[attributes.size()];
-            System.arraycopy(sampleData[d], 0, tableData, 0, sampleData[d].length);
+            for (int a = 0; a < sampleData[d].length; a++) {
+                tableData[a] = attributes.get(a).getMapping().mapString(sampleData[d][a]);
+            }
 
             // Maps the nominal classification to a double value
             tableData[sampleData[d].length] = label.getMapping().mapString(labels[d]);
