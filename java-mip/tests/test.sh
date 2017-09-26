@@ -29,9 +29,9 @@ fi
 function _cleanup() {
   local error_code="$?"
   echo "Stopping the containers..."
-  $DOCKER_COMPOSE stop
-  $DOCKER_COMPOSE down
-  $DOCKER_COMPOSE rm -f > /dev/null 2> /dev/null
+  $DOCKER_COMPOSE stop | true
+  $DOCKER_COMPOSE down | true
+  $DOCKER_COMPOSE rm -f > /dev/null 2> /dev/null | true
   exit $error_code
 }
 trap _cleanup EXIT INT TERM

@@ -29,15 +29,15 @@ fi
 function _cleanup() {
   local error_code="$?"
   echo "Stopping the containers..."
-  $DOCKER_COMPOSE stop
-  $DOCKER_COMPOSE down
-  $DOCKER_COMPOSE rm -f > /dev/null 2> /dev/null
+  $DOCKER_COMPOSE stop | true
+  $DOCKER_COMPOSE down | true
+  $DOCKER_COMPOSE rm -f > /dev/null 2> /dev/null | true
   exit $error_code
 }
 trap _cleanup EXIT INT TERM
 
 echo "Starting the databases..."
-$DOCKER_COMPOSE up -d it_db
+$DOCKER_COMPOSE up -d --remove-orphans it_db
 echo "Build Docker images while databases are starting..."
 $DOCKER_COMPOSE build java_rapidminer_test_suite
 $DOCKER_COMPOSE build rpm_default_compute
