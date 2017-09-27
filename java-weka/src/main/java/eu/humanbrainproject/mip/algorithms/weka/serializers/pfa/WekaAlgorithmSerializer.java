@@ -5,7 +5,7 @@ import eu.humanbrainproject.mip.algorithms.serializers.pfa.AlgorithmSerializer;
 import eu.humanbrainproject.mip.algorithms.serializers.pfa.InputDescription;
 import eu.humanbrainproject.mip.algorithms.weka.InputData;
 import eu.humanbrainproject.mip.algorithms.weka.WekaAlgorithm;
-import eu.humanbrainproject.mip.algorithms.weka.models.WekaClassifier;
+import eu.humanbrainproject.mip.algorithms.weka.WekaClassifier;
 import weka.classifiers.Classifier;
 
 import java.io.IOException;
@@ -16,9 +16,9 @@ import java.io.IOException;
  */
 public class WekaAlgorithmSerializer<M extends Classifier> extends AlgorithmSerializer<WekaAlgorithm<M>> {
 
-    private final WekaModelSerializer<M> modelSerializer;
+    private final WekaClassifierSerializer<M> modelSerializer;
 
-    public WekaAlgorithmSerializer(WekaModelSerializer<M> modelSerializer) {
+    public WekaAlgorithmSerializer(WekaClassifierSerializer<M> modelSerializer) {
         this.modelSerializer = modelSerializer;
     }
 

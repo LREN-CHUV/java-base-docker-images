@@ -5,8 +5,8 @@ import eu.humanbrainproject.mip.algorithms.db.OutputDataConnector;
 import eu.humanbrainproject.mip.algorithms.weka.Main;
 import eu.humanbrainproject.mip.algorithms.db.DBException;
 import eu.humanbrainproject.mip.algorithms.weka.serializers.pfa.RapidMinerAlgorithmSerializer;
-import eu.humanbrainproject.mip.algorithms.weka.rpmdefault.RPMDefault;
-import eu.humanbrainproject.mip.algorithms.weka.rpmdefault.RPMDefaultSerializer;
+import eu.humanbrainproject.mip.algorithms.weka.simplelr.RPMDefault;
+import eu.humanbrainproject.mip.algorithms.weka.simplelr.RPMDefaultSerializer;
 import org.junit.Test;
 
 import java.sql.SQLException;

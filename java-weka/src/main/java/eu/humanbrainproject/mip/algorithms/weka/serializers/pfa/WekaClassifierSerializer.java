@@ -1,12 +1,12 @@
 package eu.humanbrainproject.mip.algorithms.weka.serializers.pfa;
 
 import com.fasterxml.jackson.core.JsonGenerator;
-import eu.humanbrainproject.mip.algorithms.weka.models.WekaClassifier;
+import eu.humanbrainproject.mip.algorithms.weka.WekaClassifier;
 import weka.classifiers.Classifier;
 
 import java.io.IOException;
 
-public abstract class WekaModelSerializer<M extends Classifier> {
+public abstract class WekaClassifierSerializer<M extends Classifier> {
 
     public abstract void writeModelConstants(WekaClassifier<M> model, JsonGenerator jgen) throws IOException;
 

@@ -1,19 +1,20 @@
-package eu.humanbrainproject.mip.algorithms.weka.rpmdefault;
+package eu.humanbrainproject.mip.algorithms.weka.simplelr;
 
 import com.fasterxml.jackson.core.JsonGenerator;
-import com.weka.operator.learner.lazy.DefaultModel;
-import eu.humanbrainproject.mip.algorithms.weka.models.WekaClassifier;
-import eu.humanbrainproject.mip.algorithms.weka.serializers.pfa.WekaModelSerializer;
+import eu.humanbrainproject.mip.algorithms.weka.WekaClassifier;
+import eu.humanbrainproject.mip.algorithms.weka.serializers.pfa.WekaClassifierSerializer;
+import weka.classifiers.functions.SimpleLinearRegression;
 
 import java.io.IOException;
 
-public class RPMDefaultSerializer extends WekaModelSerializer<DefaultModel> {
+public class SimpleLinearRegressionSerializer extends WekaClassifierSerializer<SimpleLinearRegression> {
 
     @Override
-    public void writeModelConstants(WekaClassifier<DefaultModel> model, JsonGenerator jgen) throws IOException {
-        String method = model.getParameters().get("method");
-        if (!method.equals("attribute")) {
-            jgen.writeObjectFieldStart("model");
+    public void writeModelConstants(WekaClassifier<SimpleLinearRegression> model, JsonGenerator jgen) throws IOException {
+        final SimpleLinearRegression lr = model.getTrainedClassifier();
+        lr.getSlope()
+
+        jgen.writeObjectFieldStart("model");
             {
                 jgen.writeObjectFieldStart("type");
                 {
@@ -37,11 +38,10 @@ public class RPMDefaultSerializer extends WekaModelSerializer<DefaultModel> {
                 }
             }
             jgen.writeEndObject();
-        }
     }
 
     @Override
-    public void writePfaAction(WekaClassifier<DefaultModel> model, JsonGenerator jgen) throws IOException {
+    public void writePfaAction(WekaClassifier<SimpleLinearRegression> model, JsonGenerator jgen) throws IOException {
         String method = model.getParameters().get("method");
         if (!method.equals("attribute")) {
             jgen.writeStartObject();

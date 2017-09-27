@@ -1,4 +1,4 @@
-package eu.humanbrainproject.mip.algorithms.weka.rpmdefault;
+package eu.humanbrainproject.mip.algorithms.weka.simplelr;
 
 import java.util.*;
 

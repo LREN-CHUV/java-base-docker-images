@@ -4,7 +4,6 @@ import com.fasterxml.jackson.core.Version;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.module.SimpleModule;
 import eu.humanbrainproject.mip.algorithms.Algorithm;
-import eu.humanbrainproject.mip.algorithms.weka.models.WekaClassifier;
 import eu.humanbrainproject.mip.algorithms.weka.serializers.pfa.WekaAlgorithmSerializer;
 import weka.classifiers.Classifier;
 

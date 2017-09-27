@@ -1,4 +1,4 @@
-package eu.humanbrainproject.mip.algorithms.weka.rpmdefault;
+package eu.humanbrainproject.mip.algorithms.weka.simplelr;
 
 import com.fasterxml.jackson.core.JsonGenerator;
 import com.weka.operator.learner.lazy.DefaultModel;
