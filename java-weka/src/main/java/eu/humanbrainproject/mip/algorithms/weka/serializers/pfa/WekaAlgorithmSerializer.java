@@ -1,25 +1,24 @@
 package eu.humanbrainproject.mip.algorithms.weka.serializers.pfa;
 
-import java.io.IOException;
-
 import com.fasterxml.jackson.core.JsonGenerator;
-
-import com.weka.operator.learner.PredictionModel;
-import eu.humanbrainproject.mip.algorithms.weka.InputData;
-import eu.humanbrainproject.mip.algorithms.weka.WekaAlgorithm;
-import eu.humanbrainproject.mip.algorithms.weka.models.WekaModel;
 import eu.humanbrainproject.mip.algorithms.serializers.pfa.AlgorithmSerializer;
 import eu.humanbrainproject.mip.algorithms.serializers.pfa.InputDescription;
+import eu.humanbrainproject.mip.algorithms.weka.InputData;
+import eu.humanbrainproject.mip.algorithms.weka.WekaAlgorithm;
+import eu.humanbrainproject.mip.algorithms.weka.models.WekaClassifier;
+import weka.classifiers.Classifier;
+
+import java.io.IOException;
 
 
 /**
- * @author Arnaud Jutzeler
+ * @author Ludovic Claude
  */
-public class RapidMinerAlgorithmSerializer<M extends PredictionModel> extends AlgorithmSerializer<WekaAlgorithm<M>> {
+public class WekaAlgorithmSerializer<M extends Classifier> extends AlgorithmSerializer<WekaAlgorithm<M>> {
 
-    private final RapidMinerModelSerializer<M> modelSerializer;
+    private final WekaModelSerializer<M> modelSerializer;
 
-    public RapidMinerAlgorithmSerializer(RapidMinerModelSerializer<M> modelSerializer) {
+    public WekaAlgorithmSerializer(WekaModelSerializer<M> modelSerializer) {
         this.modelSerializer = modelSerializer;
     }
 
@@ -29,7 +28,7 @@ public class RapidMinerAlgorithmSerializer<M extends PredictionModel> extends Al
 
         // Input, output
         if (input != null) {
-            return new RapidMinerInputDescription(input);
+            return new WekaInputDescription(input);
         } else {
             return null;
         }
@@ -37,7 +36,7 @@ public class RapidMinerAlgorithmSerializer<M extends PredictionModel> extends Al
 
     @Override
     protected void writeModelConstants(WekaAlgorithm<M> value, JsonGenerator jgen) throws IOException {
-        WekaModel<M> model = value.getModel();
+        WekaClassifier<M> model = value.getModel();
 
         // Model representation
         if (model != null) {
@@ -47,7 +46,7 @@ public class RapidMinerAlgorithmSerializer<M extends PredictionModel> extends Al
 
     @Override
     protected void writePfaBegin(WekaAlgorithm<M> value, JsonGenerator jgen) throws IOException {
-        WekaModel<M> model = value.getModel();
+        WekaClassifier<M> model = value.getModel();
 
         if (model != null) {
             modelSerializer.writePfaBegin(model, jgen);
@@ -56,7 +55,7 @@ public class RapidMinerAlgorithmSerializer<M extends PredictionModel> extends Al
 
     @Override
     protected void writePfaAction(WekaAlgorithm<M> value, JsonGenerator jgen) throws IOException {
-        WekaModel<M> model = value.getModel();
+        WekaClassifier<M> model = value.getModel();
 
         if (model != null) {
             modelSerializer.writePfaAction(model, jgen);
@@ -65,7 +64,7 @@ public class RapidMinerAlgorithmSerializer<M extends PredictionModel> extends Al
 
     @Override
     protected void writePfaEnd(WekaAlgorithm<M> value, JsonGenerator jgen) throws IOException {
-        WekaModel<M> model = value.getModel();
+        WekaClassifier<M> model = value.getModel();
 
         if (model != null) {
             modelSerializer.writePfaEnd(model, jgen);
@@ -74,7 +73,7 @@ public class RapidMinerAlgorithmSerializer<M extends PredictionModel> extends Al
 
     @Override
     protected void writePfaFunctionDefinitions(WekaAlgorithm<M> value, JsonGenerator jgen) throws IOException {
-        WekaModel<M> model = value.getModel();
+        WekaClassifier<M> model = value.getModel();
 
         if (model != null) {
             modelSerializer.writePfaFunctionDefinitions(model, jgen);
@@ -83,7 +82,7 @@ public class RapidMinerAlgorithmSerializer<M extends PredictionModel> extends Al
 
     @Override
     protected void writePfaPools(WekaAlgorithm<M> value, JsonGenerator jgen) throws IOException {
-        WekaModel<M> model = value.getModel();
+        WekaClassifier<M> model = value.getModel();
 
         if (model != null) {
             modelSerializer.writePfaPools(model, jgen);

@@ -1,21 +1,21 @@
 package eu.humanbrainproject.mip.algorithms.weka;
 
+import eu.humanbrainproject.mip.algorithms.ResultsFormat;
+import eu.humanbrainproject.mip.algorithms.db.OutputDataConnector;
+import eu.humanbrainproject.mip.algorithms.weka.models.WekaClassifier;
+import eu.humanbrainproject.mip.algorithms.weka.serializers.pfa.WekaAlgorithmSerializer;
+import eu.humanbrainproject.mip.algorithms.weka.serializers.pfa.WekaModelSerializer;
+import weka.classifiers.Classifier;
+
 import java.util.Properties;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-
-import eu.humanbrainproject.mip.algorithms.weka.models.WekaModel;
-import org.weka.operator.learner.PredictionModel;
-import eu.humanbrainproject.mip.algorithms.ResultsFormat;
-import eu.humanbrainproject.mip.algorithms.db.OutputDataConnector;
-import eu.humanbrainproject.mip.algorithms.weka.serializers.pfa.RapidMinerAlgorithmSerializer;
-import eu.humanbrainproject.mip.algorithms.weka.serializers.pfa.RapidMinerModelSerializer;
 
 
 /**
  * Entrypoint
  *
- * @author Arnaud Jutzeler
+ * @author Ludovic Claude
  */
 public class Main {
     private static final Logger LOGGER = Logger.getLogger(Main.class.getName());
@@ -33,13 +33,13 @@ public class Main {
     public void run() {
         try {
             Class<?> modelClass = Class.forName(modelClassName);
-            @SuppressWarnings("unchecked") WekaModel<PredictionModel> model = (WekaModel<PredictionModel>) modelClass.newInstance();
+            @SuppressWarnings("unchecked") WekaClassifier<Classifier> model = (WekaClassifier<Classifier>) modelClass.newInstance();
 
             Class<?> modelSerializerClass = Class.forName(modelSerializerClassName);
-            @SuppressWarnings("unchecked") RapidMinerModelSerializer<PredictionModel> modelSerializer = (RapidMinerModelSerializer<PredictionModel>) modelSerializerClass.newInstance();
+            @SuppressWarnings("unchecked") WekaModelSerializer<Classifier> modelSerializer = (WekaModelSerializer<Classifier>) modelSerializerClass.newInstance();
 
             Class<?> algorithmSerializerClass = Class.forName(algorithmSerializerClassName);
-            RapidMinerAlgorithmSerializer algorithmSerializer = (RapidMinerAlgorithmSerializer) algorithmSerializerClass.getConstructor(RapidMinerModelSerializer.class).newInstance(modelSerializer);
+            WekaAlgorithmSerializer algorithmSerializer = (WekaAlgorithmSerializer) algorithmSerializerClass.getConstructor(WekaModelSerializer.class).newInstance(modelSerializer);
 
             InputData inputData = InputData.fromEnv();
 
@@ -74,7 +74,7 @@ public class Main {
 
             Main main = new Main(settings.getProperty("model"),
                     settings.getProperty("modelSerializer"),
-                    settings.getProperty("algorithmSerializer", RapidMinerAlgorithmSerializer.class.getName()));
+                    settings.getProperty("algorithmSerializer", WekaAlgorithmSerializer.class.getName()));
 
             main.run();
 

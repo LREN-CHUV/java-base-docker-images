@@ -3,10 +3,10 @@ package eu.humanbrainproject.mip.algorithms.weka;
 import com.opendatagroup.hadrian.jvmcompiler.PFAEngine;
 import com.opendatagroup.hadrian.jvmcompiler.PFAEngine$;
 import com.weka.operator.learner.lazy.DefaultModel;
-import eu.humanbrainproject.mip.algorithms.weka.models.WekaModel;
+import eu.humanbrainproject.mip.algorithms.weka.models.WekaClassifier;
 import eu.humanbrainproject.mip.algorithms.weka.rpmdefault.RPMDefault;
 import eu.humanbrainproject.mip.algorithms.weka.rpmdefault.RPMDefaultSerializer;
-import eu.humanbrainproject.mip.algorithms.weka.serializers.pfa.RapidMinerAlgorithmSerializer;
+import eu.humanbrainproject.mip.algorithms.weka.serializers.pfa.WekaAlgorithmSerializer;
 import org.junit.Test;
 import scala.Option;
 import scala.collection.immutable.HashMap;
@@ -38,10 +38,10 @@ public class WekaAlgorithmTest {
 
         // Get experiment input
         ClassificationInputData input = new ClassificationInputData(featureNames, variableName, data, labels);
-        WekaModel<DefaultModel> model = new RPMDefault("mode");
+        WekaClassifier<DefaultModel> model = new RPMDefault("mode");
 
         // Run experiment
-        final RapidMinerAlgorithmSerializer<DefaultModel> serializer = new RapidMinerAlgorithmSerializer<>(new RPMDefaultSerializer());
+        final WekaAlgorithmSerializer<DefaultModel> serializer = new WekaAlgorithmSerializer<>(new RPMDefaultSerializer());
         final WekaAlgorithm<DefaultModel> experiment = new WekaAlgorithm<>(input, model, serializer);
         experiment.run();
 
@@ -77,10 +77,10 @@ public class WekaAlgorithmTest {
 
         // Get experiment input
         RegressionInputData input = new RegressionInputData(featureNames, variableName, data, labels);
-        WekaModel<DefaultModel> model = new RPMDefault("median");
+        WekaClassifier<DefaultModel> model = new RPMDefault("median");
 
         // Run experiment
-        final RapidMinerAlgorithmSerializer<DefaultModel> serializer = new RapidMinerAlgorithmSerializer<>(new RPMDefaultSerializer());
+        final WekaAlgorithmSerializer<DefaultModel> serializer = new WekaAlgorithmSerializer<>(new RPMDefaultSerializer());
         final WekaAlgorithm<DefaultModel> experiment = new WekaAlgorithm<>(input, model, serializer);
         experiment.run();
 
@@ -118,10 +118,10 @@ public class WekaAlgorithmTest {
 
         // Get experiment input
         RegressionInputData input = new RegressionInputData(featureNames, variableName, data, labels);
-        WekaModel<DefaultModel> model = new RPMDefault("median");
+        WekaClassifier<DefaultModel> model = new RPMDefault("median");
 
         // Run experiment
-        final RapidMinerAlgorithmSerializer<DefaultModel> serializer = new RapidMinerAlgorithmSerializer<>(new RPMDefaultSerializer());
+        final WekaAlgorithmSerializer<DefaultModel> serializer = new WekaAlgorithmSerializer<>(new RPMDefaultSerializer());
         final WekaAlgorithm<DefaultModel> experiment = new WekaAlgorithm<>(input, model, serializer);
         experiment.run();
 

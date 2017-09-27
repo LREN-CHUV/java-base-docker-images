@@ -1,41 +1,32 @@
 package eu.humanbrainproject.mip.algorithms.weka;
 
-import java.io.IOException;
-import java.util.logging.Logger;
-
 import com.fasterxml.jackson.core.Version;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.module.SimpleModule;
-
-import com.weka.RapidMiner;
-
-import com.weka.operator.learner.PredictionModel;
 import eu.humanbrainproject.mip.algorithms.Algorithm;
-import eu.humanbrainproject.mip.algorithms.db.DBException;
-import eu.humanbrainproject.mip.algorithms.weka.exceptions.RapidMinerException;
-import eu.humanbrainproject.mip.algorithms.weka.models.WekaModel;
-import eu.humanbrainproject.mip.algorithms.weka.serializers.pfa.RapidMinerAlgorithmSerializer;
+import eu.humanbrainproject.mip.algorithms.weka.models.WekaClassifier;
+import eu.humanbrainproject.mip.algorithms.weka.serializers.pfa.WekaAlgorithmSerializer;
+import weka.classifiers.Classifier;
+
+import java.io.IOException;
+import java.util.logging.Logger;
 
 
 /**
- * Default experiment consisting of training and validating a specific models
- * The models is:
- * 1) Trained using all the data
+ * Default experiment consisting of training and validating a specific model
  *
- * @author Arnaud Jutzeler
+ * @author Ludovic Claude
  */
-public class WekaAlgorithm<M extends PredictionModel> implements Algorithm {
+public class WekaAlgorithm<M extends Classifier> implements Algorithm {
 
     private static final Logger LOGGER = Logger.getLogger(WekaAlgorithm.class.getName());
 
     private static final String NAME = "weka";
-    private static final String DOCUMENTATION = "RapidMiner Model";
-
-    private static boolean isRPMInit = false;
+    private static final String DOCUMENTATION = "Weka Model";
 
     private InputData input;
-    private WekaModel<M> model;
-    private RapidMinerAlgorithmSerializer serializer;
+    private WekaClassifier<M> model;
+    private WekaAlgorithmSerializer serializer;
 
     public Exception exception;
 
@@ -43,7 +34,7 @@ public class WekaAlgorithm<M extends PredictionModel> implements Algorithm {
      * @param input
      * @param model
      */
-    public WekaAlgorithm(InputData input, WekaModel<M> model, RapidMinerAlgorithmSerializer serializer) {
+    public WekaAlgorithm(InputData input, WekaClassifier<M> model, WekaAlgorithmSerializer serializer) {
         this.input = input;
         this.model = model;
         this.serializer = serializer;
@@ -78,20 +69,13 @@ public class WekaAlgorithm<M extends PredictionModel> implements Algorithm {
     /**
      * @return
      */
-    public WekaModel<M> getModel() {
+    public WekaClassifier<M> getModel() {
         return model;
     }
 
-    /**
-     * @throws RapidMinerException
-     */
-    public void run() throws RapidMinerException, DBException {
+    public void run() throws Exception {
 
         try {
-            if (!isRPMInit) {
-                initializeRPM();
-            }
-
             if (model.isAlreadyTrained() || exception != null) {
                 LOGGER.warning("This experiment was already executed!");
                 return;
@@ -104,25 +88,10 @@ public class WekaAlgorithm<M extends PredictionModel> implements Algorithm {
             // Train the model
             model.train(input);
 
-        } catch (ClassCastException ex) {
-            final RapidMinerException rapidMinerException = new RapidMinerException(ex);
-            this.exception = rapidMinerException;
-            throw rapidMinerException;
-
-        } catch (DBException | RapidMinerException ex) {
+        } catch (Exception ex) {
             this.exception = ex;
             throw ex;
         }
-    }
-
-    /**
-     * Generate the RMP representation of the experiment
-     * which is the native xml format used by RapidMiner
-     *
-     * @return the native xml representation of the RapidMiner process
-     */
-    public String toRMP() {
-        return model.toRMP();
     }
 
     /**
@@ -149,23 +118,10 @@ public class WekaAlgorithm<M extends PredictionModel> implements Algorithm {
 
     private ObjectMapper getObjectMapper() {
         ObjectMapper myObjectMapper = new ObjectMapper();
-        SimpleModule module = new SimpleModule("RapidMiner", new Version(1, 0, 0, null, null, null));
+        SimpleModule module = new SimpleModule("Weka", new Version(1, 0, 0, null, null, null));
         module.addSerializer(WekaAlgorithm.class, serializer);
         myObjectMapper.registerModule(module);
         return myObjectMapper;
-    }
-
-    /**
-     * Initialize RapidMiner
-     * Must be run only once
-     */
-    private static void initializeRPM() {
-        // Init RapidMiner
-        System.setProperty("weka.home", System.getProperty("user.dir"));
-
-        RapidMiner.setExecutionMode(RapidMiner.ExecutionMode.COMMAND_LINE);
-        RapidMiner.init();
-        isRPMInit = true;
     }
 
 }

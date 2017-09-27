@@ -2,15 +2,15 @@ package eu.humanbrainproject.mip.algorithms.weka.rpmdefault;
 
 import com.fasterxml.jackson.core.JsonGenerator;
 import com.weka.operator.learner.lazy.DefaultModel;
-import eu.humanbrainproject.mip.algorithms.weka.models.WekaModel;
-import eu.humanbrainproject.mip.algorithms.weka.serializers.pfa.RapidMinerModelSerializer;
+import eu.humanbrainproject.mip.algorithms.weka.models.WekaClassifier;
+import eu.humanbrainproject.mip.algorithms.weka.serializers.pfa.WekaModelSerializer;
 
 import java.io.IOException;
 
-public class RPMDefaultSerializer extends RapidMinerModelSerializer<DefaultModel> {
+public class RPMDefaultSerializer extends WekaModelSerializer<DefaultModel> {
 
     @Override
-    public void writeModelConstants(WekaModel<DefaultModel> model, JsonGenerator jgen) throws IOException {
+    public void writeModelConstants(WekaClassifier<DefaultModel> model, JsonGenerator jgen) throws IOException {
         String method = model.getParameters().get("method");
         if (!method.equals("attribute")) {
             jgen.writeObjectFieldStart("model");
@@ -41,7 +41,7 @@ public class RPMDefaultSerializer extends RapidMinerModelSerializer<DefaultModel
     }
 
     @Override
-    public void writePfaAction(WekaModel<DefaultModel> model, JsonGenerator jgen) throws IOException {
+    public void writePfaAction(WekaClassifier<DefaultModel> model, JsonGenerator jgen) throws IOException {
         String method = model.getParameters().get("method");
         if (!method.equals("attribute")) {
             jgen.writeStartObject();

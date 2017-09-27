@@ -40,9 +40,9 @@ public class InputData {
     }
 
     /**
-     * Return the relevant data structure to pass as input to RapidMiner
+     * Return the relevant data structure to pass as input to Weka
      *
-     * @return the input data as an ExampleSet to train RapidMiner algorithms
+     * @return the input data as an Instances to train Weka algorithms
      */
     public Instances getData() throws DBException {
         if (data == null) {
@@ -83,7 +83,10 @@ public class InputData {
             try {
                 InstanceQuery instanceQuery = new InstanceQuery();
                 instanceQuery.setQuery(getQuery());
-                return InstanceQuery.retrieveInstances(instanceQuery, resultSet);
+                final Instances instances = InstanceQuery.retrieveInstances(instanceQuery, resultSet);
+                final int classIndex = instances.attribute(getVariableName()).index();
+                instances.setClassIndex(classIndex);
+                return instances;
 
             } catch (Exception e) {
                 throw new RuntimeException(e);

@@ -3,7 +3,7 @@ package eu.humanbrainproject.mip.algorithms.weka.rpmdefault;
 import java.util.*;
 
 import eu.humanbrainproject.mip.algorithms.Configuration;
-import eu.humanbrainproject.mip.algorithms.weka.models.WekaModel;
+import eu.humanbrainproject.mip.algorithms.weka.models.WekaClassifier;
 
 import com.weka.operator.learner.lazy.DefaultLearner;
 import com.weka.operator.learner.lazy.DefaultModel;
@@ -16,7 +16,7 @@ import com.weka.operator.learner.lazy.DefaultModel;
  * @author Arnaud Jutzeler
  *
  */
-public class RPMDefault extends WekaModel<DefaultModel> {
+public class RPMDefault extends WekaClassifier<DefaultModel> {
 
     private String method;
 
