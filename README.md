@@ -17,11 +17,17 @@ Use it to build Java projects.
 
 ## [hbpmip/java-mip](./java-mip/): Adapt the base Java image to the MIP environment
 
-This image provides a Java environment compatible with MIP and with the following features:
+This image provides a Java environment compatible with MIP. This base image provides the
+basic tools and library to execute a statistical or machine-learning Java algorithm in the runtime
+environment provided by MIP Algorithm Factory / Woken.
 
 ## [hbpmip/java-rapidminer](./java-rapidminer/): Run RapidMinder algorithms in MIP
 
 Run Rapidminer algorithms (experiments) in MIP platform.
+
+## [hbpmip/java-weka](./java-weka/): Run Weka algorithms in MIP
+
+Run Weka algorithms (cliassifiers) in MIP platform.
 
 ## [hbpmip/scala-base-build](./scala-base-build/): Scala build environment, including sbt
 

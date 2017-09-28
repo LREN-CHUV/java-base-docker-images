@@ -2,7 +2,11 @@
 
 # hbpmip/java-mip: Adapt the base Java image to the MIP environment
 
-This image provides a Java environment compatible with MIP and with the following features:
+This image provides a Java environment compatible with MIP. This base image provides the
+basic tools and library to execute a statistical or machine-learning Java algorithm in the runtime
+environment provided by MIP Algorithm Factory / Woken.
+
+It provides the following features:
 
 * The *compute* user is used to run the Java programs
 * Directories /data/in and /data/out are intended to store the incoming files
