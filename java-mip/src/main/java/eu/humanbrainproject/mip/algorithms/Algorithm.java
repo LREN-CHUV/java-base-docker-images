@@ -14,4 +14,27 @@ public interface Algorithm {
      */
     String getErrorMessage();
 
+    enum AlgorithmCapability {
+        /**
+         * The algorithm can generate a predictive model, encoded as a PFA document
+         */
+        PREDICTIVE_MODEL,
+        /**
+         * The algorithm provides classification
+         */
+        CLASSIFICATION,
+        /**
+         * The algorithm provides statistical information about the input data
+         */
+        STATISTICAL,
+        /**
+         * Can handle missing values in input data
+         */
+        INPUT_DATA_MISSING_VALUES,
+        /**
+         * The algorithm provides one or more visualisations
+         */
+        VISUALISATION
+    }
+
 }

@@ -20,31 +20,35 @@ public abstract class InputDescription {
         for (String covariable : getCovariables()) {
             jgen.writeStartObject();
             jgen.writeStringField("name", covariable);
-            final VariableType type = getType(covariable);
-            switch (type) {
-                case REAL: {
-                    jgen.writeStringField("type", "double");
-                    break;
-                }
-                case CATEGORICAL: {
-                    jgen.writeObjectFieldStart("type");
-                    jgen.writeStringField("type", "enum");
-                    jgen.writeStringField("name", "Enum_" + covariable);
-                    jgen.writeArrayFieldStart("symbols");
-                    for (String symbol : getCategoricalValues(covariable)) {
-                        jgen.writeString(symbol);
-                    }
-                    jgen.writeEndArray();
-                    jgen.writeEndObject();
-                    break;
-                }
-                default:
-                    throw new IllegalArgumentException("Unknown type: " + type);
-            }
+            writeInputFieldType(jgen, covariable);
             jgen.writeEndObject();
         }
         jgen.writeEndArray();
         jgen.writeEndObject();
+    }
+
+    protected void writeInputFieldType(JsonGenerator jgen, String covariable) throws Exception {
+        final VariableType type = getType(covariable);
+        switch (type) {
+            case REAL: {
+                jgen.writeStringField("type", "double");
+                break;
+            }
+            case CATEGORICAL: {
+                jgen.writeObjectFieldStart("type");
+                jgen.writeStringField("type", "enum");
+                jgen.writeStringField("name", "Enum_" + covariable);
+                jgen.writeArrayFieldStart("symbols");
+                for (String symbol : getCategoricalValues(covariable)) {
+                    jgen.writeString(symbol);
+                }
+                jgen.writeEndArray();
+                jgen.writeEndObject();
+                break;
+            }
+            default:
+                throw new IllegalArgumentException("Unknown type: " + type);
+        }
     }
 
     public void writePfaOutput(JsonGenerator jgen) throws Exception {
