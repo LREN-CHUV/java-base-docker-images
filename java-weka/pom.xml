@@ -103,13 +103,24 @@
     <finalName>${project.artifactId}</finalName>
     <resources>
       <resource>
-        <directory>src/main/resources</directory>
+        <directory>src/main/java</directory>
         <includes>
           <include>**/*.properties</include>
         </includes>
         <filtering>false</filtering>
       </resource>
     </resources>
+    <testResources>
+      <testResource>
+        <directory>src/test/java</directory>
+        <includes>
+          <include>**/*.properties</include>
+          <include>**/*.jinja</include>
+          <include>**/*.csv</include>
+        </includes>
+        <filtering>false</filtering>
+      </testResource>
+    </testResources>
     <plugins>
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>

@@ -1,0 +1,43 @@
+{#
+  Java code from SimpleLinearRegression.classifyInstance(Instance inst):
+
+    if (m_attribute == null) {
+      return m_intercept;
+    } else {
+      if (inst.isMissing(m_attributeIndex)) {
+        return m_classMeanForMissing;
+      }
+      return m_intercept + m_slope * inst.value(m_attributeIndex);
+    }
+
+#}
+
+{
+  {# define m variable, used in following let expression #}
+  "let": {
+    "m": {"cell": "model"}
+  }
+},
+{
+  {# define local variables #}
+  "let": {
+    "selectedVariable": "m.selectedVariable",
+    "selectedValue": {% if selectedVariable != null %}"input.{{ selectedVariable }}"{% else %}null{% endif%},
+    "intercept": "m.intercept",
+    "slope": "m.slope"
+  }
+},
+{
+  {# implement classifyInstance #}
+  "ifnotnull": {"var": "selectedVariable"},
+  "then": {
+    "ifnotnull": {"val": "selectedValue"},
+    "then": {
+      "+": [
+        "intercept",
+        { "*": ["slope", "val"] }
+      ]
+    }
+  },
+  "else": "intercept"
+}

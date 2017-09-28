@@ -7,6 +7,13 @@ import weka.core.Instances;
 import weka.experiment.InstanceQuery;
 
 
+/**
+ * Represent the input data to be fed into the algorithm for training or testing.
+ *
+ * By default, we assume that the data comes from a database and we read the connection configuration from the environment variables (INTUT_*). See {@link #fromEnv()}
+ *
+ * Use {@link FileInputData} to get input data from a file.
+ */
 public class InputData {
 
     private final InputDataConnector connector;

@@ -29,6 +29,10 @@ public class WekaClassifier<M extends Classifier> {
 
     private M trainedClassifier;
 
+    public WekaClassifier(Class<M> classifierClass) {
+        this(classifierClass.getName());
+    }
+
     public WekaClassifier(String classifierName) {
         this(classifierName, optionsFromEnv(classifierName));
     }
@@ -104,17 +108,20 @@ public class WekaClassifier<M extends Classifier> {
             HashMap<String, String> values = new HashMap<>(Configuration.INSTANCE.algorithmParameterValues(params));
             for (String param: values.keySet()) {
                 Option option = allOptions.get(param);
-                if (option.numArguments() == 0) {
+                final String value = values.get(param);
+                if (option.numArguments() == 0 && "true".equalsIgnoreCase(value)) {
                     options.add(option.synopsis());
-                } else if (option.numArguments() == 1) {
-                    options.add(option.synopsis());
-                    options.add(values.get(param));
-                } else {
-                    options.add(option.synopsis());
-                    final String optionValues = values.get(param);
-                    StringTokenizer st = new StringTokenizer(optionValues, " ,");
-                    while (st.hasMoreTokens()) {
-                        options.add(st.nextToken());
+                } else if (value != null) {
+                    if (option.numArguments() == 1) {
+                        options.add(option.synopsis());
+                        options.add(value);
+                    } else {
+                        options.add(option.synopsis());
+                        final String optionValues = value;
+                        StringTokenizer st = new StringTokenizer(optionValues, " ,");
+                        while (st.hasMoreTokens()) {
+                            options.add(st.nextToken());
+                        }
                     }
                 }
             }

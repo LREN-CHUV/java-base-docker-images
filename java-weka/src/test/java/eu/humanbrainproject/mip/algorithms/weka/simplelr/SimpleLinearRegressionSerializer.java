@@ -1,6 +1,10 @@
 package eu.humanbrainproject.mip.algorithms.weka.simplelr;
 
 import com.fasterxml.jackson.core.JsonGenerator;
+import com.google.common.base.Charsets;
+import com.google.common.collect.Maps;
+import com.google.common.io.Resources;
+import com.hubspot.jinjava.Jinjava;
 import eu.humanbrainproject.mip.algorithms.weka.WekaClassifier;
 import eu.humanbrainproject.mip.algorithms.weka.serializers.pfa.WekaClassifierSerializer;
 import org.apache.avro.Schema;
@@ -9,9 +13,7 @@ import weka.classifiers.functions.SimpleLinearRegression;
 import weka.core.Attribute;
 
 import java.io.IOException;
-import java.lang.reflect.Field;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+import java.util.Map;
 
 public class SimpleLinearRegressionSerializer extends WekaClassifierSerializer<SimpleLinearRegression> {
 
@@ -21,23 +23,17 @@ public class SimpleLinearRegressionSerializer extends WekaClassifierSerializer<S
 
         jgen.writeObjectFieldStart("model");
         {
-            jgen.writeObjectFieldStart("type");
+            jgen.writeFieldName("type");
             {
-                jgen.writeStringField("doc", "The model parameter");
-                jgen.writeStringField("name", "value");
-                jgen.writeFieldName("type");
-                {
-                    Schema schema = SchemaBuilder.record("LinearModel").fields()
-                                /* */.name("slope").type().doubleType().noDefault()
-                                /* */.name("intercept").type().doubleType().noDefault()
-                                /* */.name("classMeanForMissing").type().doubleType().noDefault()
-                                /* */.name("selectedVariable").type().stringType().stringDefault(null)
-                            .endRecord();
+                Schema schema = SchemaBuilder.record("LinearModel").doc("The model parameter").fields()
+                            /* */.name("slope").type().doubleType().noDefault()
+                            /* */.name("intercept").type().doubleType().noDefault()
+                            /* */.name("classMeanForMissing").type().doubleType().noDefault()
+                            /* */.name("selectedVariable").type().unionOf().stringType().and().nullType().endUnion().noDefault()
+                        .endRecord();
 
-                    jgen.writeRawValue(schema.toString());
-                }
+                jgen.writeRawValue(schema.toString());
             }
-            jgen.writeEndObject();
 
             jgen.writeObjectFieldStart("init");
             {
@@ -49,24 +45,32 @@ public class SimpleLinearRegressionSerializer extends WekaClassifierSerializer<S
                     jgen.writeNumberField("slope", lr.getSlope());
                     jgen.writeNumberField("classMeanForMissing", classMeanForMissing);
                     jgen.writeStringField("selectedVariable", attribute.name());
+                } else {
+                    jgen.writeStringField("selectedVariable", null);
                 }
             }
+            jgen.writeEndObject();
         }
         jgen.writeEndObject();
     }
 
     @Override
     public void writePfaAction(WekaClassifier<SimpleLinearRegression> model, JsonGenerator jgen) throws IOException {
-        jgen.writeStartObject();
-        {
-            jgen.writeStringField("attr", "input");
-            jgen.writeArrayFieldStart("path");
-            {
-                jgen.writeString(attributeName);
-            }
-            jgen.writeEndArray();
+        Jinjava jinjava = new Jinjava();
+        Map<String, Object> context = Maps.newHashMap();
+        final SimpleLinearRegression lr = model.getTrainedClassifier();
+        context.put("foundUsefulAttribute", lr.foundUsefulAttribute());
+        if (lr.foundUsefulAttribute()) {
+            Attribute attribute = accessPrivateField(lr, "m_attribute");
+            context.put("selectedVariable", attribute.name());
+        } else {
+            context.put("selectedVariable", null);
         }
-        jgen.writeEndObject();
+
+        String template = Resources.toString(this.getClass().getResource("action.jinja"), Charsets.UTF_8);
+        String renderedTemplate = jinjava.render(template, context);
+
+        jgen.writeRaw(renderedTemplate);
     }
 
 }
