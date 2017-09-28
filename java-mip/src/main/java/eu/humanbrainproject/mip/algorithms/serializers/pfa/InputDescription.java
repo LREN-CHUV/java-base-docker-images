@@ -1,13 +1,29 @@
 package eu.humanbrainproject.mip.algorithms.serializers.pfa;
 
 import com.fasterxml.jackson.core.JsonGenerator;
+import eu.humanbrainproject.mip.algorithms.Algorithm;
+import org.apache.avro.Schema;
+import org.apache.avro.SchemaBuilder;
 
 import java.util.List;
+import java.util.stream.Collectors;
+
+import static eu.humanbrainproject.mip.algorithms.Algorithm.AlgorithmCapability.INPUT_DATA_MISSING_VALUES;
 
 /**
  * Helper to describe algorithm inputs and outputs, including the query used during learning.
  */
-public abstract class InputDescription {
+public abstract class InputDescription<T extends Algorithm> {
+
+    private final T algorithm;
+
+    public InputDescription(T algorithm) {
+        this.algorithm = algorithm;
+    }
+
+    protected T getAlgorithm() {
+        return algorithm;
+    }
 
     public void writePfaInput(JsonGenerator jgen) throws Exception {
 
@@ -29,26 +45,46 @@ public abstract class InputDescription {
 
     protected void writeInputFieldType(JsonGenerator jgen, String covariable) throws Exception {
         final VariableType type = getType(covariable);
+        boolean nullableField = algorithm.getCapabilities().contains(INPUT_DATA_MISSING_VALUES);
+        Schema schema;
         switch (type) {
             case REAL: {
-                jgen.writeStringField("type", "double");
+                if (nullableField) {
+                    schema = SchemaBuilder.builder().unionOf().doubleType().and().nullType().endUnion();
+                } else {
+                    schema = SchemaBuilder.builder().doubleType();
+                }
                 break;
             }
             case CATEGORICAL: {
-                jgen.writeObjectFieldStart("type");
-                jgen.writeStringField("type", "enum");
-                jgen.writeStringField("name", "Enum_" + covariable);
-                jgen.writeArrayFieldStart("symbols");
-                for (String symbol : getCategoricalValues(covariable)) {
-                    jgen.writeString(symbol);
+                List<String> categoricalValues = getCategoricalValues(covariable);
+                boolean categoryOfNumbers = categoricalValues.stream().allMatch(v -> v.matches("\\d+"));
+                String[] symbols = asSymbols(categoricalValues);
+                Schema enumType = SchemaBuilder.builder().enumeration("Enum_" + covariable).symbols(symbols);
+                if (nullableField) {
+                    if (categoryOfNumbers) {
+                        schema = SchemaBuilder.unionOf().type(enumType).and().intType().and().nullType().endUnion();
+                    } else {
+                        schema = SchemaBuilder.unionOf().type(enumType).and().nullType().endUnion();
+                    }
+                } else if (categoryOfNumbers) {
+                    schema = SchemaBuilder.unionOf().type(enumType).and().intType().endUnion();
+                } else {
+                    schema = enumType;
                 }
-                jgen.writeEndArray();
-                jgen.writeEndObject();
                 break;
             }
             default:
                 throw new IllegalArgumentException("Unknown type: " + type);
         }
+
+        jgen.writeFieldName("type");
+        jgen.writeRawValue(schema.toString());
+    }
+
+    protected String[] asSymbols(List<String> values) {
+        List<String> symbols = values.stream().map(v -> v.matches("\\d+") ? "_" + v : v).collect(Collectors.toList());
+        return symbols.toArray(new String[symbols.size()]);
     }
 
     public void writePfaOutput(JsonGenerator jgen) throws Exception {
@@ -177,6 +213,9 @@ public abstract class InputDescription {
 
         }
         jgen.writeEndObject();
+    }
+
+    public void writeInputToLocalVars(JsonGenerator jgen) {
     }
 
     protected abstract VariableType getType(String variable) throws Exception;

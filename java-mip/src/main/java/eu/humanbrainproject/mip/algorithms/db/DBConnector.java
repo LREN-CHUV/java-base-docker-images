@@ -6,9 +6,9 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 /**
+ * Handles connections to a database
  *
  * @author Arnaud Jutzeler
- *
  */
 public class DBConnector implements AutoCloseable {
     private static final Logger LOGGER = Logger.getLogger(DBConnector.class.getName());

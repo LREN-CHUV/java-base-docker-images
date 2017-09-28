@@ -7,6 +7,9 @@ import java.sql.*;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+/**
+ * Connection to the output database where the algorithm results are stored.
+ */
 public class OutputDataConnector extends DBConnector {
     private static final Logger LOGGER = Logger.getLogger(OutputDataConnector.class.getName());
 

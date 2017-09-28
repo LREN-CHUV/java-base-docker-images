@@ -8,6 +8,9 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.function.Function;
 
+/**
+ * Connection to the input database containing the features for training.
+ */
 public class InputDataConnector extends DBConnector {
 
     private final String query;

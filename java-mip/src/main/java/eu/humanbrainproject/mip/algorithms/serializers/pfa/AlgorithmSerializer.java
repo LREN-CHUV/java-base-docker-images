@@ -92,6 +92,7 @@ public abstract class AlgorithmSerializer<T extends Algorithm> extends JsonSeria
                 jgen.writeFieldName("action");
                 jgen.writeStartArray();
                 {
+                    inputDescription.writeInputToLocalVars(jgen);
                     writePfaAction(value, jgen);
                 }
                 jgen.writeEndArray();
@@ -146,7 +147,25 @@ public abstract class AlgorithmSerializer<T extends Algorithm> extends JsonSeria
      * the active phase of the scoring engine’s run
      */
     protected void writePfaAction(T value, JsonGenerator jgen) throws IOException {
-        // Empty expression, to override if necessary
+        jgen.writeStartObject();
+        {
+            jgen.writeStringField("error", "No action defined");
+        }
+        jgen.writeEndObject();
+        jgen.writeStartObject();
+        {
+            InputDescription inputDescription = getInputDescription(value);
+            try {
+                if (inputDescription.getType(inputDescription.getVariables()[0]) == InputDescription.VariableType.CATEGORICAL) {
+                    jgen.writeStringField("string", "dummy");
+                } else {
+                    jgen.writeNumberField("double", -1);
+                }
+            } catch (Exception e) {
+                LOGGER.log(Level.SEVERE, "Cannot generate empty action", e);
+            }
+        }
+        jgen.writeEndObject();
     }
 
     /**

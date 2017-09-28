@@ -1,5 +1,7 @@
 package eu.humanbrainproject.mip.algorithms;
 
+import java.util.Set;
+
 /**
  * An algorithm is used to learn from input data and produce a result.
  */
@@ -13,6 +15,8 @@ public interface Algorithm {
      * @return the error message or null
      */
     String getErrorMessage();
+
+    Set<AlgorithmCapability> getCapabilities();
 
     enum AlgorithmCapability {
         /**

@@ -6,6 +6,9 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 
+/**
+ * Describe how to connect to a database
+ */
 public class DBConnectionDescriptor {
     private static final Configuration conf = Configuration.INSTANCE;
 

@@ -1,6 +1,7 @@
 package eu.humanbrainproject.mip.algorithms.db;
 
 /**
+ * Exception related to a database operation
  *
  * @author Arnaud Jutzeler
  */

@@ -4,25 +4,28 @@ import com.opendatagroup.hadrian.jvmcompiler.PFAEngine;
 import com.opendatagroup.hadrian.jvmcompiler.PFAEngine$;
 import eu.humanbrainproject.mip.algorithms.weka.serializers.pfa.WekaAlgorithmSerializer;
 import eu.humanbrainproject.mip.algorithms.weka.simplelr.SimpleLinearRegressionSerializer;
-import org.junit.Test;
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Test;
 import scala.Option;
 import scala.collection.immutable.HashMap;
 import weka.classifiers.functions.SimpleLinearRegression;
 
 import java.net.URL;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 /**
  * Tests for WekaAlgorithm
  *
  * @author Arnaud Jutzeler
  */
+@DisplayName("With Weka algorithms")
 public class WekaAlgorithmTest {
 
     @Test
+    @DisplayName("we can implement a linear regression and export its model to PFA")
     public void testRegression() throws Exception {
 
         String[] featureNames = new String[]{"input1", "input2"};
