@@ -30,8 +30,7 @@ public abstract class AlgorithmSerializer<T extends Algorithm> extends JsonSeria
             jgen.writeStringField("doc", value.getDocumentation());
 
             // Metadata
-            jgen.writeFieldName("metadata");
-            jgen.writeStartObject();
+            jgen.writeObjectFieldStart("metadata");
             {
                 writePfaMetadata(value, jgen);
             }
@@ -40,7 +39,7 @@ public abstract class AlgorithmSerializer<T extends Algorithm> extends JsonSeria
             String errorMessage = value.getErrorMessage();
             InputDescription inputDescription = getInputDescription(value);
 
-            if (inputDescription != null && errorMessage == null) {
+            if (inputDescription != null) {
                 try {
                     inputDescription.writePfaInput(jgen);
                     inputDescription.writePfaOutput(jgen);
@@ -48,11 +47,15 @@ public abstract class AlgorithmSerializer<T extends Algorithm> extends JsonSeria
                     LOGGER.log(Level.SEVERE, "Cannot generate PFA input or output", e);
                     errorMessage = e.getMessage();
                 }
+            } else {
+                jgen.writeObjectFieldStart("input");
+                jgen.writeEndObject();
+                jgen.writeObjectFieldStart("output");
+                jgen.writeEndObject();
             }
 
             // Cells
-            jgen.writeFieldName("cells");
-            jgen.writeStartObject();
+            jgen.writeObjectFieldStart("cells");
             {
                 if (inputDescription != null) {
                     try {
@@ -63,7 +66,12 @@ public abstract class AlgorithmSerializer<T extends Algorithm> extends JsonSeria
                     }
                 }
                 if (errorMessage != null) {
-                    jgen.writeStringField("error", errorMessage);
+                    jgen.writeObjectFieldStart("error");
+                    {
+                        jgen.writeStringField("type", "string");
+                        jgen.writeStringField("init", errorMessage);
+                    }
+                    jgen.writeEndObject();
                 } else {
                     writeModelConstants(value, jgen);
                 }
@@ -73,46 +81,51 @@ public abstract class AlgorithmSerializer<T extends Algorithm> extends JsonSeria
             if (errorMessage == null) {
 
                 // Pools
-                jgen.writeFieldName("pools");
-                jgen.writeStartObject();
+                jgen.writeObjectFieldStart("pools");
                 {
                     writePfaPools(value, jgen);
                 }
                 jgen.writeEndObject();
 
                 // Begin
-                jgen.writeFieldName("begin");
-                jgen.writeStartArray();
+                jgen.writeArrayFieldStart("begin");
                 {
                     writePfaBegin(value, jgen);
                 }
                 jgen.writeEndArray();
 
                 // Action
-                jgen.writeFieldName("action");
-                jgen.writeStartArray();
+                jgen.writeArrayFieldStart("action");
                 {
-                    inputDescription.writeInputToLocalVars(jgen);
+                    if (inputDescription != null) {
+                        inputDescription.writeInputToLocalVars(jgen);
+                    }
                     writePfaAction(value, jgen);
                 }
                 jgen.writeEndArray();
 
                 // End
-                jgen.writeFieldName("end");
-                jgen.writeStartArray();
+                jgen.writeArrayFieldStart("end");
                 {
                     writePfaEnd(value, jgen);
                 }
                 jgen.writeEndArray();
 
                 // Functions
-                jgen.writeFieldName("fcns");
-                jgen.writeStartObject();
+                jgen.writeObjectFieldStart("fcns");
                 {
                     writePfaFunctionDefinitions(value, jgen);
                 }
                 jgen.writeEndObject();
 
+            } else {
+                // Action
+                jgen.writeArrayFieldStart("action");
+                {
+                    writePfaErrorAction(value, jgen, errorMessage);
+
+                }
+                jgen.writeEndArray();
             }
 
         }
@@ -150,6 +163,32 @@ public abstract class AlgorithmSerializer<T extends Algorithm> extends JsonSeria
         jgen.writeStartObject();
         {
             jgen.writeStringField("error", "No action defined");
+        }
+        jgen.writeEndObject();
+        jgen.writeStartObject();
+        {
+            InputDescription inputDescription = getInputDescription(value);
+            try {
+                if (inputDescription.getType(inputDescription.getVariables()[0]) == InputDescription.VariableType.CATEGORICAL) {
+                    jgen.writeStringField("string", "dummy");
+                } else {
+                    jgen.writeNumberField("double", -1);
+                }
+            } catch (Exception e) {
+                LOGGER.log(Level.SEVERE, "Cannot generate empty action", e);
+            }
+        }
+        jgen.writeEndObject();
+    }
+
+    /**
+     * Write the expression or JSON array of expressions that are executed for each input datum in
+     * the active phase of the scoring engine’s run
+     */
+    protected void writePfaErrorAction(T value, JsonGenerator jgen, String errorMessage) throws IOException {
+        jgen.writeStartObject();
+        {
+            jgen.writeStringField("error", errorMessage);
         }
         jgen.writeEndObject();
         jgen.writeStartObject();
