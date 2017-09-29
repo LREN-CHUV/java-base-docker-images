@@ -29,7 +29,7 @@ public class SimpleLinearRegressionSerializer extends WekaClassifierSerializer<S
                             /* */.name("slope").type().doubleType().noDefault()
                             /* */.name("intercept").type().doubleType().noDefault()
                             /* */.name("classMeanForMissing").type().doubleType().noDefault()
-                            /* */.name("selectedVariable").type().unionOf().stringType().and().nullType().endUnion().noDefault()
+                            /* */.name("selectedVariable").type().stringType().noDefault()
                         .endRecord();
 
                 jgen.writeRawValue(schema.toString());

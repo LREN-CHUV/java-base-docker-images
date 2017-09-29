@@ -4,6 +4,8 @@ import com.opendatagroup.hadrian.jvmcompiler.PFAEngine;
 import com.opendatagroup.hadrian.jvmcompiler.PFAEngine$;
 import eu.humanbrainproject.mip.algorithms.weka.serializers.pfa.WekaAlgorithmSerializer;
 import eu.humanbrainproject.mip.algorithms.weka.simplelr.SimpleLinearRegressionSerializer;
+import org.codehaus.jackson.JsonNode;
+import org.codehaus.jackson.map.ObjectMapper;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import scala.Option;
@@ -23,6 +25,8 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
  */
 @DisplayName("With Weka algorithms")
 public class WekaAlgorithmTest {
+
+    private static ObjectMapper mapper = new ObjectMapper();
 
     @Test
     @DisplayName("we can implement a linear regression and export its model to PFA")
@@ -49,11 +53,17 @@ public class WekaAlgorithmTest {
         assertTrue(pfa.contains("\"model\""));
         assertTrue(pfa.contains("\"action\""));
 
+        final JsonNode jsonPfa = mapper.readTree(pfa);
+        final JsonNode jsonExpected = mapper.readTree(getClass().getResource("regression.pfa.json"));
+
+        assertEquals(jsonExpected, jsonPfa);
+
         // Validate PFA
         PFAEngine<Object, Object> pfaEngine = getPFAEngine(pfa);
 
-        Object result = pfaEngine.action(pfaEngine.jsonInput("{\"input1\": 1.1, \"input2\": 2.0}"));
-        assertEquals("1.0", result);
+        // Execute the PFA predictive algorithm on new data to make a prediction
+        Object result = pfaEngine.action(pfaEngine.jsonInput("{\"input1\": {\"double\": 1.1}, \"input2\": {\"double\": 2.0}}"));
+        assertEquals(3.9112, (Double)result, 0.001);
     }
 
     private PFAEngine<Object, Object> getPFAEngine(String pfa) {

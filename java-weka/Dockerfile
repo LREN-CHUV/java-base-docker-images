@@ -7,9 +7,9 @@ COPY src/ /project/src
 RUN cp /usr/share/maven/ref/settings-docker.xml /root/.m2/settings.xml \
     && mvn package site
 
-FROM hbpmip/java-mip:0.4.1
+FROM hbpmip/java-mip:0.5.0
 
-MAINTAINER arnaud@ahead-solutions.ch
+MAINTAINER ludovic.claude@chuv.ch
 
 ENV JAVA_CLASSPATH=${JAVA_CLASSPATH}:/usr/share/jars/mip-weka-deps.jar
 ENV JAVA_MAINCLASS=eu.humanbrainproject.mip.algorithms.weka.Main
@@ -24,7 +24,7 @@ RUN chown -R compute:compute /mip/
 
 LABEL org.label-schema.build-date=$BUILD_DATE \
       org.label-schema.name="hbpmip/java-weka" \
-      org.label-schema.description="Execute RapidMiner algorithms in MIP Woken environment" \
+      org.label-schema.description="Execute Weka algorithms in MIP Woken environment" \
       org.label-schema.url="https://github.com/LREN-CHUV/java-base-docker-images" \
       org.label-schema.vcs-type="git" \
       org.label-schema.vcs-url="https://github.com/LREN-CHUV/java-base-docker-images.git" \

@@ -28,7 +28,7 @@ public class WekaAlgorithmSerializer<M extends Classifier> extends AlgorithmSeri
 
         // Input, output
         if (input != null) {
-            return new WekaInputDescription(input);
+            return new WekaInputDescription(value);
         } else {
             return null;
         }
@@ -36,7 +36,7 @@ public class WekaAlgorithmSerializer<M extends Classifier> extends AlgorithmSeri
 
     @Override
     protected void writeModelConstants(WekaAlgorithm<M> value, JsonGenerator jgen) throws IOException {
-        WekaClassifier<M> model = value.getModel();
+        WekaClassifier<M> model = value.getClassifier();
 
         // Model representation
         if (model != null) {
@@ -46,7 +46,7 @@ public class WekaAlgorithmSerializer<M extends Classifier> extends AlgorithmSeri
 
     @Override
     protected void writePfaBegin(WekaAlgorithm<M> value, JsonGenerator jgen) throws IOException {
-        WekaClassifier<M> model = value.getModel();
+        WekaClassifier<M> model = value.getClassifier();
 
         if (model != null) {
             modelSerializer.writePfaBegin(model, jgen);
@@ -55,7 +55,7 @@ public class WekaAlgorithmSerializer<M extends Classifier> extends AlgorithmSeri
 
     @Override
     protected void writePfaAction(WekaAlgorithm<M> value, JsonGenerator jgen) throws IOException {
-        WekaClassifier<M> model = value.getModel();
+        WekaClassifier<M> model = value.getClassifier();
 
         if (model != null) {
             modelSerializer.writePfaAction(model, jgen);
@@ -64,7 +64,7 @@ public class WekaAlgorithmSerializer<M extends Classifier> extends AlgorithmSeri
 
     @Override
     protected void writePfaEnd(WekaAlgorithm<M> value, JsonGenerator jgen) throws IOException {
-        WekaClassifier<M> model = value.getModel();
+        WekaClassifier<M> model = value.getClassifier();
 
         if (model != null) {
             modelSerializer.writePfaEnd(model, jgen);
@@ -73,7 +73,7 @@ public class WekaAlgorithmSerializer<M extends Classifier> extends AlgorithmSeri
 
     @Override
     protected void writePfaFunctionDefinitions(WekaAlgorithm<M> value, JsonGenerator jgen) throws IOException {
-        WekaClassifier<M> model = value.getModel();
+        WekaClassifier<M> model = value.getClassifier();
 
         if (model != null) {
             modelSerializer.writePfaFunctionDefinitions(model, jgen);
@@ -82,7 +82,7 @@ public class WekaAlgorithmSerializer<M extends Classifier> extends AlgorithmSeri
 
     @Override
     protected void writePfaPools(WekaAlgorithm<M> value, JsonGenerator jgen) throws IOException {
-        WekaClassifier<M> model = value.getModel();
+        WekaClassifier<M> model = value.getClassifier();
 
         if (model != null) {
             modelSerializer.writePfaPools(model, jgen);

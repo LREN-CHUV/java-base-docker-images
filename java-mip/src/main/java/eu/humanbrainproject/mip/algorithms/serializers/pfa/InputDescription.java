@@ -2,6 +2,7 @@ package eu.humanbrainproject.mip.algorithms.serializers.pfa;
 
 import com.fasterxml.jackson.core.JsonGenerator;
 import eu.humanbrainproject.mip.algorithms.Algorithm;
+import eu.humanbrainproject.mip.algorithms.db.DBException;
 import org.apache.avro.Schema;
 import org.apache.avro.SchemaBuilder;
 

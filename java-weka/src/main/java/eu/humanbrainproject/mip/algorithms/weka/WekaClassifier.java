@@ -1,8 +1,10 @@
 package eu.humanbrainproject.mip.algorithms.weka;
 
 import eu.humanbrainproject.mip.algorithms.Configuration;
+import weka.Run;
 import weka.classifiers.AbstractClassifier;
 import weka.classifiers.Classifier;
+import weka.core.Capabilities;
 import weka.core.CommandlineRunnable;
 import weka.core.Option;
 import weka.core.OptionHandler;
@@ -84,6 +86,16 @@ public class WekaClassifier<M extends Classifier> {
 
     public M getTrainedClassifier() {
         return trainedClassifier;
+    }
+
+    public Capabilities getCapabilities() {
+        Classifier classifier;
+        try {
+            classifier = AbstractClassifier.forName(classifierName, new String[0]);
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+        return classifier.getCapabilities();
     }
 
     public static List<Option> availableOptions(String classifierName) throws Exception {

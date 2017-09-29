@@ -24,20 +24,24 @@
     "selectedVariable": "m.selectedVariable",
     "selectedValue": {% if selectedVariable != null %}"input.{{ selectedVariable }}"{% else %}null{% endif%},
     "intercept": "m.intercept",
-    "slope": "m.slope"
+    "slope": "m.slope",
+    "classMeanForMissing": "m.classMeanForMissing"
   }
 },
 {
   {# implement classifyInstance #}
-  "ifnotnull": {"var": "selectedVariable"},
-  "then": {
+  {% if selectedVariable != null %}
     "ifnotnull": {"val": "selectedValue"},
     "then": {
       "+": [
         "intercept",
         { "*": ["slope", "val"] }
       ]
+    },
+    "else": {
+     "do": "classMeanForMissing"
     }
-  },
-  "else": "intercept"
+  {% else %}
+  "do": "intercept"
+  {% endif %}
 }

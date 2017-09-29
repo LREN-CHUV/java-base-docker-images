@@ -6,13 +6,18 @@ import com.fasterxml.jackson.databind.module.SimpleModule;
 import eu.humanbrainproject.mip.algorithms.Algorithm;
 import eu.humanbrainproject.mip.algorithms.weka.serializers.pfa.WekaAlgorithmSerializer;
 import weka.classifiers.Classifier;
+import weka.core.Capabilities;
+import weka.core.CapabilitiesHandler;
 
 import java.io.IOException;
+import java.util.Arrays;
+import java.util.HashSet;
+import java.util.Set;
 import java.util.logging.Logger;
 
 
 /**
- * Default experiment consisting of training and validating a specific model
+ * Default experiment consisting of training and validating a specific classifier
  *
  * @author Ludovic Claude
  */
@@ -24,19 +29,28 @@ public class WekaAlgorithm<M extends Classifier> implements Algorithm {
     private static final String DOCUMENTATION = "Weka Model";
 
     private InputData input;
-    private WekaClassifier<M> model;
-    private WekaAlgorithmSerializer serializer;
-
-    public Exception exception;
+    private WekaClassifier<M> classifier;
+    private WekaAlgorithmSerializer<M> serializer;
+    private HashSet<AlgorithmCapability> capabilities;
+    private Exception exception;
 
     /**
      * @param input
-     * @param model
+     * @param classifier
      */
-    public WekaAlgorithm(InputData input, WekaClassifier<M> model, WekaAlgorithmSerializer serializer) {
+    public WekaAlgorithm(InputData input, WekaClassifier<M> classifier, WekaAlgorithmSerializer<M> serializer) {
         this.input = input;
-        this.model = model;
+        this.classifier = classifier;
         this.serializer = serializer;
+        this.capabilities = new HashSet<>(Arrays.asList(
+                AlgorithmCapability.PREDICTIVE_MODEL,
+                AlgorithmCapability.CLASSIFICATION
+        ));
+        final Capabilities wekaCapabilities = classifier.getCapabilities();
+        if (wekaCapabilities.handles(Capabilities.Capability.MISSING_VALUES)) {
+            this.capabilities.add(AlgorithmCapability.INPUT_DATA_MISSING_VALUES);
+            System.out.println("Missing input values supported");
+        }
     }
 
     @Override
@@ -68,14 +82,19 @@ public class WekaAlgorithm<M extends Classifier> implements Algorithm {
     /**
      * @return
      */
-    public WekaClassifier<M> getModel() {
-        return model;
+    public WekaClassifier<M> getClassifier() {
+        return classifier;
+    }
+
+    @Override
+    public Set<AlgorithmCapability> getCapabilities() {
+        return capabilities;
     }
 
     public void run() throws Exception {
 
         try {
-            if (model.isAlreadyTrained() || exception != null) {
+            if (classifier.isAlreadyTrained() || exception != null) {
                 LOGGER.warning("This experiment was already executed!");
                 return;
             }
@@ -84,8 +103,8 @@ public class WekaAlgorithm<M extends Classifier> implements Algorithm {
                 input = InputData.fromEnv();
             }
 
-            // Train the model
-            model.train(input);
+            // Train the classifier
+            classifier.train(input);
 
         } catch (Exception ex) {
             this.exception = ex;
@@ -118,7 +137,7 @@ public class WekaAlgorithm<M extends Classifier> implements Algorithm {
     private ObjectMapper getObjectMapper() {
         ObjectMapper myObjectMapper = new ObjectMapper();
         SimpleModule module = new SimpleModule("Weka", new Version(1, 0, 0, null, null, null));
-        module.addSerializer(WekaAlgorithm.class, serializer);
+        module.addSerializer((Class<? extends WekaAlgorithm<M>>) this.getClass(), serializer);
         myObjectMapper.registerModule(module);
         return myObjectMapper;
     }
