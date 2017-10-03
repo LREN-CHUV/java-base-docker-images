@@ -3,6 +3,7 @@
 set -o pipefail  # trace ERR through pipes
 set -o errtrace  # trace ERR through 'time command' and other functions
 set -o errexit   ## set -e : exit the script if any statement returns a non-true return value
+set -x
 
 get_script_dir () {
      SOURCE="${BASH_SOURCE[0]}"
@@ -34,14 +35,14 @@ function _cleanup() {
   $DOCKER_COMPOSE rm -f > /dev/null 2> /dev/null | true
   exit $error_code
 }
-trap _cleanup EXIT INT TERM
+#trap _cleanup EXIT INT TERM
 
 echo "Starting the databases..."
 $DOCKER_COMPOSE up -d --remove-orphans it_db
 echo "Build Docker images while databases are starting..."
 $DOCKER_COMPOSE build java_weka_test_suite
-$DOCKER_COMPOSE build rpm_default_compute
-$DOCKER_COMPOSE build rpm_default_compute_check
+$DOCKER_COMPOSE build slr_compute
+$DOCKER_COMPOSE build slr_compute_check
 $DOCKER_COMPOSE run wait_dbs
 $DOCKER_COMPOSE run create_dbs
 
@@ -55,12 +56,12 @@ echo "Run the test suite for java-weka job..."
 $DOCKER_COMPOSE run java_weka_test_suite compute
 
 echo
-echo "Run the sample weka job..."
-$DOCKER_COMPOSE run rpm_default_compute compute
+echo "Run the sample Weka job..."
+$DOCKER_COMPOSE run slr_compute compute
 
 echo
-echo "Test the results of the sample weka job..."
-$DOCKER_COMPOSE run rpm_default_compute_check
+echo "Test the results of the sample Weka job..."
+$DOCKER_COMPOSE run slr_compute_check
 
 echo
 # Cleanup

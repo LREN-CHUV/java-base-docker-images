@@ -78,11 +78,11 @@ services:
     links:
       - "it_db:db"
 
-  rpm_default_compute:
+  slr_compute:
     build:
       context: .
       dockerfile: Dockerfile
-    container_name: "rpm-default-compute"
+    container_name: "slr-compute"
     environment:
       NODE: job_test
       JOB_ID: 1
@@ -102,11 +102,11 @@ services:
       - "it_db:db"
 
   # Issues with volume mounting here, workaround by building an image including the sources
-  rpm_default_compute_check:
+  slr_compute_check:
     build:
       context: .
       dockerfile: Dockerfile.check
-    container_name: "rpm-default-compute-check"
+    container_name: "slr-compute-check"
     environment:
       HOST: db
       PORT: 5432

@@ -9,7 +9,7 @@ COPY src/ /project/src
 
 # Repeating copy of the settings works better. I dunno why.
 RUN cp /usr/share/maven/ref/settings-docker.xml /root/.m2/settings.xml \
-    && mvn package site
+    && mvn -Dmaven.test.skip=true package site
 
 FROM hbpmip/java-weka:latest
 
