@@ -1,15 +1,19 @@
 FROM hbpmip/java-base-build:3.5.0-jdk-8-7 as build-java-env
 
 COPY pom.xml /project/pom.xml
+# Fill the cache for jar dependencies, to allow code changes reusing previously downloaded jars
+RUN cp /usr/share/maven/ref/settings-docker.xml /root/.m2/settings.xml \
+    && mvn dependency:resolve
+
 COPY src/ /project/src
 
-# Repeating the file copy works better. I dunno why.
+# Repeating copy of the settings works better. I dunno why.
 RUN cp /usr/share/maven/ref/settings-docker.xml /root/.m2/settings.xml \
     && mvn package site
 
 FROM hbpmip/java-mip:0.5.0
 
-MAINTAINER arnaud@ahead-solutions.ch
+MAINTAINER ludovic.claude@chuv.ch
 
 ENV JAVA_CLASSPATH=${JAVA_CLASSPATH}:/usr/share/jars/mip-rapidminer-deps.jar
 ENV JAVA_MAINCLASS=eu.humanbrainproject.mip.algorithms.rapidminer.Main

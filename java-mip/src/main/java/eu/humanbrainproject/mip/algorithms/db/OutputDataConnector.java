@@ -3,7 +3,9 @@ package eu.humanbrainproject.mip.algorithms.db;
 import eu.humanbrainproject.mip.algorithms.Configuration;
 import eu.humanbrainproject.mip.algorithms.ResultsFormat;
 
-import java.sql.*;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 

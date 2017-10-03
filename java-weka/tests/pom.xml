@@ -3,7 +3,7 @@
 
   <modelVersion>4.0.0</modelVersion>
 
-  <groupId>ch.lren.hbpmip</groupId>
+  <groupId>eu.humanbrainproject.mip.algorithms</groupId>
   <artifactId>java-weka-test</artifactId>
   <packaging>jar</packaging>
   <version>0.0.1</version>
@@ -14,13 +14,14 @@
     <jdk.version>1.8</jdk.version>
     <compiler.plugin.version>3.6.2</compiler.plugin.version>
     <jar.plugin.version>3.0.2</jar.plugin.version>
-    <surefire.plugin.version>2.20</surefire.plugin.version>
+    <surefire.plugin.version>2.19</surefire.plugin.version>
     <site.plugin.version>3.6</site.plugin.version>
     <info.reports.plugin.version>2.9</info.reports.plugin.version>
     <surefire.report.plugin.version>2.20</surefire.report.plugin.version>
     <jxr.plugin.version>2.5</jxr.plugin.version>
     <hadrian.version>0.8.5</hadrian.version>
-    <junit.version>4.9</junit.version>
+    <junit.version>5.0.0</junit.version>
+    <postgres.version>9.4.1212.jre7</postgres.version>
     <mip.weka.version>0.1.0</mip.weka.version>
   </properties>
 
@@ -52,9 +53,10 @@
   <dependencies>
 
     <dependency>
-      <groupId>eu.humanbrainproject.mip.algorithms</groupId>
-      <artifactId>weka</artifactId>
-      <version>${mip.weka.version}</version>
+      <groupId>org.junit.jupiter</groupId>
+      <artifactId>junit-jupiter-api</artifactId>
+      <version>${junit.version}</version>
+      <scope>test</scope>
     </dependency>
 
     <dependency>
@@ -65,10 +67,15 @@
     </dependency>
 
     <dependency>
-      <groupId>junit</groupId>
-      <artifactId>junit</artifactId>
-      <version>${junit.version}</version>
-      <scope>test</scope>
+      <groupId>eu.humanbrainproject.mip.algorithms</groupId>
+      <artifactId>weka</artifactId>
+      <version>${mip.weka.version}</version>
+    </dependency>
+
+    <dependency>
+      <groupId>org.postgresql</groupId>
+      <artifactId>postgresql</artifactId>
+      <version>${postgres.version}</version>
     </dependency>
 
   </dependencies>
@@ -106,9 +113,14 @@
         <!-- lock down our surefire provider -->
         <dependencies>
           <dependency>
-            <groupId>org.apache.maven.surefire</groupId>
-            <artifactId>surefire-junit4</artifactId>
-            <version>${surefire.plugin.version}</version>
+            <groupId>org.junit.platform</groupId>
+            <artifactId>junit-platform-surefire-provider</artifactId>
+            <version>1.0.0</version>
+          </dependency>
+          <dependency>
+            <groupId>org.junit.jupiter</groupId>
+            <artifactId>junit-jupiter-engine</artifactId>
+            <version>5.0.0</version>
           </dependency>
         </dependencies>
       </plugin>

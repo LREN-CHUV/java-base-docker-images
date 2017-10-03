@@ -2,10 +2,10 @@ package eu.humanbrainproject.mip.algorithms.serializers.pfa;
 
 import com.fasterxml.jackson.core.JsonGenerator;
 import eu.humanbrainproject.mip.algorithms.Algorithm;
-import eu.humanbrainproject.mip.algorithms.db.DBException;
 import org.apache.avro.Schema;
 import org.apache.avro.SchemaBuilder;
 
+import java.io.IOException;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -24,6 +24,11 @@ public abstract class InputDescription<T extends Algorithm> {
 
     protected T getAlgorithm() {
         return algorithm;
+    }
+
+    public void writeInputMetadata(JsonGenerator jgen) throws IOException {
+        boolean nullableField = algorithm.getCapabilities().contains(INPUT_DATA_MISSING_VALUES);
+        jgen.writeStringField("accepts_missing_values", String.valueOf(nullableField));
     }
 
     public void writePfaInput(JsonGenerator jgen) throws Exception {

@@ -7,21 +7,24 @@ import eu.humanbrainproject.mip.algorithms.rapidminer.models.RapidMinerModel;
 import eu.humanbrainproject.mip.algorithms.rapidminer.rpmdefault.RPMDefault;
 import eu.humanbrainproject.mip.algorithms.rapidminer.rpmdefault.RPMDefaultSerializer;
 import eu.humanbrainproject.mip.algorithms.rapidminer.serializers.pfa.RapidMinerAlgorithmSerializer;
-import org.junit.Test;
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Test;
 import scala.Option;
 import scala.collection.immutable.HashMap;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 /**
  * Tests for RapidMinerAlgorithm
  *
  * @author Arnaud Jutzeler
  */
+@DisplayName("With a RapidMiner algorithm, we can")
 public class RapidMinerAlgorithmTest {
 
     @Test
+    @DisplayName("perform classification and export the results as a PFA document")
     public void testClassification() throws Exception {
 
         String[] featureNames = new String[]{"input1", "input2"};
@@ -60,48 +63,8 @@ public class RapidMinerAlgorithmTest {
     }
 
     @Test
+    @DisplayName("perform regression and export the results as a PFA document")
     public void testRegression() throws Exception {
-
-        String[] featureNames = new String[]{"input1", "input2"};
-        String variableName = "output";
-        double[][] data = new double[][]{
-                {1.2, 2.4},
-                {6.7, 8.9},
-                {4.6, 23.4},
-                {7.6, 5.4},
-                {1.2, 1.6},
-                {3.4, 4.7},
-                {3.4, 6.5}
-        };
-        double[] labels = new double[]{2.4, 4.5, 5.7, 4.5, 23.7, 8.7, 9.2};
-
-        // Get experiment input
-        RegressionInputData input = new RegressionInputData(featureNames, variableName, data, labels);
-        RapidMinerModel<DefaultModel> model = new RPMDefault("median");
-
-        // Run experiment
-        final RapidMinerAlgorithmSerializer<DefaultModel> serializer = new RapidMinerAlgorithmSerializer<>(new RPMDefaultSerializer());
-        final RapidMinerAlgorithm<DefaultModel> experiment = new RapidMinerAlgorithm<>(input, model, serializer);
-        experiment.run();
-
-        System.out.println(experiment.toRMP());
-        System.out.println(experiment.toPrettyPFA());
-
-        String pfa = experiment.toPFA();
-        assertTrue(!pfa.contains("error"));
-        assertTrue(pfa.contains("\"model\""));
-        assertTrue(pfa.contains("\"action\""));
-
-        // Validate PFA
-        PFAEngine<Object, Object> pfaEngine = getPFAEngine(pfa);
-
-        Object result = pfaEngine.action(pfaEngine.jsonInput("{\"input1\": 1.1, \"input2\": 2.0}"));
-        assertEquals(5.7, result);
-
-    }
-
-    @Test
-    public void testAttribute() throws Exception {
 
         String[] featureNames = new String[]{"input1", "input2"};
         String variableName = "output";

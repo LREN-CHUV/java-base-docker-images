@@ -1,13 +1,12 @@
-package eu.humanbrainproject.mip.algorithms.rapidminer.models;
+package eu.humanbrainproject.mip.algorithms.rapidminer;
 
 import com.opendatagroup.hadrian.reader.jsonToAst;
 import eu.humanbrainproject.mip.algorithms.db.OutputDataConnector;
-import eu.humanbrainproject.mip.algorithms.rapidminer.Main;
 import eu.humanbrainproject.mip.algorithms.db.DBException;
 import eu.humanbrainproject.mip.algorithms.rapidminer.serializers.pfa.RapidMinerAlgorithmSerializer;
 import eu.humanbrainproject.mip.algorithms.rapidminer.rpmdefault.RPMDefault;
 import eu.humanbrainproject.mip.algorithms.rapidminer.rpmdefault.RPMDefaultSerializer;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import java.sql.SQLException;
 

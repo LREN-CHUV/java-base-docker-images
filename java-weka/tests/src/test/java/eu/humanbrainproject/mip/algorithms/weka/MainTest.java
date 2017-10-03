@@ -1,19 +1,12 @@
-package eu.humanbrainproject.mip.algorithms.weka.models;
+package eu.humanbrainproject.mip.algorithms.weka;
 
 import com.opendatagroup.hadrian.reader.jsonToAst;
 import eu.humanbrainproject.mip.algorithms.db.OutputDataConnector;
-import eu.humanbrainproject.mip.algorithms.weka.Main;
 import eu.humanbrainproject.mip.algorithms.db.DBException;
-import eu.humanbrainproject.mip.algorithms.weka.serializers.pfa.RapidMinerAlgorithmSerializer;
-import eu.humanbrainproject.mip.algorithms.weka.simplelr.RPMDefault;
-import eu.humanbrainproject.mip.algorithms.weka.simplelr.RPMDefaultSerializer;
-import org.junit.Test;
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Test;
 
 import java.sql.SQLException;
-
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.fail;
 
 
 /**
@@ -21,6 +14,7 @@ import static org.junit.Assert.fail;
  *
  * @author Arnaud Jutzeler
  */
+@DisplayName("With a Weka algorithms packaged in a Docker container")
 public class MainTest {
 
     @Test

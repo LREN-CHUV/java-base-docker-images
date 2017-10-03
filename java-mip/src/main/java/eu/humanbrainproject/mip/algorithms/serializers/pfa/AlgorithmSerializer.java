@@ -3,8 +3,8 @@ package eu.humanbrainproject.mip.algorithms.serializers.pfa;
 import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.databind.JsonSerializer;
 import com.fasterxml.jackson.databind.SerializerProvider;
-import eu.humanbrainproject.mip.algorithms.Configuration;
 import eu.humanbrainproject.mip.algorithms.Algorithm;
+import eu.humanbrainproject.mip.algorithms.Configuration;
 
 import java.io.IOException;
 import java.util.logging.Level;
@@ -29,15 +29,18 @@ public abstract class AlgorithmSerializer<T extends Algorithm> extends JsonSeria
             jgen.writeStringField("method", "map");
             jgen.writeStringField("doc", value.getDocumentation());
 
+            String errorMessage = value.getErrorMessage();
+            InputDescription inputDescription = getInputDescription(value);
+
             // Metadata
             jgen.writeObjectFieldStart("metadata");
             {
                 writePfaMetadata(value, jgen);
+                if (inputDescription != null) {
+                    inputDescription.writeInputMetadata(jgen);
+                }
             }
             jgen.writeEndObject();
-
-            String errorMessage = value.getErrorMessage();
-            InputDescription inputDescription = getInputDescription(value);
 
             if (inputDescription != null) {
                 try {
