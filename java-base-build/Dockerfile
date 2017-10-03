@@ -19,6 +19,7 @@ RUN mkdir -p /usr/share/maven/ref/repository \
         package \
         assembly:single \
         site \
+        dependency:go-offline \
     && rm -rf /seed-src/target
 
 WORKDIR /project
