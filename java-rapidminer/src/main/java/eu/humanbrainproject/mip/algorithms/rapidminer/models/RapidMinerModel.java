@@ -1,7 +1,9 @@
 package eu.humanbrainproject.mip.algorithms.rapidminer.models;
 
 import java.util.Map;
+import java.util.Set;
 
+import eu.humanbrainproject.mip.algorithms.Algorithm;
 import eu.humanbrainproject.mip.algorithms.db.DBException;
 import eu.humanbrainproject.mip.algorithms.rapidminer.InputData;
 
@@ -75,6 +77,8 @@ public abstract class RapidMinerModel<M extends PredictionModel> {
 
     public abstract Map<String,String> getParameters();
 
+    public abstract Set<Algorithm.AlgorithmCapability> getCapabilities();
+
     public String toRMP() {
         return getProcess().getRootOperator().getXML(false);
     }
@@ -90,6 +94,5 @@ public abstract class RapidMinerModel<M extends PredictionModel> {
     public M getTrainedModel() {
         return trainedModel;
     }
-
 
 }

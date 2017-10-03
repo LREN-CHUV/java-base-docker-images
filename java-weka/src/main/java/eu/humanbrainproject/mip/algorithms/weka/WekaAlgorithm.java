@@ -7,7 +7,6 @@ import eu.humanbrainproject.mip.algorithms.Algorithm;
 import eu.humanbrainproject.mip.algorithms.weka.serializers.pfa.WekaAlgorithmSerializer;
 import weka.classifiers.Classifier;
 import weka.core.Capabilities;
-import weka.core.CapabilitiesHandler;
 
 import java.io.IOException;
 import java.util.Arrays;
@@ -49,7 +48,7 @@ public class WekaAlgorithm<M extends Classifier> implements Algorithm {
         final Capabilities wekaCapabilities = classifier.getCapabilities();
         if (wekaCapabilities.handles(Capabilities.Capability.MISSING_VALUES)) {
             this.capabilities.add(AlgorithmCapability.INPUT_DATA_MISSING_VALUES);
-            System.out.println("Missing input values supported");
+            LOGGER.info("Missing input values supported");
         }
     }
 
@@ -137,7 +136,7 @@ public class WekaAlgorithm<M extends Classifier> implements Algorithm {
     private ObjectMapper getObjectMapper() {
         ObjectMapper myObjectMapper = new ObjectMapper();
         SimpleModule module = new SimpleModule("Weka", new Version(1, 0, 0, null, null, null));
-        module.addSerializer((Class<? extends WekaAlgorithm<M>>) this.getClass(), serializer);
+        module.addSerializer(this.getClass(), serializer);
         myObjectMapper.registerModule(module);
         return myObjectMapper;
     }

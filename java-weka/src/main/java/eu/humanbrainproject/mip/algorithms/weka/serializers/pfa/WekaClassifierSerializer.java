@@ -3,7 +3,6 @@ package eu.humanbrainproject.mip.algorithms.weka.serializers.pfa;
 import com.fasterxml.jackson.core.JsonGenerator;
 import eu.humanbrainproject.mip.algorithms.weka.WekaClassifier;
 import weka.classifiers.Classifier;
-import weka.classifiers.functions.SimpleLinearRegression;
 
 import java.io.IOException;
 import java.lang.reflect.Field;

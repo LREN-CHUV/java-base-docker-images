@@ -29,7 +29,7 @@ public class RapidMinerAlgorithmSerializer<M extends PredictionModel> extends Al
 
         // Input, output
         if (input != null) {
-            return new RapidMinerInputDescription(input);
+            return new RapidMinerInputDescription(value);
         } else {
             return null;
         }

@@ -1,7 +1,6 @@
 package eu.humanbrainproject.mip.algorithms.weka;
 
 import eu.humanbrainproject.mip.algorithms.Configuration;
-import weka.Run;
 import weka.classifiers.AbstractClassifier;
 import weka.classifiers.Classifier;
 import weka.core.Capabilities;

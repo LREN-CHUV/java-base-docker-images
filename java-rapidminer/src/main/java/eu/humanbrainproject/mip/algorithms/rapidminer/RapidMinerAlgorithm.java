@@ -1,6 +1,9 @@
 package eu.humanbrainproject.mip.algorithms.rapidminer;
 
 import java.io.IOException;
+import java.util.Arrays;
+import java.util.HashSet;
+import java.util.Set;
 import java.util.logging.Logger;
 
 import com.fasterxml.jackson.core.Version;
@@ -34,8 +37,8 @@ public class RapidMinerAlgorithm<M extends PredictionModel> implements Algorithm
     private static boolean isRPMInit = false;
 
     private InputData input;
-    private RapidMinerModel<M> model;
-    private RapidMinerAlgorithmSerializer serializer;
+    private final RapidMinerModel<M> model;
+    private final RapidMinerAlgorithmSerializer serializer;
 
     public Exception exception;
 
@@ -80,6 +83,11 @@ public class RapidMinerAlgorithm<M extends PredictionModel> implements Algorithm
      */
     public RapidMinerModel<M> getModel() {
         return model;
+    }
+
+    @Override
+    public Set<AlgorithmCapability> getCapabilities() {
+        return model.getCapabilities();
     }
 
     /**

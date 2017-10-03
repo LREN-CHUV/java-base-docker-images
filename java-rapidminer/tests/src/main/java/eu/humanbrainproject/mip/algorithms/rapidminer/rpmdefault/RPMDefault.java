@@ -2,6 +2,7 @@ package eu.humanbrainproject.mip.algorithms.rapidminer.rpmdefault;
 
 import java.util.*;
 
+import eu.humanbrainproject.mip.algorithms.Algorithm.AlgorithmCapability;
 import eu.humanbrainproject.mip.algorithms.Configuration;
 import eu.humanbrainproject.mip.algorithms.rapidminer.models.RapidMinerModel;
 
@@ -18,7 +19,14 @@ import com.rapidminer.operator.learner.lazy.DefaultModel;
  */
 public class RPMDefault extends RapidMinerModel<DefaultModel> {
 
-    private String method;
+    private static final Set<AlgorithmCapability> CAPABILITIES = new HashSet<>();
+
+    private final HashMap<String, String> parameters;
+    private final String method;
+
+    static {
+        CAPABILITIES.add(AlgorithmCapability.PREDICTIVE_MODEL);
+    }
 
     @SuppressWarnings("unused")
     public RPMDefault() {
@@ -28,14 +36,21 @@ public class RPMDefault extends RapidMinerModel<DefaultModel> {
     public RPMDefault(String method) {
         super(DefaultLearner.class);
         this.method = method;
+
+        HashSet<String> parameterNames = new HashSet<>(Arrays.asList("method", "constant", "attribute_name"));
+        parameters = new HashMap<>(Configuration.INSTANCE.algorithmParameterValues(parameterNames));
+        parameters.put("method", this.method);
+
     }
 
     @Override
     public Map<String, String> getParameters() {
-        HashSet<String> parameters = new HashSet<>(Arrays.asList("method", "constant", "attribute_name"));
-        HashMap<String, String> map = new HashMap<>(Configuration.INSTANCE.algorithmParameterValues(parameters));
-        map.put("method", this.method);
-        return map;
+        return parameters;
+    }
+
+    @Override
+    public Set<AlgorithmCapability> getCapabilities() {
+        return CAPABILITIES;
     }
 
 }
