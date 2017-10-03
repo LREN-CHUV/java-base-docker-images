@@ -4,6 +4,8 @@ MAINTAINER Arnaud Jutzeler <arnaud.jutzeler@chuv.ch>
 
 RUN apk add --no-cache shadow=4.2.1-r11
 
+ENV JAVA_OPTIONS="-XX:+UnlockExperimentalVMOptions -XX:+UseCGroupMemoryLimitForHeap"
+
 LABEL org.label-schema.build-date=$BUILD_DATE \
       org.label-schema.name="hbpmip/java-base" \
       org.label-schema.description="Base Java runtime, using OpenJDK" \

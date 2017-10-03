@@ -11,3 +11,11 @@ Dockerfile
   FROM hbpmip/java-base:8u131-1
 
 ```
+
+To start Java inside the container:
+
+```
+  java ${JAVA_OPTIONS} -cp ${JAVA_CLASSPATH} ${JAVA_MAINCLASS} ${JAVA_ARGS}
+```
+
+Use the pre-defined Java options as they ensure that Java memory management will adapt to Docker.
