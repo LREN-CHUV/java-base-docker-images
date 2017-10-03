@@ -17,7 +17,7 @@
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <jdk.version>1.8</jdk.version>
     <compiler.plugin.version>3.6.2</compiler.plugin.version>
-    <surefire.plugin.version>2.20</surefire.plugin.version>
+    <surefire.plugin.version>2.19</surefire.plugin.version>
     <jar.plugin.version>3.0.2</jar.plugin.version>
   </properties>
 
@@ -48,9 +48,14 @@
           <!-- lock down our surefire provider -->
           <dependencies>
               <dependency>
-                  <groupId>org.apache.maven.surefire</groupId>
-                  <artifactId>surefire-junit4</artifactId>
-                  <version>${surefire.plugin.version}</version>
+            <groupId>org.junit.platform</groupId>
+            <artifactId>junit-platform-surefire-provider</artifactId>
+            <version>1.0.0</version>
+          </dependency>
+          <dependency>
+            <groupId>org.junit.jupiter</groupId>
+            <artifactId>junit-jupiter-engine</artifactId>
+            <version>5.0.0</version>
               </dependency>
           </dependencies>
       </plugin>

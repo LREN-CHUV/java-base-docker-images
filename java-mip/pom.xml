@@ -20,15 +20,16 @@
     <install.plugin.version>2.5.2</install.plugin.version>
     <surefire.plugin.version>2.19</surefire.plugin.version>
     <assembly.plugin.version>3.1.0</assembly.plugin.version>
+    <shade.plugin.version>3.1.0</shade.plugin.version>
     <site.plugin.version>3.6</site.plugin.version>
     <info.reports.plugin.version>2.9</info.reports.plugin.version>
     <surefire.report.plugin.version>2.20</surefire.report.plugin.version>
     <jxr.plugin.version>2.5</jxr.plugin.version>
+    <junit.version>5.0.0</junit.version>
     <jackson.version>2.7.0</jackson.version>
     <avro.version>1.7.7</avro.version>
     <jinjava.version>2.2.9</jinjava.version>
     <hadrian.version>0.8.5</hadrian.version>
-    <junit.version>5.0.0</junit.version>
     <postgres.version>9.4.1212.jre7</postgres.version>
   </properties>
 
@@ -182,7 +183,7 @@
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-shade-plugin</artifactId>
-        <version>3.1.0</version>
+        <version>${shade.plugin.version}</version>
         <executions>
           <execution>
             <phase>package</phase>

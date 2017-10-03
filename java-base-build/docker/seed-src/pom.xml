@@ -19,20 +19,21 @@
     <compiler.plugin.version>3.6.2</compiler.plugin.version>
     <jar.plugin.version>3.0.2</jar.plugin.version>
     <install.plugin.version>2.5.2</install.plugin.version>
-    <surefire.plugin.version>2.20</surefire.plugin.version>
+    <surefire.plugin.version>2.19</surefire.plugin.version>
     <assembly.plugin.version>3.1.0</assembly.plugin.version>
     <shade.plugin.version>3.1.0</shade.plugin.version>
     <site.plugin.version>3.6</site.plugin.version>
     <info.reports.plugin.version>2.9</info.reports.plugin.version>
     <surefire.report.plugin.version>2.20</surefire.report.plugin.version>
     <jxr.plugin.version>2.5</jxr.plugin.version>
+    <junit.version>5.0.0</junit.version>
   </properties>
 
   <dependencies>
     <dependency>
-      <groupId>junit</groupId>
-      <artifactId>junit</artifactId>
-      <version>4.9</version>
+      <groupId>org.junit.jupiter</groupId>
+      <artifactId>junit-jupiter-api</artifactId>
+      <version>${junit.version}</version>
       <scope>test</scope>
     </dependency>
   </dependencies>
@@ -75,9 +76,14 @@
           <!-- lock down our surefire provider -->
           <dependencies>
               <dependency>
-                  <groupId>org.apache.maven.surefire</groupId>
-                  <artifactId>surefire-junit4</artifactId>
-                  <version>${surefire.plugin.version}</version>
+            <groupId>org.junit.platform</groupId>
+            <artifactId>junit-platform-surefire-provider</artifactId>
+            <version>1.0.0</version>
+          </dependency>
+          <dependency>
+            <groupId>org.junit.jupiter</groupId>
+            <artifactId>junit-jupiter-engine</artifactId>
+            <version>5.0.0</version>
               </dependency>
           </dependencies>
       </plugin>
@@ -91,6 +97,11 @@
           </configuration>
       </plugin>
       <plugin>
+          <groupId>org.apache.maven.plugins</groupId>
+          <artifactId>maven-site-plugin</artifactId>
+          <version>${site.plugin.version}</version>
+      </plugin>
+      <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-shade-plugin</artifactId>
         <version>${shade.plugin.version}</version>
@@ -102,11 +113,6 @@
             </goals>
           </execution>
         </executions>
-      </plugin>
-      <plugin>
-          <groupId>org.apache.maven.plugins</groupId>
-          <artifactId>maven-site-plugin</artifactId>
-          <version>${site.plugin.version}</version>
       </plugin>
     </plugins>
   </build>

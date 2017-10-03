@@ -3,7 +3,8 @@
   "method" : "map",
   "doc" : "A simple algorithm",
   "metadata" : {
-    "docker_image" : ""
+    "docker_image" : "",
+    "accepts_missing_values" : "false"
   },
   "input" : {
     "doc" : "Input is the list of covariables and groups",
