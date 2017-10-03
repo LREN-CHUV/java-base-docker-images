@@ -11,7 +11,7 @@ COPY src/ /project/src
 RUN cp /usr/share/maven/ref/settings-docker.xml /root/.m2/settings.xml \
     && mvn package site
 
-FROM hbpmip/java-mip:0.5.1
+FROM hbpmip/java-mip:0.5.2
 
 MAINTAINER ludovic.claude@chuv.ch
 
