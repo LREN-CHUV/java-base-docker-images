@@ -29,9 +29,11 @@ Dockerfile
   MAINTAINER <your email>
 
   ENV JAVA_CLASSPATH=${JAVA_CLASSPATH}:/usr/share/jars/my-algo.jar
-  ENV JAVA_MAINCLASS=org.myorg.myalgo.Main
+  ENV JAVA_ARGS=/eu/humanbrainproject/mip/algorithms/rapidminer/myalgo/settings.properties
+  ENV MODEL myalgo
+  ENV FUNCTION java-rapidminer-myalgo
 
-  COPY --from=build-java-env /project/target/my-algo-jar-with-dependencies.jar /usr/share/jars/my-algo.jar
+  COPY --from=build-java-env /project/target/my-algo.jar /usr/share/jars/my-algo.jar
   COPY --from=build-java-env /project/target/site/ /var/www/html/
   COPY src/ /src/
 
