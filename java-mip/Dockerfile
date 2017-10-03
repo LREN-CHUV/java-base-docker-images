@@ -11,7 +11,7 @@ COPY src/ /project/src
 RUN cp /usr/share/maven/ref/settings-docker.xml /root/.m2/settings.xml \
     && mvn package site
 
-FROM hbpmip/java-base:8u131-1
+FROM hbpmip/java-base:8u131-2
 
 MAINTAINER arnaud@ahead-solutions.ch
 

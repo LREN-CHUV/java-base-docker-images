@@ -19,7 +19,7 @@ Dockerfile
   RUN cp /usr/share/maven/ref/settings-docker.xml /root/.m2/settings.xml \
       && mvn clean package
 
-  FROM hbpmip/java-base:8u131-1
+  FROM hbpmip/java-base:8u131-2
 
   COPY --from=java-build-env /project/target/my-project.jar /usr/share/jars/
 
