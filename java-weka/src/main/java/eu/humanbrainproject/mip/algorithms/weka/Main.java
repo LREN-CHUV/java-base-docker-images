@@ -1,11 +1,15 @@
 package eu.humanbrainproject.mip.algorithms.weka;
 
+import eu.humanbrainproject.mip.algorithms.Configuration;
 import eu.humanbrainproject.mip.algorithms.ResultsFormat;
 import eu.humanbrainproject.mip.algorithms.db.OutputDataConnector;
 import eu.humanbrainproject.mip.algorithms.weka.serializers.pfa.WekaAlgorithmSerializer;
 import eu.humanbrainproject.mip.algorithms.weka.serializers.pfa.WekaClassifierSerializer;
 import weka.classifiers.Classifier;
 
+import java.nio.file.FileSystems;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.util.Properties;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -74,6 +78,11 @@ public class Main<M extends Classifier> {
             WekaAlgorithmSerializer<Classifier> algorithmSerializer = (WekaAlgorithmSerializer<Classifier>)
                     algorithmSerializerClass.getConstructor(WekaClassifierSerializer.class).newInstance(classifierSerializer);
 
+            Path targetDbProps = FileSystems.getDefault().getPath("/opt", "weka", "props", "weka", "experiment", "DatabaseUtils.props");
+            if (Configuration.INSTANCE.inputJdbcUrl().startsWith("jdbc:postgresql:")) {
+                Path dbProps = FileSystems.getDefault().getPath("/opt", "weka", "databases-props", "DatabaseUtils.props.postgresql");
+                Files.createLink(targetDbProps, dbProps);
+            }
             Main main = new Main(classifier, algorithmSerializer);
 
             main.run();

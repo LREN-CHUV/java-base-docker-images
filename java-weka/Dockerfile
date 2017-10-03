@@ -14,16 +14,19 @@ FROM hbpmip/java-mip:0.5.2
 
 MAINTAINER ludovic.claude@chuv.ch
 
-ENV JAVA_CLASSPATH=${JAVA_CLASSPATH}:/usr/share/jars/mip-weka-deps.jar
-ENV JAVA_MAINCLASS=eu.humanbrainproject.mip.algorithms.weka.Main
+ENV JAVA_CLASSPATH=${JAVA_CLASSPATH}:/usr/share/jars/mip-weka-deps.jar:/opt/weka/props/ \
+    JAVA_MAINCLASS=eu.humanbrainproject.mip.algorithms.weka.Main \
+    WEKA_HOME=/opt/weka
 
+COPY docker/databases-props/ /opt/weka/databases-props/
 COPY --from=build-java-env /usr/share/maven/ref/repository/org/postgresql/postgresql/9.4.1212.jre7/postgresql-9.4.1212.jre7.jar /usr/share/jars/postgres-9.4.jar
 COPY --from=build-java-env /project/target/weka.jar /usr/share/jars/mip-weka.jar
 COPY --from=build-java-env /project/target/weka-deps.jar /usr/share/jars/mip-weka-deps.jar
 COPY --from=build-java-env /project/target/site/ /mip/java-weka/docs/
 COPY src/ /mip/java-weka/src/
 
-RUN chown -R compute:compute /mip/
+RUN chown -R compute:compute /mip/ \
+    && mkdir -p /opt/weka/props/weka/experiment
 
 LABEL org.label-schema.build-date=$BUILD_DATE \
       org.label-schema.name="hbpmip/java-weka" \
@@ -34,6 +37,6 @@ LABEL org.label-schema.build-date=$BUILD_DATE \
       org.label-schema.vcs-ref=$VCS_REF \
       org.label-schema.version="$VERSION" \
       org.label-schema.vendor="LREN CHUV" \
-      org.label-schema.license="AGPLv3" \
+      org.label-schema.license="GPLv3" \
       org.label-schema.docker.dockerfile="Dockerfile" \
       org.label-schema.schema-version="1.0"
