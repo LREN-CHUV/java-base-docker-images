@@ -6,13 +6,14 @@ import eu.humanbrainproject.mip.algorithms.db.DBException;
 import eu.humanbrainproject.mip.algorithms.rapidminer.serializers.pfa.RapidMinerAlgorithmSerializer;
 import eu.humanbrainproject.mip.algorithms.rapidminer.rpmdefault.RPMDefault;
 import eu.humanbrainproject.mip.algorithms.rapidminer.rpmdefault.RPMDefaultSerializer;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 import java.sql.SQLException;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.fail;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.fail;
 
 
 /**
@@ -20,12 +21,12 @@ import static org.junit.Assert.fail;
  *
  * @author Arnaud Jutzeler
  */
+@DisplayName("With the RPMDefault RapidMiner algorithm, we can")
 public class MainTest {
 
     @Test
+    @DisplayName("perform RPMDefault on one variable, one covariable")
     public void testOneVarOneCovar() throws DBException {
-
-        System.out.println("We can perform RPMDefault on one variable, one covariable");
 
         String jobId = "001";
 
@@ -35,7 +36,7 @@ public class MainTest {
         System.setProperty("PARAM_covariables", "response_time_task2");
         System.setProperty("PARAM_grouping", "");
 
-        System.setProperty("PARAM_MODEL_method", "median");
+        System.setProperty("MODEL_PARAM_method", "median");
 
         Main main = new Main(
                 RPMDefault.class.getName(),
@@ -63,9 +64,8 @@ public class MainTest {
     }
 
     @Test
+    @DisplayName("perform RPMDefault on one variable, two covariables")
     public void testOneVarTwoCovars() throws DBException {
-
-        System.out.println("We can perform RPMDefault on one variable, two covariables");
 
         String jobId = "002";
 
@@ -75,7 +75,7 @@ public class MainTest {
         System.setProperty("PARAM_covariables", "response_time_task2,college_math");
         System.setProperty("PARAM_grouping", "");
 
-        System.setProperty("PARAM_MODEL_method", "median");
+        System.setProperty("MODEL_PARAM_method", "median");
 
         Main main = new Main(
                 RPMDefault.class.getName(),
@@ -100,9 +100,8 @@ public class MainTest {
     }
 
     @Test
+    @DisplayName("cannot perform classification with an invalid model")
     public void testInvalidModel() throws DBException {
-
-        System.out.println("We cannot perform classification with invalid model");
 
         String jobId = "004";
 
@@ -112,7 +111,7 @@ public class MainTest {
         System.setProperty("PARAM_covariables", "response_time_task2,college_math");
         System.setProperty("PARAM_grouping", "");
 
-        System.setProperty("PARAM_MODEL_method", "median");
+        System.setProperty("MODEL_PARAM_method", "median");
 
         Main main = new Main(
                 "eu.humanbrainproject.mip.algorithms.rapidminer.sjkhdfj",

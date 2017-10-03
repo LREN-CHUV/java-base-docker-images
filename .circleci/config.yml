@@ -54,6 +54,14 @@ jobs:
           command: |
             PATH=$PATH:/$HOME/.captain/bin/ ./java-rapidminer/tests/test.sh
       - run:
+          name: "Build java-weka"
+          command: |
+            PATH=$PATH:/$HOME/.captain/bin/ ./java-weka/build.sh
+      - run:
+          name: "Test java-weka"
+          command: |
+            PATH=$PATH:/$HOME/.captain/bin/ ./java-weka/tests/test.sh
+      - run:
           name: "Build scala-base-build"
           command: |
             PATH=$PATH:/$HOME/.captain/bin/ ./scala-base-build/build.sh

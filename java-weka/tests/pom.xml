@@ -15,6 +15,7 @@
     <compiler.plugin.version>3.6.2</compiler.plugin.version>
     <jar.plugin.version>3.0.2</jar.plugin.version>
     <surefire.plugin.version>2.19</surefire.plugin.version>
+    <assembly.plugin.version>3.1.0</assembly.plugin.version>
     <site.plugin.version>3.6</site.plugin.version>
     <info.reports.plugin.version>2.9</info.reports.plugin.version>
     <surefire.report.plugin.version>2.20</surefire.report.plugin.version>

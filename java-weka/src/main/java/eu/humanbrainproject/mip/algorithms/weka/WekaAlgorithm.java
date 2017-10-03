@@ -133,10 +133,11 @@ public class WekaAlgorithm<M extends Classifier> implements Algorithm {
         return myObjectMapper.writerWithDefaultPrettyPrinter().writeValueAsString(this);
     }
 
+    @SuppressWarnings("RedundantCast")
     private ObjectMapper getObjectMapper() {
         ObjectMapper myObjectMapper = new ObjectMapper();
         SimpleModule module = new SimpleModule("Weka", new Version(1, 0, 0, null, null, null));
-        module.addSerializer(this.getClass(), serializer);
+        module.addSerializer((Class<? extends WekaAlgorithm<M>>) this.getClass(), serializer);
         myObjectMapper.registerModule(module);
         return myObjectMapper;
     }

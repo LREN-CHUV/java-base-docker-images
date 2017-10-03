@@ -35,7 +35,7 @@ services:
       - it_db
 
   sample_data_db_setup:
-    image: "hbpmip/sample-data-db-setup:0.3.1"
+    image: "hbpmip/sample-data-db-setup:0.3.2"
     container_name: "sample-data-db-setup"
     environment:
       FLYWAY_DBMS: postgresql
@@ -97,7 +97,7 @@ services:
       PARAM_query: "select iq, response_time_task2 from sample_data"
       PARAM_variables: iq
       PARAM_covariables: response_time_task2
-      PARAM_MODEL_method: median
+      MODEL_PARAM_method: median
     links:
       - "it_db:db"
 

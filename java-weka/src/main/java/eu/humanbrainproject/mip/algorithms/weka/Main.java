@@ -16,21 +16,15 @@ import java.util.logging.Logger;
  *
  * @author Ludovic Claude
  */
-public class Main {
+public class Main<M extends Classifier> {
     private static final Logger LOGGER = Logger.getLogger(Main.class.getName());
 
-    private final WekaClassifier<Classifier> classifier;
-    private final WekaAlgorithmSerializer<Classifier> algorithmSerializer;
+    private final WekaClassifier<M> classifier;
+    private final WekaAlgorithmSerializer<M> algorithmSerializer;
 
-    @SuppressWarnings("unchecked")
-    public Main(String classifierClassName, String classifierSerializerClassName, String algorithmSerializerClassName) throws Exception {
-        classifier = new WekaClassifier<>(classifierClassName);
-
-        Class<?> classifierSerializerClass = Class.forName(classifierSerializerClassName);
-        WekaClassifierSerializer<Classifier> classifierSerializer = (WekaClassifierSerializer<Classifier>) classifierSerializerClass.newInstance();
-
-        Class<?> algorithmSerializerClass = Class.forName(algorithmSerializerClassName);
-        algorithmSerializer = (WekaAlgorithmSerializer<Classifier>) algorithmSerializerClass.getConstructor(WekaClassifierSerializer.class).newInstance(classifierSerializer);
+    public Main(WekaClassifier<M> classifier, WekaAlgorithmSerializer<M> algorithmSerializer) {
+        this.classifier = classifier;
+        this.algorithmSerializer = algorithmSerializer;
     }
 
     public void run() {
@@ -39,7 +33,7 @@ public class Main {
             InputData inputData = InputData.fromEnv();
 
             // Run experiment
-            WekaAlgorithm<Classifier> experiment = new WekaAlgorithm<>(inputData, classifier, algorithmSerializer);
+            WekaAlgorithm<M> experiment = new WekaAlgorithm<>(inputData, classifier, algorithmSerializer);
 
             try {
                 experiment.run();
@@ -59,6 +53,7 @@ public class Main {
         }
     }
 
+    @SuppressWarnings("unchecked")
     public static void main(String[] args) {
 
         try {
@@ -67,9 +62,19 @@ public class Main {
             Properties settings = new Properties();
             settings.load(Main.class.getResourceAsStream(settingsPath));
 
-            Main main = new Main(settings.getProperty("classifier"),
-                    settings.getProperty("classifierSerializer"),
-                    settings.getProperty("algorithmSerializer", WekaAlgorithmSerializer.class.getName()));
+            final String classifierClassName = settings.getProperty("classifier");
+            WekaClassifier<Classifier> classifier = new WekaClassifier<>(classifierClassName);
+
+            final String classifierSerializerClassName = settings.getProperty("classifierSerializer");
+            Class<?> classifierSerializerClass = Class.forName(classifierSerializerClassName);
+            WekaClassifierSerializer<Classifier> classifierSerializer = (WekaClassifierSerializer<Classifier>) classifierSerializerClass.newInstance();
+
+            final String algorithmSerializerClassName = settings.getProperty("algorithmSerializer", WekaAlgorithmSerializer.class.getName());
+            Class<?> algorithmSerializerClass = Class.forName(algorithmSerializerClassName);
+            WekaAlgorithmSerializer<Classifier> algorithmSerializer = (WekaAlgorithmSerializer<Classifier>)
+                    algorithmSerializerClass.getConstructor(WekaClassifierSerializer.class).newInstance(classifierSerializer);
+
+            Main main = new Main(classifier, algorithmSerializer);
 
             main.run();
 

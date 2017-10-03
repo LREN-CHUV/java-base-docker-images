@@ -1,12 +1,17 @@
 package eu.humanbrainproject.mip.algorithms.weka;
 
 import com.opendatagroup.hadrian.reader.jsonToAst;
-import eu.humanbrainproject.mip.algorithms.db.OutputDataConnector;
 import eu.humanbrainproject.mip.algorithms.db.DBException;
+import eu.humanbrainproject.mip.algorithms.db.OutputDataConnector;
+import eu.humanbrainproject.mip.algorithms.weka.serializers.pfa.WekaAlgorithmSerializer;
+import eu.humanbrainproject.mip.algorithms.weka.serializers.pfa.WekaClassifierSerializer;
+import eu.humanbrainproject.mip.algorithms.weka.simplelr.SimpleLinearRegressionSerializer;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import weka.classifiers.functions.SimpleLinearRegression;
 
-import java.sql.SQLException;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 
 /**
@@ -18,9 +23,8 @@ import java.sql.SQLException;
 public class MainTest {
 
     @Test
+    @DisplayName("We can perform SimpleLinearRegression on one variable, one covariable")
     public void testOneVarOneCovar() throws DBException {
-
-        System.out.println("We can perform RPMDefault on one variable, one covariable");
 
         String jobId = "001";
 
@@ -30,13 +34,11 @@ public class MainTest {
         System.setProperty("PARAM_covariables", "response_time_task2");
         System.setProperty("PARAM_grouping", "");
 
-        System.setProperty("PARAM_MODEL_method", "median");
+        WekaClassifier<SimpleLinearRegression> classifier = new WekaClassifier<>(SimpleLinearRegression.class.getName());
+        WekaClassifierSerializer<SimpleLinearRegression> classifierSerializer = new SimpleLinearRegressionSerializer();
+        WekaAlgorithmSerializer<SimpleLinearRegression> algorithmSerializer = new WekaAlgorithmSerializer<>(classifierSerializer);
 
-        Main main = new Main(
-                RPMDefault.class.getName(),
-                RPMDefaultSerializer.class.getName(),
-                RapidMinerAlgorithmSerializer.class.getName()
-        );
+        Main<SimpleLinearRegression> main = new Main<>(classifier, algorithmSerializer);
 
         main.run();
 
@@ -58,9 +60,8 @@ public class MainTest {
     }
 
     @Test
+    @DisplayName("We can perform SimpleLinearRegression on one variable, two covariables")
     public void testOneVarTwoCovars() throws DBException {
-
-        System.out.println("We can perform RPMDefault on one variable, two covariables");
 
         String jobId = "002";
 
@@ -70,13 +71,11 @@ public class MainTest {
         System.setProperty("PARAM_covariables", "response_time_task2,college_math");
         System.setProperty("PARAM_grouping", "");
 
-        System.setProperty("PARAM_MODEL_method", "median");
+        WekaClassifier<SimpleLinearRegression> classifier = new WekaClassifier<>(SimpleLinearRegression.class.getName());
+        WekaClassifierSerializer<SimpleLinearRegression> classifierSerializer = new SimpleLinearRegressionSerializer();
+        WekaAlgorithmSerializer<SimpleLinearRegression> algorithmSerializer = new WekaAlgorithmSerializer<>(classifierSerializer);
 
-        Main main = new Main(
-                RPMDefault.class.getName(),
-                RPMDefaultSerializer.class.getName(),
-                RapidMinerAlgorithmSerializer.class.getName()
-        );
+        Main<SimpleLinearRegression> main = new Main<>(classifier, algorithmSerializer);
 
         main.run();
 
@@ -94,35 +93,4 @@ public class MainTest {
         assertTrue(pfa.contains("\"action\""));
     }
 
-    @Test
-    public void testInvalidModel() throws DBException {
-
-        System.out.println("We cannot perform classification with invalid model");
-
-        String jobId = "004";
-
-        System.setProperty("JOB_ID", jobId);
-        System.setProperty("PARAM_query", "select iq, response_time_task2, college_math from sample_data");
-        System.setProperty("PARAM_variables", "iq");
-        System.setProperty("PARAM_covariables", "response_time_task2,college_math");
-        System.setProperty("PARAM_grouping", "");
-
-        System.setProperty("PARAM_MODEL_method", "median");
-
-        Main main = new Main(
-                "eu.humanbrainproject.mip.algorithms.weka.sjkhdfj",
-                "eu.humanbrainproject.mip.algorithms.weka.sjkhdfj.serialize",
-                RapidMinerAlgorithmSerializer.class.getName()
-        );
-
-        main.run();
-
-        OutputDataConnector out = OutputDataConnector.fromEnv();
-        try {
-            out.getJobResults(jobId);
-            fail("Should not be able to fetch results");
-        } catch (RuntimeException e) {
-            assertEquals(SQLException.class, e.getCause().getClass());
-        }
-    }
 }

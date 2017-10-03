@@ -3,7 +3,8 @@
   "method": "map",
   "doc": "Weka Model",
   "metadata": {
-    "docker_image": ""
+    "docker_image": "",
+    "accepts_missing_values": "true"
   },
   "input": {
     "doc": "Input is the list of covariables and groups",
