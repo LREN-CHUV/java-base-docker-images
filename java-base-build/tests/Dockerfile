@@ -1,4 +1,5 @@
-FROM hbpmip/java-base-build:3.5.0-jdk-8-8
+# Use latest version as this is what is under test
+FROM hbpmip/java-base-build:latest
 
 COPY pom.xml /project/pom.xml
 # Fill the cache for jar dependencies, to allow code changes reusing previously downloaded jars
