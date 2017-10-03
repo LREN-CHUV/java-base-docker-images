@@ -20,17 +20,17 @@ public class Main {
     private static final Logger LOGGER = Logger.getLogger(Main.class.getName());
 
     private final WekaClassifier<Classifier> classifier;
-    private final WekaAlgorithmSerializer algorithmSerializer;
+    private final WekaAlgorithmSerializer<Classifier> algorithmSerializer;
 
     @SuppressWarnings("unchecked")
-    public Main(String classifierClassName, String classifierSerializerClassName, String algorithmSerializerClassName) throws ClassNotFoundException, Exception {
+    public Main(String classifierClassName, String classifierSerializerClassName, String algorithmSerializerClassName) throws Exception {
         classifier = new WekaClassifier<>(classifierClassName);
 
         Class<?> classifierSerializerClass = Class.forName(classifierSerializerClassName);
         WekaClassifierSerializer<Classifier> classifierSerializer = (WekaClassifierSerializer<Classifier>) classifierSerializerClass.newInstance();
 
         Class<?> algorithmSerializerClass = Class.forName(algorithmSerializerClassName);
-        algorithmSerializer = (WekaAlgorithmSerializer) algorithmSerializerClass.getConstructor(WekaClassifierSerializer.class).newInstance(classifierSerializer);
+        algorithmSerializer = (WekaAlgorithmSerializer<Classifier>) algorithmSerializerClass.getConstructor(WekaClassifierSerializer.class).newInstance(classifierSerializer);
     }
 
     public void run() {
@@ -39,7 +39,7 @@ public class Main {
             InputData inputData = InputData.fromEnv();
 
             // Run experiment
-            WekaAlgorithm<?> experiment = new WekaAlgorithm<>(inputData, classifier, algorithmSerializer);
+            WekaAlgorithm<Classifier> experiment = new WekaAlgorithm<>(inputData, classifier, algorithmSerializer);
 
             try {
                 experiment.run();

@@ -111,6 +111,7 @@
                     <include>**/*.properties</include>
                     <include>**/*.jinja</include>
                     <include>**/*.csv</include>
+                    <include>**/*.json</include>
                 </includes>
                 <filtering>false</filtering>
             </testResource>

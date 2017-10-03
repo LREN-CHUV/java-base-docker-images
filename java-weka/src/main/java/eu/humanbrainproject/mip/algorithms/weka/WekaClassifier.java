@@ -129,8 +129,7 @@ public class WekaClassifier<M extends Classifier> {
                         options.add(value);
                     } else {
                         options.add(option.synopsis());
-                        final String optionValues = value;
-                        StringTokenizer st = new StringTokenizer(optionValues, " ,");
+                        StringTokenizer st = new StringTokenizer(value, " ,");
                         while (st.hasMoreTokens()) {
                             options.add(st.nextToken());
                         }

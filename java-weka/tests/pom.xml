@@ -21,7 +21,7 @@
     <jxr.plugin.version>2.5</jxr.plugin.version>
     <hadrian.version>0.8.5</hadrian.version>
     <junit.version>4.9</junit.version>
-    <mip.weka.version>0.8.0</mip.weka.version>
+    <mip.weka.version>0.0.1</mip.weka.version>
   </properties>
 
   <repositories>
@@ -36,13 +36,6 @@
       <id>opendatagroup</id>
       <url>http://repository.opendatagroup.com/maven</url>
       <name>Repository for Hadrian</name>
-    </repository>
-
-    <repository>
-      <url>https://maven.weka.com/content/groups/public/</url>
-      <id>weka</id>
-      <layout>default</layout>
-      <name>Repository for RapidMiner</name>
     </repository>
 
     <repository>

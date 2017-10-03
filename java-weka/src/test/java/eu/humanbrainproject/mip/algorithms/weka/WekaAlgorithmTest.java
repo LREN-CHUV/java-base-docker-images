@@ -53,7 +53,7 @@ public class WekaAlgorithmTest {
         assertTrue(pfa.contains("\"model\""));
         assertTrue(pfa.contains("\"action\""));
 
-        final JsonNode jsonPfa = mapper.readTree(pfa);
+        final JsonNode jsonPfa = mapper.readTree(pfa.replaceFirst("SELECT \\* FROM .*\\\\\"", "SELECT"));
         final JsonNode jsonExpected = mapper.readTree(getClass().getResource("regression.pfa.json"));
 
         assertEquals(jsonExpected, jsonPfa);

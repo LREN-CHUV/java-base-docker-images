@@ -11,8 +11,8 @@ FROM hbpmip/java-weka:latest
 
 ENV JAVA_CLASSPATH=${JAVA_CLASSPATH}:/usr/share/jars/java-weka-test.jar
 ENV JAVA_ARGS=/eu/humanbrainproject/mip/algorithms/weka/rpmdefault/settings.properties
-ENV MODEL rpm
-ENV FUNCTION java-weka-rpm
+ENV MODEL simplelr
+ENV FUNCTION java-weka-simplelr
 
 COPY --from=build-java-env /project/target/java-weka-test.jar /usr/share/jars/java-weka-test.jar
 COPY --from=build-java-env /project/target/site/ /var/www/html/
