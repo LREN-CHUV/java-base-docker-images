@@ -4,7 +4,6 @@ COPY pom.xml /project/pom.xml
 COPY src/ /project/src
 COPY docker/run-tests.sh /
 
-RUN chmod a+rx /run-tests.sh \
-    && mkdir -p /root/.RapidMiner
+RUN chmod a+rx /run-tests.sh
 
 ENTRYPOINT ["/run-tests.sh"]

@@ -1,7 +1,6 @@
 package eu.humanbrainproject.mip.algorithms.weka;
 
 import com.opendatagroup.hadrian.reader.jsonToAst;
-import eu.humanbrainproject.mip.algorithms.Configuration;
 import eu.humanbrainproject.mip.algorithms.db.OutputDataConnector;
 import eu.humanbrainproject.mip.algorithms.weka.serializers.pfa.WekaAlgorithmSerializer;
 import eu.humanbrainproject.mip.algorithms.weka.serializers.pfa.WekaClassifierSerializer;
@@ -9,10 +8,6 @@ import eu.humanbrainproject.mip.algorithms.weka.simplelr.SimpleLinearRegressionS
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import weka.classifiers.functions.SimpleLinearRegression;
-
-import java.nio.file.FileSystems;
-import java.nio.file.Files;
-import java.nio.file.Path;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -41,12 +36,6 @@ public class MainTest {
         WekaClassifier<SimpleLinearRegression> classifier = new WekaClassifier<>(SimpleLinearRegression.class.getName());
         WekaClassifierSerializer<SimpleLinearRegression> classifierSerializer = new SimpleLinearRegressionSerializer();
         WekaAlgorithmSerializer<SimpleLinearRegression> algorithmSerializer = new WekaAlgorithmSerializer<>(classifierSerializer);
-
-        Path targetDbProps = FileSystems.getDefault().getPath("/opt", "weka", "props", "weka", "experiment", "DatabaseUtils.props");
-        if (Configuration.INSTANCE.inputJdbcUrl().startsWith("jdbc:postgresql:")) {
-            Path dbProps = FileSystems.getDefault().getPath("/opt", "weka", "databases-props", "DatabaseUtils.props.postgresql");
-            Files.createLink(targetDbProps, dbProps);
-        }
 
         Main<SimpleLinearRegression> main = new Main<>(classifier, algorithmSerializer);
 
@@ -84,12 +73,6 @@ public class MainTest {
         WekaClassifier<SimpleLinearRegression> classifier = new WekaClassifier<>(SimpleLinearRegression.class.getName());
         WekaClassifierSerializer<SimpleLinearRegression> classifierSerializer = new SimpleLinearRegressionSerializer();
         WekaAlgorithmSerializer<SimpleLinearRegression> algorithmSerializer = new WekaAlgorithmSerializer<>(classifierSerializer);
-
-        Path targetDbProps = FileSystems.getDefault().getPath("/opt", "weka", "props", "weka", "experiment", "DatabaseUtils.props");
-        if (Configuration.INSTANCE.inputJdbcUrl().startsWith("jdbc:postgresql:")) {
-            Path dbProps = FileSystems.getDefault().getPath("/opt", "weka", "databases-props", "DatabaseUtils.props.postgresql");
-            Files.createLink(targetDbProps, dbProps);
-        }
 
         Main<SimpleLinearRegression> main = new Main<>(classifier, algorithmSerializer);
 

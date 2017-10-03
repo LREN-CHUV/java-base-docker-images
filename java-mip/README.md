@@ -40,9 +40,9 @@ Dockerfile
 
   MAINTAINER <your email>
 
-  ENV JAVA_CLASSPATH=/usr/share/jars/my-algo.jar
-  ENV JAVA_MAINCLASS=org.myorg.myalgo.Main
-  ENV JAVA_ARGS=--verbose
+  ENV JAVA_CLASSPATH=/usr/share/jars/my-algo.jar \
+      JAVA_MAINCLASS=org.myorg.myalgo.Main \
+      JAVA_ARGS=--verbose
 
   COPY --from=build-java-env /project/target/my-algo-jar-with-dependencies.jar /usr/share/jars/my-algo.jar
   COPY --from=build-java-env /project/target/site/ /var/www/html/
