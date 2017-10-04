@@ -23,7 +23,7 @@
     <hadrian.version>0.8.5</hadrian.version>
     <junit.version>5.0.0</junit.version>
     <postgres.version>9.4.1212.jre7</postgres.version>
-    <mip.weka.version>0.2.3</mip.weka.version>
+    <mip.weka.version>0.2.4</mip.weka.version>
   </properties>
 
   <repositories>

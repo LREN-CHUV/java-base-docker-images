@@ -21,7 +21,7 @@ Dockerfile
   RUN cp /usr/share/maven/ref/settings-docker.xml /root/.m2/settings.xml \
       && mvn package site
 
-  FROM hbpmip/java-weka:0.2.3
+  FROM hbpmip/java-weka:0.2.4
 
   MAINTAINER <your email>
 
