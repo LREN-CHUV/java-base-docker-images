@@ -25,8 +25,8 @@ COPY --from=build-java-env /project/target/weka-deps.jar /usr/share/jars/mip-wek
 COPY --from=build-java-env /project/target/site/ /mip/java-weka/docs/
 COPY src/ /mip/java-weka/src/
 
-RUN chown -R compute:compute /mip/ \
-    && mkdir -p /opt/weka/props/weka/experiment
+RUN mkdir -p /opt/weka/props/weka/experiment \
+    && chown -R compute:compute /mip/ /opt/weka/
 
 LABEL org.label-schema.build-date=$BUILD_DATE \
       org.label-schema.name="hbpmip/java-weka" \

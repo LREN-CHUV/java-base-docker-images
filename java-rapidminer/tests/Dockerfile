@@ -13,10 +13,11 @@ RUN cp /usr/share/maven/ref/settings-docker.xml /root/.m2/settings.xml \
 
 FROM hbpmip/java-rapidminer:latest
 
-ENV JAVA_CLASSPATH=${JAVA_CLASSPATH}:/usr/share/jars/java-rapidminer-test.jar
-ENV JAVA_ARGS=/eu/humanbrainproject/mip/algorithms/rapidminer/rpmdefault/settings.properties
-ENV MODEL rpm
-ENV FUNCTION java-rapidminer-rpm
+ENV DOCKER_IMAGE=java-rapidminer-tests \
+    JAVA_CLASSPATH=${JAVA_CLASSPATH}:/usr/share/jars/java-rapidminer-test.jar \
+    JAVA_ARGS=/eu/humanbrainproject/mip/algorithms/rapidminer/rpmdefault/settings.properties \
+    MODEL=rpm \
+    FUNCTION=java-rapidminer-rpm
 
 COPY --from=build-java-env /project/target/java-rapidminer-test.jar /usr/share/jars/java-rapidminer-test.jar
 COPY --from=build-java-env /project/target/site/ /var/www/html/

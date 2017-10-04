@@ -13,7 +13,8 @@ RUN cp /usr/share/maven/ref/settings-docker.xml /root/.m2/settings.xml \
 
 FROM hbpmip/java-weka:latest
 
-ENV JAVA_CLASSPATH=${JAVA_CLASSPATH}:/opt/weka/props/:/usr/share/jars/java-weka-test.jar \
+ENV DOCKER_IMAGE=java-weka-tests \
+    JAVA_CLASSPATH=${JAVA_CLASSPATH}:/opt/weka/props/:/usr/share/jars/java-weka-test.jar \
     JAVA_ARGS=/eu/humanbrainproject/mip/algorithms/weka/simplelr/settings.properties \
     MODEL=simplelr \
     FUNCTION=java-weka-simplelr
