@@ -26,7 +26,7 @@ Dockerfile
   MAINTAINER <your email>
 
   ENV DOCKER_IMAGE=hbpmip/my-algo:1.0.0 \
-      JAVA_CLASSPATH=${JAVA_CLASSPATH}:/usr/share/jars/my-algo.jar \
+      JAVA_CLASSPATH=${JAVA_CLASSPATH}:/opt/weka/props/:/usr/share/jars/my-algo.jar \
       JAVA_ARGS=/eu/humanbrainproject/mip/algorithms/weka/myalgo/settings.properties \
       MODEL=myalgo \
       FUNCTION=java-weka-myalgo
@@ -37,4 +37,24 @@ Dockerfile
 
   RUN chown -R compute:compute /src/ \
       && chown -R root:www-data /var/www/html/
+```
+
+Your algorithm will require additional classes and files packaged in my-algo.jar to adapt it to MIP Woken and to generate PFA output:
+
+* MyAlgoSerializer extends WekaClassifierSerializer<MyAlgo>
+* settings.properties containing
+
+```
+classifier=weka.classifiers.functions.MyAlgo
+classifierSerializer=eu.humanbrainproject.mip.algorithms.weka.simplelr.MyAlgoSerializer
+```
+
+We provide a Java library to support the integration:
+
+```xml
+<dependency>
+  <groupId>eu.humanbrainproject.mip.algorithms</groupId>
+  <artifactId>weka</artifactId>
+  <version>${mip.weka.version}</version>
+</dependency>
 ```
