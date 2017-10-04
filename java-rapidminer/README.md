@@ -28,7 +28,8 @@ Dockerfile
 
   MAINTAINER <your email>
 
-  ENV JAVA_CLASSPATH=${JAVA_CLASSPATH}:/usr/share/jars/my-algo.jar \
+  ENV DOCKER_IMAGE=hbpmip/my-algo:1.0.0 \
+      JAVA_CLASSPATH=${JAVA_CLASSPATH}:/usr/share/jars/my-algo.jar \
       JAVA_ARGS=/eu/humanbrainproject/mip/algorithms/rapidminer/myalgo/settings.properties \
       MODEL=myalgo \
       FUNCTION=java-rapidminer-myalgo

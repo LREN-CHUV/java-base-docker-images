@@ -6,7 +6,7 @@ SELECT plan( 5 );
 SELECT is(node::VARCHAR, 'job_test', 'Job result node is incorrect')
   FROM job_result where job_id = '1';
 
-SELECT is(function::VARCHAR, 'java-weka-rpm', 'Job result function is incorrect')
+SELECT is(function::VARCHAR, 'java-weka-simplelr', 'Job result function is incorrect')
   FROM job_result where job_id = '1';
 
 SELECT is(shape::VARCHAR, 'pfa_json', 'Job result shape is incorrect')

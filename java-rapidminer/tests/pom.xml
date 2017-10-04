@@ -66,16 +66,16 @@
     </dependency>
 
     <dependency>
-      <groupId>eu.humanbrainproject.mip.algorithms</groupId>
-      <artifactId>rapidminer</artifactId>
-      <version>${mip.rapidminer.version}</version>
-    </dependency>
-
-    <dependency>
       <groupId>com.opendatagroup</groupId>
       <artifactId>hadrian</artifactId>
       <version>${hadrian.version}</version>
       <scope>test</scope>
+    </dependency>
+
+    <dependency>
+      <groupId>eu.humanbrainproject.mip.algorithms</groupId>
+      <artifactId>rapidminer</artifactId>
+      <version>${mip.rapidminer.version}</version>
     </dependency>
 
   </dependencies>

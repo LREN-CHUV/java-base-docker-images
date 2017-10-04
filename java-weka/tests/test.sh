@@ -35,7 +35,7 @@ function _cleanup() {
   $DOCKER_COMPOSE rm -f > /dev/null 2> /dev/null | true
   exit $error_code
 }
-#trap _cleanup EXIT INT TERM
+trap _cleanup EXIT INT TERM
 
 echo "Starting the databases..."
 $DOCKER_COMPOSE up -d --remove-orphans it_db

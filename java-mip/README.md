@@ -40,7 +40,8 @@ Dockerfile
 
   MAINTAINER <your email>
 
-  ENV JAVA_CLASSPATH=/usr/share/jars/my-algo.jar \
+  ENV DOCKER_IMAGE=hbpmip/my-algo:1.0.0 \
+      JAVA_CLASSPATH=/usr/share/jars/my-algo.jar \
       JAVA_MAINCLASS=org.myorg.myalgo.Main \
       JAVA_ARGS=--verbose
 
