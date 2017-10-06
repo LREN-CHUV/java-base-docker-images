@@ -14,7 +14,7 @@ in the data/in/template volume folder
 Use this image as the parent image to adapt a RapidMiner algorithm to the MIP platform:
 
 Dockerfile
-```
+```dockerfile
   FROM hbpmip/java-base-build:3.5.0-jdk-8-9 as build-java-env
 
   COPY pom.xml /project/pom.xml

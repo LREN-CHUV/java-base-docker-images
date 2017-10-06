@@ -9,7 +9,7 @@ This image contains the Java JDK and Maven 3 (from [Maven image](https://hub.doc
 Use this image as part of a multistage build:
 
 Dockerfile
-```
+```dockerfile
   FROM hbpmip/java-base-build:3.5.0-jdk-8-9 as java-build-env
 
   COPY pom.xml /project/
