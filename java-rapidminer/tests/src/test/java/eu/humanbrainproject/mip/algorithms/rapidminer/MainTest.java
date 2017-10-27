@@ -118,7 +118,12 @@ public class MainTest {
                 RapidMinerAlgorithmSerializer.class.getName()
         );
 
-        main.run();
+        try {
+            main.run();
+            fail("Should have thrown ClassNotFoundException");
+        } catch (ClassNotFoundException expected) {
+            // ok
+        }
 
         OutputDataConnector out = OutputDataConnector.fromEnv();
         try {
