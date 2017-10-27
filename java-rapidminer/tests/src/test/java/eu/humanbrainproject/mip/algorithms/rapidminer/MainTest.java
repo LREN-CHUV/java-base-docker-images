@@ -2,7 +2,6 @@ package eu.humanbrainproject.mip.algorithms.rapidminer;
 
 import com.opendatagroup.hadrian.reader.jsonToAst;
 import eu.humanbrainproject.mip.algorithms.db.OutputDataConnector;
-import eu.humanbrainproject.mip.algorithms.db.DBException;
 import eu.humanbrainproject.mip.algorithms.rapidminer.serializers.pfa.RapidMinerAlgorithmSerializer;
 import eu.humanbrainproject.mip.algorithms.rapidminer.rpmdefault.RPMDefault;
 import eu.humanbrainproject.mip.algorithms.rapidminer.rpmdefault.RPMDefaultSerializer;
@@ -26,7 +25,7 @@ public class MainTest {
 
     @Test
     @DisplayName("perform RPMDefault on one variable, one covariable")
-    public void testOneVarOneCovar() throws DBException {
+    public void testOneVarOneCovar() throws Exception {
 
         String jobId = "001";
 
@@ -65,7 +64,7 @@ public class MainTest {
 
     @Test
     @DisplayName("perform RPMDefault on one variable, two covariables")
-    public void testOneVarTwoCovars() throws DBException {
+    public void testOneVarTwoCovars() throws Exception {
 
         String jobId = "002";
 
@@ -101,7 +100,7 @@ public class MainTest {
 
     @Test
     @DisplayName("cannot perform classification with an invalid model")
-    public void testInvalidModel() throws DBException {
+    public void testInvalidModel() throws Exception {
 
         String jobId = "004";
 
