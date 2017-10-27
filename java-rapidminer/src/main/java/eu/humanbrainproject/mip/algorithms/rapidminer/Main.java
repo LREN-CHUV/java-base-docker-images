@@ -1,12 +1,16 @@
 package eu.humanbrainproject.mip.algorithms.rapidminer;
 
+import java.io.IOException;
+import java.lang.reflect.InvocationTargetException;
 import java.util.Properties;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import com.rapidminer.operator.learner.PredictionModel;
 import eu.humanbrainproject.mip.algorithms.ResultsFormat;
+import eu.humanbrainproject.mip.algorithms.db.DBException;
 import eu.humanbrainproject.mip.algorithms.db.OutputDataConnector;
+import eu.humanbrainproject.mip.algorithms.rapidminer.exceptions.RapidMinerException;
 import eu.humanbrainproject.mip.algorithms.rapidminer.models.RapidMinerModel;
 import eu.humanbrainproject.mip.algorithms.rapidminer.serializers.pfa.RapidMinerAlgorithmSerializer;
 import eu.humanbrainproject.mip.algorithms.rapidminer.serializers.pfa.RapidMinerModelSerializer;
@@ -30,37 +34,29 @@ public class Main {
         this.algorithmSerializerClassName = algorithmSerializerClassName;
     }
 
-    public void run() {
+    public void run() throws Exception {
+        Class<?> modelClass = Class.forName(modelClassName);
+        @SuppressWarnings("unchecked") RapidMinerModel<PredictionModel> model = (RapidMinerModel<PredictionModel>) modelClass.newInstance();
+
+        Class<?> modelSerializerClass = Class.forName(modelSerializerClassName);
+        @SuppressWarnings("unchecked") RapidMinerModelSerializer<PredictionModel> modelSerializer = (RapidMinerModelSerializer<PredictionModel>) modelSerializerClass.newInstance();
+
+        Class<?> algorithmSerializerClass = Class.forName(algorithmSerializerClassName);
+        RapidMinerAlgorithmSerializer algorithmSerializer = (RapidMinerAlgorithmSerializer) algorithmSerializerClass.getConstructor(RapidMinerModelSerializer.class).newInstance(modelSerializer);
+
+        InputData inputData = InputData.fromEnv();
+
+        // Run experiment
+        RapidMinerAlgorithm<?> experiment = new RapidMinerAlgorithm<>(inputData, model, algorithmSerializer);
+
         try {
-            Class<?> modelClass = Class.forName(modelClassName);
-            @SuppressWarnings("unchecked") RapidMinerModel<PredictionModel> model = (RapidMinerModel<PredictionModel>) modelClass.newInstance();
+            experiment.run();
+        } finally {
 
-            Class<?> modelSerializerClass = Class.forName(modelSerializerClassName);
-            @SuppressWarnings("unchecked") RapidMinerModelSerializer<PredictionModel> modelSerializer = (RapidMinerModelSerializer<PredictionModel>) modelSerializerClass.newInstance();
-
-            Class<?> algorithmSerializerClass = Class.forName(algorithmSerializerClassName);
-            RapidMinerAlgorithmSerializer algorithmSerializer = (RapidMinerAlgorithmSerializer) algorithmSerializerClass.getConstructor(RapidMinerModelSerializer.class).newInstance(modelSerializer);
-
-            InputData inputData = InputData.fromEnv();
-
-            // Run experiment
-            RapidMinerAlgorithm<?> experiment = new RapidMinerAlgorithm<>(inputData, model, algorithmSerializer);
-
-            try {
-                experiment.run();
-            } finally {
-
-                // Write results PFA in DB - it can represent also an error
-                String pfa = experiment.toPFA();
-                OutputDataConnector out = OutputDataConnector.fromEnv();
-                out.saveResults(pfa, ResultsFormat.PFA_JSON);
-            }
-
-        } catch (ClassNotFoundException e) {
-            LOGGER.severe(e.getMessage());
-
-        } catch (Exception e) {
-            LOGGER.log(Level.SEVERE, "Cannot execute the algorithm", e);
+            // Write results PFA in DB - it can represent also an error
+            String pfa = experiment.toPFA();
+            OutputDataConnector out = OutputDataConnector.fromEnv();
+            out.saveResults(pfa, ResultsFormat.PFA_JSON);
         }
     }
 
@@ -78,8 +74,13 @@ public class Main {
 
             main.run();
 
+        } catch (ClassNotFoundException e) {
+            LOGGER.severe(e.getMessage());
+            System.exit(1);
+
         } catch (Exception e) {
-            LOGGER.log(Level.SEVERE, "Cannot execute the algorithm", e);
+            LOGGER.log(Level.SEVERE, "Cannot execute the algorithm: " + e.getMessage(), e);
+            System.exit(1);
         }
     }
 

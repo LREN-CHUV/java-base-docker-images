@@ -31,29 +31,20 @@ public class Main<M extends Classifier> {
         this.algorithmSerializer = algorithmSerializer;
     }
 
-    public void run() {
+    public void run() throws  Exception {
+        InputData inputData = InputData.fromEnv();
+
+        // Run experiment
+        WekaAlgorithm<M> experiment = new WekaAlgorithm<>(inputData, classifier, algorithmSerializer);
+
         try {
+            experiment.run();
+        } finally {
 
-            InputData inputData = InputData.fromEnv();
-
-            // Run experiment
-            WekaAlgorithm<M> experiment = new WekaAlgorithm<>(inputData, classifier, algorithmSerializer);
-
-            try {
-                experiment.run();
-            } finally {
-
-                // Write results PFA in DB - it can represent also an error
-                String pfa = experiment.toPFA();
-                OutputDataConnector out = OutputDataConnector.fromEnv();
-                out.saveResults(pfa, ResultsFormat.PFA_JSON);
-            }
-
-        } catch (ClassNotFoundException e) {
-            LOGGER.severe(e.getMessage());
-
-        } catch (Exception e) {
-            LOGGER.log(Level.SEVERE, "Cannot execute the algorithm", e);
+            // Write results PFA in DB - it can represent also an error
+            String pfa = experiment.toPFA();
+            OutputDataConnector out = OutputDataConnector.fromEnv();
+            out.saveResults(pfa, ResultsFormat.PFA_JSON);
         }
     }
 
@@ -89,8 +80,10 @@ public class Main<M extends Classifier> {
 
         } catch (ClassNotFoundException e) {
             LOGGER.severe(e.getMessage());
+            System.exit(1);
         } catch (Exception e) {
             LOGGER.log(Level.SEVERE, "Cannot execute the algorithm", e);
+            System.exit(1);
         }
     }
 
