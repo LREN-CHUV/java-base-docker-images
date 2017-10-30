@@ -59,7 +59,7 @@ rm -rf /root/.gnupg
 rm -rf /var/cache/apk/*
 
 # Install nginx to be able to serve content from this container
-apk --no-cache add nginx=1.12.1-r0
+apk --no-cache add nginx=1.12.2-r0
 rm -rf /etc/nginx/*.d
 mkdir -p /etc/nginx/addon.d /etc/nginx/conf.d /etc/nginx/host.d /etc/nginx/nginx.d
 usermod -a -G www-data compute
