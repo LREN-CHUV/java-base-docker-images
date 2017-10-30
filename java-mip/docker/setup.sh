@@ -45,7 +45,7 @@ apk add --no-cache $buildDeps
 gpg-agent --daemon
 # Use an alternative key server to improve reliability of CI
 gpg --keyserver pgp.mit.edu --recv-keys $GOSU_DOWNLOAD_KEY || \
-  gpg --keyserver hkps://hkps.pool.sks-keyservers.net:443 --recv-keys $GOSU_DOWNLOAD_KEY
+  gpg --keyserver hkp://hkps.pool.sks-keyservers.net:80 --recv-keys $GOSU_DOWNLOAD_KEY
 echo "trusted-key $GOSU_DOWNLOAD_KEY" >> /root/.gnupg/gpg.conf
 curl -sSL "$GOSU_DOWNLOAD_URL" > gosu-amd64
 curl -sSL "$GOSU_DOWNLOAD_SIG" > gosu-amd64.asc
