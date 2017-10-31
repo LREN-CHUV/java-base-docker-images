@@ -14,12 +14,13 @@ import org.junit.jupiter.api.Test;
 import scala.Option;
 import scala.collection.immutable.HashMap;
 
+import java.io.IOException;
+
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 @DisplayName("When serializing an algorithm, AlgorithmSerializer produces")
 class AlgorithmSerializerTest {
-    private static ObjectMapper mapper = new ObjectMapper();
 
     private AlgorithmSerializer<SimpleAlgorithm> simpleSerializer;
     private NullableInputAlgorithmSerializer nullableInputSerializer;
@@ -45,11 +46,7 @@ class AlgorithmSerializerTest {
         String pfa = objectMapper.writerWithDefaultPrettyPrinter().writeValueAsString(algorithm);
 
         assertNotNull(getPFAEngine(pfa));
-
-        final JsonNode jsonPfa = mapper.readTree(pfa);
-        final JsonNode jsonExpected = mapper.readTree(getClass().getResource("simple_algo.pfa.json"));
-
-        assertEquals(jsonExpected, jsonPfa);
+        assertJsonEquals(pfa, "simple_algo.pfa.json");
     }
 
     @Test
@@ -61,11 +58,7 @@ class AlgorithmSerializerTest {
         String pfa = objectMapper.writerWithDefaultPrettyPrinter().writeValueAsString(algorithm);
 
         assertNotNull(getPFAEngine(pfa));
-
-        final JsonNode jsonPfa = mapper.readTree(pfa);
-        final JsonNode jsonExpected = mapper.readTree(getClass().getResource("failing_algorithm.pfa.json"));
-
-        assertEquals(jsonExpected, jsonPfa);
+        assertJsonEquals(pfa, "failing_algorithm.pfa.json");
     }
 
     @Test
@@ -75,11 +68,7 @@ class AlgorithmSerializerTest {
         String pfa = objectMapper.writerWithDefaultPrettyPrinter().writeValueAsString(algorithm);
 
         assertNotNull(getPFAEngine(pfa));
-
-        final JsonNode jsonPfa = mapper.readTree(pfa);
-        final JsonNode jsonExpected = mapper.readTree(getClass().getResource("nullable_input_algorithm.pfa.json"));
-
-        assertEquals(jsonExpected, jsonPfa);
+        assertJsonEquals(pfa, "nullable_input_algorithm.pfa.json");
     }
 
 
@@ -88,4 +77,10 @@ class AlgorithmSerializerTest {
                 1, Option.empty(), false).head();
     }
 
+    private void assertJsonEquals(String jsonDocument, String pathToExpected) throws IOException {
+        final JsonNode jsonTest = objectMapper.readTree(jsonDocument);
+        final JsonNode jsonExpected = objectMapper.readTree(getClass().getResource(pathToExpected));
+
+        assertEquals(jsonExpected, jsonTest);
+    }
 }

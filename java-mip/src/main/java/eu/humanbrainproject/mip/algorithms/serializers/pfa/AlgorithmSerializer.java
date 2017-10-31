@@ -171,22 +171,13 @@ public abstract class AlgorithmSerializer<T extends Algorithm> extends JsonSeria
         jgen.writeStartObject();
         {
             InputDescription inputDescription = getInputDescription(value);
-            try {
-                if (inputDescription.getType(inputDescription.getVariables()[0]) == InputDescription.VariableType.CATEGORICAL) {
-                    jgen.writeStringField("string", "dummy");
-                } else {
-                    jgen.writeNumberField("double", -1);
-                }
-            } catch (Exception e) {
-                LOGGER.log(Level.SEVERE, "Cannot generate empty action", e);
-            }
+            generateDummyOutput(jgen, inputDescription);
         }
         jgen.writeEndObject();
     }
 
     /**
-     * Write the expression or JSON array of expressions that are executed for each input datum in
-     * the active phase of the scoring engine’s run
+     * Write a PFA action that keeps failing to indicate that training of the model failed earlier on.
      */
     protected void writePfaErrorAction(T value, JsonGenerator jgen, String errorMessage) throws IOException {
         jgen.writeStartObject();
@@ -197,17 +188,33 @@ public abstract class AlgorithmSerializer<T extends Algorithm> extends JsonSeria
         jgen.writeStartObject();
         {
             InputDescription inputDescription = getInputDescription(value);
-            try {
-                if (inputDescription.getType(inputDescription.getVariables()[0]) == InputDescription.VariableType.CATEGORICAL) {
-                    jgen.writeStringField("string", "dummy");
-                } else {
-                    jgen.writeNumberField("double", -1);
-                }
-            } catch (Exception e) {
-                LOGGER.log(Level.SEVERE, "Cannot generate empty action", e);
-            }
+            generateDummyOutput(jgen, inputDescription);
         }
         jgen.writeEndObject();
+    }
+
+    protected void generateDummyOutput(JsonGenerator jgen, InputDescription inputDescription) {
+        try {
+            switch (inputDescription.getType(inputDescription.getVariables()[0])) {
+                case CATEGORICAL_STRING: {
+                    jgen.writeStringField("string", "dummy");
+                    break;
+                }
+                case CATEGORICAL_INT: {
+                    jgen.writeNumberField("int", -1);
+                    break;
+                }
+                case REAL: {
+                    jgen.writeNumberField("double", -1.);
+                    break;
+                }
+                default: {
+                    jgen.writeStringField("string", "dummy");
+                }
+            }
+        } catch (Exception e) {
+            LOGGER.log(Level.SEVERE, "Cannot generate empty action", e);
+        }
     }
 
     /**

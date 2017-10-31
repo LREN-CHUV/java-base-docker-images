@@ -6,6 +6,7 @@ import org.apache.avro.Schema;
 import org.apache.avro.SchemaBuilder;
 
 import java.io.IOException;
+import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -62,21 +63,25 @@ public abstract class InputDescription<T extends Algorithm> {
                 }
                 break;
             }
-            case CATEGORICAL: {
+            case CATEGORICAL_STRING: {
                 List<String> categoricalValues = getCategoricalValues(covariable);
-                boolean categoryOfNumbers = categoricalValues.stream().allMatch(v -> v.matches("\\d+"));
                 String[] symbols = asSymbols(categoricalValues);
                 Schema enumType = SchemaBuilder.builder().enumeration("Enum_" + covariable).symbols(symbols);
                 if (nullableField) {
-                    if (categoryOfNumbers) {
-                        schema = SchemaBuilder.unionOf().type(enumType).and().intType().and().nullType().endUnion();
-                    } else {
-                        schema = SchemaBuilder.unionOf().type(enumType).and().nullType().endUnion();
-                    }
-                } else if (categoryOfNumbers) {
-                    schema = SchemaBuilder.unionOf().type(enumType).and().intType().endUnion();
+                    schema = SchemaBuilder.unionOf().type(enumType).and().intType().and().nullType().endUnion();
                 } else {
                     schema = enumType;
+                }
+                break;
+            }
+            case CATEGORICAL_INT: {
+                List<String> categoricalValues = getCategoricalValues(covariable);
+                String[] symbols = asSymbols(categoricalValues);
+                Schema enumType = SchemaBuilder.builder().enumeration("Enum_" + covariable).symbols(symbols);
+                if (nullableField) {
+                    schema = SchemaBuilder.unionOf().type(enumType).and().intType().and().nullType().endUnion();
+                } else {
+                    schema = SchemaBuilder.unionOf().type(enumType).and().intType().endUnion();
                 }
                 break;
             }
@@ -89,7 +94,10 @@ public abstract class InputDescription<T extends Algorithm> {
     }
 
     protected String[] asSymbols(List<String> values) {
-        List<String> symbols = values.stream().map(v -> v.matches("\\d+") ? "_" + v : v).collect(Collectors.toList());
+        List<String> symbols = values.stream()
+                .map(v -> v.matches("$\\d.*") ? "_" + v : v)
+                .map(v -> v.replaceAll("\\s", "_"))
+                .collect(Collectors.toList());
         return symbols.toArray(new String[symbols.size()]);
     }
 
@@ -101,19 +109,7 @@ public abstract class InputDescription<T extends Algorithm> {
 
         if (getVariables().length == 1) {
             final VariableType type = getType(getVariables()[0]);
-            switch (type) {
-                case REAL: {
-                    jgen.writeStringField("type", "double");
-                    break;
-                }
-                case CATEGORICAL: {
-                    // Convert categorical output to a string
-                    jgen.writeStringField("type", "string");
-                    break;
-                }
-                default:
-                    throw new IllegalArgumentException("Unknown type: " + type);
-            }
+            jgen.writeStringField("type", toPFAType(type));
         } else {
             jgen.writeStringField("type", "record");
             jgen.writeArrayFieldStart("fields");
@@ -121,19 +117,7 @@ public abstract class InputDescription<T extends Algorithm> {
                 jgen.writeStartObject();
                 jgen.writeStringField("name", variable);
                 final VariableType type = getType(variable);
-                switch (type) {
-                    case REAL: {
-                        jgen.writeStringField("type", "double");
-                        break;
-                    }
-                    case CATEGORICAL: {
-                        // Convert categorical output to a string
-                        jgen.writeStringField("type", "string");
-                        break;
-                    }
-                    default:
-                        throw new IllegalArgumentException("Unknown type: " + type);
-                }
+                jgen.writeStringField("type", toPFAType(type));
                 jgen.writeEndObject();
             }
             jgen.writeEndArray();
@@ -224,9 +208,11 @@ public abstract class InputDescription<T extends Algorithm> {
     public void writeInputToLocalVars(JsonGenerator jgen) {
     }
 
-    protected abstract VariableType getType(String variable) throws Exception;
+    protected List<String> getCategoricalValues(String variable) throws Exception {
+        return Collections.emptyList();
+    }
 
-    protected abstract List<String> getCategoricalValues(String variable) throws Exception;
+    protected abstract VariableType getType(String variable) throws Exception;
 
     protected abstract String getQuery();
 
@@ -238,7 +224,17 @@ public abstract class InputDescription<T extends Algorithm> {
 
     public enum VariableType {
         REAL,
-        CATEGORICAL
+        CATEGORICAL_STRING,
+        CATEGORICAL_INT
+    }
+
+    public static String toPFAType(VariableType variableType) {
+        switch (variableType) {
+            case REAL: return "double";
+            case CATEGORICAL_STRING: return "string";
+            case CATEGORICAL_INT: return "int";
+            default: throw new IllegalArgumentException("Unknown type: " + variableType);
+        }
     }
 
 }

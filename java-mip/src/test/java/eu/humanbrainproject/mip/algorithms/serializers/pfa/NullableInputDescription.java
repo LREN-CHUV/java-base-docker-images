@@ -15,8 +15,10 @@ public class NullableInputDescription extends InputDescription<NullableInputAlgo
     protected VariableType getType(String variable) throws Exception {
         if (variable.startsWith("num")) {
             return VariableType.REAL;
+        } else if (variable.equals("cat2")) {
+            return VariableType.CATEGORICAL_INT;
         } else {
-            return VariableType.CATEGORICAL;
+            return VariableType.CATEGORICAL_STRING;
         }
     }
 
