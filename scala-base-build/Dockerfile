@@ -13,7 +13,7 @@ ENV SCALA_VERSION 2.11.8
 ENV SBT_VERSION 0.13.16
 
 # Install sbt dependencies
-RUN apk add --no-cache ncurses
+RUN apk add --no-cache ncurses git
 
 # Install sbt
 RUN \
