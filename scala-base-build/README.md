@@ -25,3 +25,26 @@ Dockerfile
   COPY --from=scala-build-env /build/target/scala_2.11/my-project.jar /usr/share/jars/
 
 ```
+
+# Scala development
+
+## Recommended global sbt plugins
+
+Add to ~/.sbt/0.13/plugins/sbt-updates.sbt
+
+```scala
+  addSbtPlugin("com.orrsella" % "sbt-stats" % "1.0.5") // stats
+
+  addSbtPlugin("net.virtual-void" % "sbt-dependency-graph" % "0.8.2") // dependencyGraph
+
+  addSbtPlugin("com.timushev.sbt" % "sbt-updates" % "0.3.3") // dependencyUpdates
+
+  addSbtPlugin("com.github.xuwei-k" % "sbt-class-diagram" % "0.1.7")
+
+  // Faster development
+  addSbtPlugin("io.spray" % "sbt-revolver" % "0.9.1")
+
+  // Benchmarking
+  addSbtPlugin("pl.project13.scala" % "sbt-jmh" % "0.2.27")
+
+```
