@@ -2,8 +2,6 @@
 
 cd /build
 
-ls -al
-
 count=$(git status --porcelain | wc -l)
 if test $count -gt 0; then
     git status
