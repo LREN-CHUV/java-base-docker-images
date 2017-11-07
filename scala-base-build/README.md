@@ -47,4 +47,14 @@ Add to ~/.sbt/0.13/plugins/sbt-updates.sbt
   // Benchmarking
   addSbtPlugin("pl.project13.scala" % "sbt-jmh" % "0.2.27")
 
+  addSbtPlugin("com.updateimpact" % "updateimpact-sbt-plugin" % "2.1.1")
+
+```
+
+Other sbt plugins:
+
+```
+addSbtPlugin("org.scoverage" % "sbt-scoverage" % "1.3.5")
+
+addSbtPlugin("com.codacy" % "sbt-codacy-coverage" % "1.3.0")
 ```
