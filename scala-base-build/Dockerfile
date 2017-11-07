@@ -31,15 +31,13 @@ RUN \
   echo >> /root/.bashrc && \
   echo 'export PATH=~/scala-$SCALA_VERSION/bin:$PATH' >> /root/.bashrc
 
-RUN sbt sbtVersion
-
 WORKDIR /seed
 
 COPY docker/build.sbt /seed/
 COPY docker/project/ /seed/project/
 COPY docker/src/ /seed/src/
 
-RUN sbt about && sbt compile && rm -rf /seed/target && mv /root/.ivy2/cache/* /usr/share/ivy/ref/repository/
+RUN cd /seed && sbt about && sbt sbtVersion compile && rm -rf /seed/target && mv /root/.ivy2/cache/* /usr/share/ivy/ref/repository/
 
 # Define working directory
 WORKDIR /build
