@@ -4,8 +4,6 @@ resolvers += Classpaths.sbtPluginReleases
 
 resolvers += "Typesafe repository" at "https://repo.typesafe.com/typesafe/releases/"
 
-resolvers += "Pre-filled Ivy Repository" at "file:///usr/share/ivy/ref/repository/"
-
 // Dependency Resolution
 addSbtPlugin("io.get-coursier" % "sbt-coursier" % "1.0.0-RC13")
 

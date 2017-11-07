@@ -39,5 +39,9 @@ COPY docker/src/ /seed/src/
 
 RUN cd /seed && sbt about && sbt sbtVersion compile && rm -rf /seed/target && mv /root/.ivy2/cache/* /usr/share/ivy/ref/repository/
 
+COPY docker/warm-ivy2-cache.sh /
+
 # Define working directory
-WORKDIR /build
+ONBUILD WORKDIR /build
+# Warm Ivy2 cache
+ONBUILD RUN /warm-ivy2-cache.sh
