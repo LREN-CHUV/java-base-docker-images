@@ -16,13 +16,27 @@ Dockerfile
 
   COPY build.sbt /build/
   COPY project/ /build/project/
+
+  # Run sbt on an empty project and force it to download most of its dependencies to fill the cache
+  RUN sbt compile
+
   COPY src/ /build/src/
+  COPY .git/ /build/.git/
 
   RUN sbt package
 
   FROM hbpmip/java-base:8u131-2
 
   COPY --from=scala-build-env /build/target/scala_2.11/my-project.jar /usr/share/jars/
+
+```
+
+You need also to adapt build.sbt to use the pre-filled cache of dependencies stored in this image:
+
+build.sbt
+```scala
+
+  resolvers += "Pre-filled Ivy Repository" at "file:///usr/share/ivy/ref/repository/"
 
 ```
 

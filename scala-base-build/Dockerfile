@@ -9,8 +9,9 @@ FROM hbpmip/java-base-build:3.5.0-jdk-8-9
 
 MAINTAINER Arnaud Jutzeler <arnaud.jutzeler@chuv.ch>
 
-ENV SCALA_VERSION 2.11.8
-ENV SBT_VERSION 0.13.16
+ENV SCALA_VERSION=2.11.8 \
+    SBT_VERSION=0.13.16 \
+    HOME=/root
 
 # Install sbt dependencies
 RUN apk add --no-cache ncurses git
@@ -38,8 +39,7 @@ COPY docker/build.sbt /seed/
 COPY docker/project/ /seed/project/
 COPY docker/src/ /seed/src/
 
-RUN sbt about
-RUN sbt compile && rm -rf /seed/target
+RUN sbt about && sbt compile && rm -rf /seed/target && mv /root/.ivy2/cache/* /usr/share/ivy/ref/repository/
 
 # Define working directory
 WORKDIR /build

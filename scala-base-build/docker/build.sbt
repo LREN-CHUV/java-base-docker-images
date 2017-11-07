@@ -1,37 +1,80 @@
 
-name          := "dummy"
+name          := "seed"
 
-version       := sys.env.getOrElse("VERSION", "dev")
+// *****************************************************************************
+// Library dependencies
+// *****************************************************************************
 
-scalaVersion  := "2.11.8"
+lazy val library =
+  new {
+    object Version {
+      val scalaCheck = "1.13.5"
+      val scalaTest  = "3.0.3"
+      val spec2      = "3.8.9"
+    }
+    val scalaCheck: ModuleID  = "org.scalacheck"    %% "scalacheck"   % Version.scalaCheck
+    val scalaTest: ModuleID   = "org.scalatest"     %% "scalatest"    % Version.scalaTest
+    val spec2: ModuleID       = "org.specs2"        %% "specs2-core"  % Version.spec2
+  }
 
-val versions = new {
-  val scalaTest = "2.2.5"
-  val spec2 = "3.8.9"
-}
+lazy val `seed` =
+  project
+    .in(file("."))
+    .enablePlugins(AutomateHeaderPlugin, GitVersioning, GitBranchPrompt)
+    .settings(settings)
+    .settings(
+      Seq(
+        libraryDependencies ++= Seq(
+          library.scalaCheck % Test,
+          library.scalaTest  % Test,
+          library.spec2      % Test
+        )
+      )
+    )
 
-libraryDependencies ++= {
+lazy val settings = commonSettings ++ gitSettings ++ scalafmtSettings
+
+lazy val commonSettings =
   Seq(
-  //---------- Test libraries -------------------//
-    "org.scalatest"       %%  "scalatest"        % versions.scalaTest % "test",
-    "org.specs2"          %%  "specs2-core"      % versions.spec2     % "test"
+    scalaVersion := "2.11.8",
+    organization := "eu.humanbrainproject.mip",
+    organizationName := "LREN CHUV",
+    startYear := Some(2017),
+    licenses += ("Apache-2.0", url("http://www.apache.org/licenses/LICENSE-2.0")),
+    scalacOptions ++= Seq(
+      "-unchecked",
+      "-deprecation",
+      "-Xlint",
+      "-Yno-adapted-args",
+      "-Ywarn-dead-code",
+      "-Ywarn-value-discard",
+      "-language:_",
+      "-target:jvm-1.8",
+      "-encoding",
+      "UTF-8"
+    ),
+    javacOptions ++= Seq("-source", "1.8", "-target", "1.8", "-Xlint"),
+    unmanagedSourceDirectories.in(Compile) := Seq(scalaSource.in(Compile).value),
+    unmanagedSourceDirectories.in(Test) := Seq(scalaSource.in(Test).value),
+    wartremoverWarnings in (Compile, compile) ++= Warts.unsafe,
+    fork in run := true,
+    test in assembly := {},
+    fork in Test := false,
+    parallelExecution in Test := false
   )
-}
 
-scalacOptions ++= Seq(
-  "-unchecked",
-  "-deprecation",
-  "-Xlint",
-  "-Ywarn-dead-code",
-  "-language:_",
-  "-target:jvm-1.8",
-  "-encoding", "UTF-8"
-)
+lazy val gitSettings =
+  Seq(
+    git.gitTagToVersionNumber := { tag: String =>
+      if (tag matches "[0-9]+\\..*") Some(tag)
+      else None
+    },
+    git.useGitDescribe := true
+  )
 
-javacOptions ++= Seq("-source", "1.8", "-target", "1.8", "-Xlint")
-
-fork in Test := false
-
-parallelExecution in Test := false
-
-fork in run := true
+lazy val scalafmtSettings =
+  Seq(
+    scalafmtOnCompile := true,
+    scalafmtOnCompile.in(Sbt) := false,
+    scalafmtVersion := "1.1.0"
+  )
