@@ -31,15 +31,6 @@ Dockerfile
 
 ```
 
-You need also to adapt build.sbt to use the pre-filled cache of dependencies stored in this image:
-
-build.sbt
-```scala
-
-  resolvers += "Pre-filled Ivy Repository" at "file:///usr/share/ivy/ref/repository/"
-
-```
-
 # Scala development
 
 ## Recommended global sbt plugins
