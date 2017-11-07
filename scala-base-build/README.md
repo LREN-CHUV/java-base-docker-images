@@ -31,6 +31,10 @@ Dockerfile
 
 ```
 
+Environment variables:
+
+* BINTRAY_USER and BINTRAY_PASS: Credentials for BinTray. See [sbt-bintray](https://github.com/sbt/sbt-bintray)
+
 # Scala development
 
 ## Recommended global sbt plugins
