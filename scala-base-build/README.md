@@ -22,6 +22,13 @@ Dockerfile
 
   COPY src/ /build/src/
   COPY .git/ /build/.git/
+  # Adapt this line to your project
+  COPY .circleci/ /build/.circleci/
+  # Adapt this line to your project
+  COPY .*.cfg .*ignore .*.yaml .*.conf *.md *.builder *.sh *.yml *.json LICENSE /build/
+
+  # Check that all sources have been copied with the .git repository, to avoid missing files and snapshot versions during publication
+  RUN /check-sources.sh
 
   RUN sbt package
 
