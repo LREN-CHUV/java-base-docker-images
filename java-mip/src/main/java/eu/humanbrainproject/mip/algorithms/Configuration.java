@@ -49,11 +49,20 @@ public class Configuration {
     }
 
     public String[] variables() {
-        return env("PARAM_variables").split(",");
+
+        final String variables = env("PARAM_variables");
+        if (variables == null) {
+            throw new RuntimeException("Environment parameter PARAM_variables is empty");
+        }
+        return variables.split(",");
     }
 
     public String[] covariables() {
-        return env("PARAM_covariables").split(",");
+        final String covariables = env("PARAM_covariables");
+        if (covariables == null) {
+            throw new RuntimeException("Environment parameter PARAM_covariables is empty");
+        }
+        return covariables.split(",");
     }
 
     public double randomSeed() {
