@@ -1,89 +1,128 @@
 {
-  "name" : "simple",
-  "method" : "map",
-  "doc" : "A simple algorithm",
-  "metadata" : {
-    "docker_image" : "",
-    "accepts_missing_values" : "true"
-  },
-  "input" : {
-    "doc" : "Input is the list of covariables and groups",
-    "name" : "DependentVariables",
-    "type" : "record",
-    "fields" : [ {
-      "name" : "num1",
-      "type" : [ "double", "null" ]
-    }, {
-      "name" : "num2",
-      "type" : [ "double", "null" ]
-    }, {
-      "name" : "cat1",
-      "type" : [ {
-        "type" : "enum",
-        "name" : "Enum_cat1",
-        "symbols" : [ "a", "b", "c" ]
-      }, "int", "null" ]
-    }, {
-      "name" : "cat2",
-      "type" : [ {
-        "type" : "enum",
-        "name" : "Enum_cat2",
-        "symbols" : [ "_0", "_1" ]
-      }, "int", "null" ]
-    }]
-  },
-  "output" : {
-    "doc" : "Output is the estimate of the variable",
-    "type" : "string"
-  },
-  "cells" : {
-    "query" : {
-      "type" : {
-        "doc" : "Definition of the query that has produced this model",
-        "name" : "Query",
-        "type" : "record",
-        "fields" : [ {
-          "doc" : "Dependent variable",
-          "name" : "variable",
-          "type" : "string"
-        }, {
-          "doc" : "List of explanatory variables",
-          "name" : "covariables",
-          "type" : {
-            "type" : "array",
-            "items" : {
-              "type" : "string"
-            }
-          }
-        }, {
-          "doc" : "SQL query",
-          "name" : "sql",
-          "type" : "string"
-        }, {
-          "doc" : "Number of records selected by the query",
-          "name" : "count",
-          "type" : "int"
-        } ]
-      },
-      "init" : {
-        "variable" : "var1",
-        "covariables" : [ "num1", "num2", "cat1", "cat2" ],
-        "sql" : "SELECT input data",
-        "count" : 10
-      }
+  "action": [
+    {
+      "error": "No action defined"
     },
-    "model" : {
-      "type" : "int",
-      "init" : 42
+    {
+      "string": "dummy"
+    }
+  ],
+  "begin": [],
+  "cells": {
+    "model": {
+      "init": 42,
+      "type": "int"
+    },
+    "query": {
+      "init": {
+        "count": 10,
+        "covariables": [
+          "num1",
+          "num2",
+          "cat1",
+          "cat2"
+        ],
+        "sql": "SELECT input data",
+        "variable": "var1"
+      },
+      "type": {
+        "doc": "Definition of the query that has produced this model",
+        "fields": [
+          {
+            "doc": "Dependent variable",
+            "name": "variable",
+            "type": "string"
+          },
+          {
+            "doc": "List of explanatory variables",
+            "name": "covariables",
+            "type": {
+              "items": {
+                "type": "string"
+              },
+              "type": "array"
+            }
+          },
+          {
+            "doc": "SQL query",
+            "name": "sql",
+            "type": "string"
+          },
+          {
+            "doc": "Number of records selected by the query",
+            "name": "count",
+            "type": "int"
+          }
+        ],
+        "name": "Query",
+        "type": "record"
+      }
     }
   },
-  "pools" : { },
-  "begin" : [ ],
-  "action" : [ {
-    "error" : "No action defined"
-  }, {
-    "string" : "dummy"
-  } ],
-  "end" : [ ],
-  "fcns" : { }
+  "doc": "A simple algorithm",
+  "end": [],
+  "fcns": {},
+  "input": {
+    "doc": "Input is the list of covariables and groups",
+    "fields": [
+      {
+        "name": "num1",
+        "type": [
+          "double",
+          "null"
+        ]
+      },
+      {
+        "name": "num2",
+        "type": [
+          "double",
+          "null"
+        ]
+      },
+      {
+        "name": "cat1",
+        "type": [
+          {
+            "name": "Enum_cat1",
+            "symbols": [
+              "a",
+              "b",
+              "c"
+            ],
+            "type": "enum"
+          },
+          "int",
+          "null"
+        ]
+      },
+      {
+        "name": "cat2",
+        "type": [
+          {
+            "name": "Enum_cat2",
+            "symbols": [
+              "_0",
+              "_1"
+            ],
+            "type": "enum"
+          },
+          "int",
+          "null"
+        ]
+      }
+    ],
+    "name": "DependentVariables",
+    "type": "record"
+  },
+  "metadata": {
+    "accepts_missing_values": "true",
+    "docker_image": ""
+  },
+  "method": "map",
+  "name": "simple",
+  "output": {
+    "doc": "Output is the estimate of the variable",
+    "type": "string"
+  },
+  "pools": {}
 }

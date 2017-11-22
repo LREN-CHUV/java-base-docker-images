@@ -1,119 +1,151 @@
 {
-  "name": "weka",
-  "method": "map",
-  "doc": "Weka Model",
-  "metadata": {
-    "docker_image": "",
-    "accepts_missing_values": "true"
+  "action": [
+    {
+      "let": {
+        "m": {
+          "cell": "model"
+        }
+      }
+    },
+    {
+      "let": {
+        "classMeanForMissing": "m.classMeanForMissing",
+        "intercept": "m.intercept",
+        "selectedValue": "input.input1",
+        "selectedVariable": "m.selectedVariable",
+        "slope": "m.slope"
+      }
+    },
+    {
+      "else": {
+        "do": "classMeanForMissing"
+      },
+      "ifnotnull": {
+        "val": "selectedValue"
+      },
+      "then": {
+        "+": [
+          "intercept",
+          {
+            "*": [
+              "slope",
+              "val"
+            ]
+          }
+        ]
+      }
+    }
+  ],
+  "begin": [],
+  "cells": {
+    "model": {
+      "init": {
+        "classMeanForMissing": 0.0,
+        "intercept": 4.497857639156953,
+        "selectedVariable": "input1",
+        "slope": -0.5332741449857177
+      },
+      "type": {
+        "doc": "The model parameter",
+        "fields": [
+          {
+            "name": "slope",
+            "type": "double"
+          },
+          {
+            "name": "intercept",
+            "type": "double"
+          },
+          {
+            "name": "classMeanForMissing",
+            "type": "double"
+          },
+          {
+            "name": "selectedVariable",
+            "type": "string"
+          }
+        ],
+        "name": "LinearModel",
+        "type": "record"
+      }
+    },
+    "query": {
+      "init": {
+        "count": 7,
+        "covariables": [
+          "input1",
+          "input2"
+        ],
+        "sql": "SELECT",
+        "variable": "output"
+      },
+      "type": {
+        "doc": "Definition of the query that has produced this model",
+        "fields": [
+          {
+            "doc": "Dependent variable",
+            "name": "variable",
+            "type": "string"
+          },
+          {
+            "doc": "List of explanatory variables",
+            "name": "covariables",
+            "type": {
+              "items": {
+                "type": "string"
+              },
+              "type": "array"
+            }
+          },
+          {
+            "doc": "SQL query",
+            "name": "sql",
+            "type": "string"
+          },
+          {
+            "doc": "Number of records selected by the query",
+            "name": "count",
+            "type": "int"
+          }
+        ],
+        "name": "Query",
+        "type": "record"
+      }
+    }
   },
+  "doc": "Weka Model",
+  "end": [],
+  "fcns": {},
   "input": {
     "doc": "Input is the list of covariables and groups",
+    "fields": [
+      {
+        "name": "input1",
+        "type": [
+          "double",
+          "null"
+        ]
+      },
+      {
+        "name": "input2",
+        "type": [
+          "double",
+          "null"
+        ]
+      }
+    ],
     "name": "DependentVariables",
-    "type": "record",
-    "fields": [{
-      "name": "input1",
-      "type": ["double", "null"]
-    }, {
-      "name": "input2",
-      "type": ["double", "null"]
-    }]
+    "type": "record"
   },
+  "metadata": {
+    "accepts_missing_values": "true",
+    "docker_image": ""
+  },
+  "method": "map",
+  "name": "weka",
   "output": {
     "doc": "Output is the estimate of the variable",
     "type": "double"
   },
-  "cells": {
-    "query": {
-      "type": {
-        "doc": "Definition of the query that has produced this model",
-        "name": "Query",
-        "type": "record",
-        "fields": [{
-          "doc": "Dependent variable",
-          "name": "variable",
-          "type": "string"
-        }, {
-          "doc": "List of explanatory variables",
-          "name": "covariables",
-          "type": {
-            "type": "array",
-            "items": {
-              "type": "string"
-            }
-          }
-        }, {
-          "doc": "SQL query",
-          "name": "sql",
-          "type": "string"
-        }, {
-          "doc": "Number of records selected by the query",
-          "name": "count",
-          "type": "int"
-        }]
-      },
-      "init": {
-        "variable": "output",
-        "covariables": ["input1", "input2"],
-        "sql": "SELECT",
-        "count": 7
-      }
-    },
-    "model": {
-      "type": {
-        "type": "record",
-        "name": "LinearModel",
-        "doc": "The model parameter",
-        "fields": [{
-          "name": "slope",
-          "type": "double"
-        }, {
-          "name": "intercept",
-          "type": "double"
-        }, {
-          "name": "classMeanForMissing",
-          "type": "double"
-        }, {
-          "name": "selectedVariable",
-          "type": "string"
-        }]
-      },
-      "init": {
-        "intercept": 4.497857639156953,
-        "slope": -0.5332741449857177,
-        "classMeanForMissing": 0.0,
-        "selectedVariable": "input1"
-      }
-    }
-  },
-  "pools": {},
-  "begin": [],
-  "action": [{
-    "let": {
-      "m": {
-        "cell": "model"
-      }
-    }
-  }, {
-    "let": {
-      "selectedVariable": "m.selectedVariable",
-      "selectedValue": "input.input1",
-      "intercept": "m.intercept",
-      "slope": "m.slope",
-      "classMeanForMissing": "m.classMeanForMissing"
-    }
-  }, {
-    "ifnotnull": {
-      "val": "selectedValue"
-    },
-    "then": {
-      "+": ["intercept", {
-        "*": ["slope", "val"]
-      }]
-    },
-    "else": {
-      "do": "classMeanForMissing"
-    }
-  }],
-  "end": [],
-  "fcns": {}
+  "pools": {}
 }

@@ -1,1 +1,6 @@
-{"output":{"doc":"Output is the estimate of the variable","type":"double"}}
+{
+  "output": {
+    "doc": "Output is the estimate of the variable",
+    "type": "double"
+  }
+}

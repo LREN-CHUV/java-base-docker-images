@@ -1,37 +1,47 @@
 {
   "query": {
+    "init": {
+      "count": 10,
+      "covariables": [
+        "num1",
+        "num2",
+        "num3",
+        "num4"
+      ],
+      "sql": "SELECT input data",
+      "variable": "var1"
+    },
     "type": {
       "doc": "Definition of the query that has produced this model",
-      "name": "Query",
-      "type": "record",
-      "fields": [{
-        "doc": "Dependent variable",
-        "name": "variable",
-        "type": "string"
-      }, {
-        "doc": "List of explanatory variables",
-        "name": "covariables",
-        "type": {
-          "type": "array",
-          "items": {
-            "type": "string"
+      "fields": [
+        {
+          "doc": "Dependent variable",
+          "name": "variable",
+          "type": "string"
+        },
+        {
+          "doc": "List of explanatory variables",
+          "name": "covariables",
+          "type": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array"
           }
+        },
+        {
+          "doc": "SQL query",
+          "name": "sql",
+          "type": "string"
+        },
+        {
+          "doc": "Number of records selected by the query",
+          "name": "count",
+          "type": "int"
         }
-      }, {
-        "doc": "SQL query",
-        "name": "sql",
-        "type": "string"
-      }, {
-        "doc": "Number of records selected by the query",
-        "name": "count",
-        "type": "int"
-      }]
-    },
-    "init": {
-      "variable": "var1",
-      "covariables": ["num1", "num2", "num3", "num4"],
-      "sql": "SELECT input data",
-      "count": 10
+      ],
+      "name": "Query",
+      "type": "record"
     }
   }
 }
