@@ -1,0 +1,7 @@
+target_image:
+  build: Dockerfile
+  image: hbpmip/chaos-algorithm
+  pre:
+    - echo "Start building chaos-algorithm"
+  post:
+    - echo "Finished building chaos-algorithm"
