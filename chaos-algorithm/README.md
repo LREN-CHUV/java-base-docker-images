@@ -12,7 +12,7 @@ Run the Docker image using:
 
 ```sh
 
-  docker run --rm -e PARAM_variables=v1 -e PARAM_covariables=v2,v3 -e MODEL_PARAM_failure=<failure mode> hbpmip/chaos-algorithm:0.0.1 compute
+  docker run --rm -e PARAM_variables=v1 -e PARAM_covariables=v2,v3 -e MODEL_PARAM_failure=<failure mode> hbpmip/chaos-algorithm:0.1.0 compute
 
 ```
 

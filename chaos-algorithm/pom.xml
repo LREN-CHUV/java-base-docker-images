@@ -6,7 +6,7 @@
   <groupId>eu.humanbrainproject.mip.algorithms</groupId>
   <artifactId>chaos</artifactId>
   <packaging>jar</packaging>
-  <version>0.0.1</version><!-- bumpversion -->
+  <version>0.1.0</version><!-- bumpversion -->
   <name>mip-chaos</name>
   <description>
     This algorithm deliberately fails and introduce defects and helps to design different failure scenario during testing.
