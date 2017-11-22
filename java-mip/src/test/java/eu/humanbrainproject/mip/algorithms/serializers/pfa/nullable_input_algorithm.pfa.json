@@ -12,17 +12,25 @@
     "type" : "record",
     "fields" : [ {
       "name" : "num1",
-      "type" : ["double","null"]
+      "type" : [ "double", "null" ]
     }, {
       "name" : "num2",
-      "type" : ["double","null"]
+      "type" : [ "double", "null" ]
     }, {
       "name" : "cat1",
-      "type" : [{"type":"enum","name":"Enum_cat1","symbols":["a","b","c"]},"null"]
+      "type" : [ {
+        "type" : "enum",
+        "name" : "Enum_cat1",
+        "symbols" : [ "a", "b", "c" ]
+      }, "int", "null" ]
     }, {
       "name" : "cat2",
-      "type" : [{"type":"enum","name":"Enum_cat2","symbols":["_0","_1"]},"int","null"]
-    } ]
+      "type" : [ {
+        "type" : "enum",
+        "name" : "Enum_cat2",
+        "symbols" : [ "_0", "_1" ]
+      }, "int", "null" ]
+    }]
   },
   "output" : {
     "doc" : "Output is the estimate of the variable",

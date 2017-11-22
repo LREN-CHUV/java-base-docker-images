@@ -95,8 +95,8 @@ public abstract class InputDescription<T extends Algorithm> {
 
     protected String[] asSymbols(List<String> values) {
         List<String> symbols = values.stream()
-                .map(v -> v.matches("$\\d.*") ? "_" + v : v)
-                .map(v -> v.replaceAll("\\s", "_"))
+                .map(v -> v.matches("^\\d.*") ? "_" + v : v)
+                .map(v -> v.replaceAll("[\\s'\"]", "_"))
                 .collect(Collectors.toList());
         return symbols.toArray(new String[symbols.size()]);
     }
