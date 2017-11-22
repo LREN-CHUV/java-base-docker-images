@@ -69,3 +69,8 @@ jobs:
           name: "Test scala-base-build"
           command: |
             PATH=$PATH:/$HOME/.captain/bin/ ./scala-base-build/tests/test.sh
+      - run:
+          name: "Build chaos-algorithm"
+          command: |
+            PATH=$PATH:/$HOME/.captain/bin/ ./chaos-algorithm/build.sh
+      # No tests for chaos-algorithm
