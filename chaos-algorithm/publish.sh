@@ -37,8 +37,7 @@ fi
 # Build
 echo "Build the project..."
 ./build.sh
-# Cannot run the integration test now as the jar needs to be deployed to BinTray first
-# ./tests/test.sh
+#./tests/test.sh
 echo "[ok] Done"
 
 count=$(git status --porcelain | wc -l)
@@ -95,7 +94,7 @@ updated_version=$(bumpversion --dry-run --list patch | grep current_version | se
 # Build again to update the version
 echo "Build the project for distribution..."
 ./build.sh
-./tests/test.sh
+#./tests/test.sh
 echo "[ok] Done"
 
 git push
