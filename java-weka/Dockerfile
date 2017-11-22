@@ -31,9 +31,9 @@ RUN mkdir -p /opt/weka/props/weka/experiment \
 LABEL org.label-schema.build-date=$BUILD_DATE \
       org.label-schema.name="hbpmip/java-weka" \
       org.label-schema.description="Execute Weka algorithms in MIP Woken environment" \
-      org.label-schema.url="https://github.com/LREN-CHUV/java-base-docker-images" \
+      org.label-schema.url="https://github.com/LREN-CHUV/java-weka" \
       org.label-schema.vcs-type="git" \
-      org.label-schema.vcs-url="https://github.com/LREN-CHUV/java-base-docker-images.git" \
+      org.label-schema.vcs-url="https://github.com/LREN-CHUV/java-weka.git" \
       org.label-schema.vcs-ref=$VCS_REF \
       org.label-schema.version="$VERSION" \
       org.label-schema.vendor="LREN CHUV" \

@@ -45,3 +45,16 @@ COPY docker/warm-ivy2-cache.sh docker/check-sources.sh /
 ONBUILD WORKDIR /build
 # Warm Ivy2 cache
 ONBUILD RUN /warm-ivy2-cache.sh
+
+LABEL org.label-schema.build-date=$BUILD_DATE \
+      org.label-schema.name="hbpmip/scala-base-build" \
+      org.label-schema.description="Base image for building Scala projects with sbt" \
+      org.label-schema.url="https://github.com/LREN-CHUV/scala-base-build" \
+      org.label-schema.vcs-type="git" \
+      org.label-schema.vcs-url="https://github.com/LREN-CHUV/scala-base-build.git" \
+      org.label-schema.vcs-ref=$VCS_REF \
+      org.label-schema.version="$VERSION" \
+      org.label-schema.vendor="LREN CHUV" \
+      org.label-schema.license="GPLv3" \
+      org.label-schema.docker.dockerfile="Dockerfile" \
+      org.label-schema.schema-version="1.0"
