@@ -63,7 +63,7 @@ You may want to use one of the following specialised images for your algorithm i
 
 * Run the main computations
   ````
-    mkdir doc && docker run --rm -v $(pwd)/in:/data/in -v $(pwd)/out:/data/out <image name> compute
+    mkdir -p in out && docker run --rm -v $(pwd)/in:/data/in -v $(pwd)/out:/data/out <image name> compute
   ````
 * Export the documentation to the ./doc directory
   ````
@@ -80,11 +80,11 @@ You may want to use one of the following specialised images for your algorithm i
   ````
 * Export the sources to the ./src directory
   ````
-    mkdir src && docker run --rm -v $(pwd)/src:/data/out <image name> export
+    mkdir -p src && docker run --rm -v $(pwd)/src:/data/out <image name> export
   ````
 * Export the documentation to the ./doc directory
   ````
-    mkdir doc && docker run --rm -v $(pwd)/doc:/data/out <image name> export-docs
+    mkdir -p doc && docker run --rm -v $(pwd)/doc:/data/out <image name> export-docs
   ````
 
 ## Useful environment variables:

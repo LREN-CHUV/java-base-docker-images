@@ -49,10 +49,9 @@ ENTRYPOINT ["/docker-entrypoint.sh"]
 EXPOSE 80
 CMD ["compute"]
 
-LABEL eu.humanbrainproject.version=0.2 \
-      eu.humanbrainproject.category=Java
-
-LABEL org.label-schema.build-date=$BUILD_DATE \
+LABEL eu.humanbrainproject.version=0.5 \
+      eu.humanbrainproject.category=Java \
+      org.label-schema.build-date=$BUILD_DATE \
       org.label-schema.name="hbpmip/java-mip" \
       org.label-schema.description="Java environment compatible with MIP" \
       org.label-schema.url="https://github.com/LREN-CHUV/java-base-docker-images" \
