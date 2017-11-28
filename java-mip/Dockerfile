@@ -13,7 +13,11 @@ RUN cp /usr/share/maven/ref/settings-docker.xml /root/.m2/settings.xml \
 
 FROM hbpmip/java-base:8u131-2
 
-MAINTAINER arnaud@ahead-solutions.ch
+MAINTAINER Arnaud Jutzeler <arnaud.jutzeler@chuv.ch>
+
+ARG BUILD_DATE
+ARG VCS_REF
+ARG VERSION
 
 COPY docker/setup.sh /usr/local/bin/java-mip-docker-setup
 

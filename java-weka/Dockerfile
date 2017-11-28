@@ -14,6 +14,10 @@ FROM hbpmip/java-mip:0.5.3
 
 MAINTAINER ludovic.claude@chuv.ch
 
+ARG BUILD_DATE
+ARG VCS_REF
+ARG VERSION
+
 ENV JAVA_CLASSPATH=${JAVA_CLASSPATH}:/opt/weka/props/:/usr/share/jars/mip-weka-deps.jar \
     JAVA_MAINCLASS=eu.humanbrainproject.mip.algorithms.weka.Main \
     WEKA_HOME=/opt/weka

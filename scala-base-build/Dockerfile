@@ -9,6 +9,10 @@ FROM hbpmip/java-base-build:3.5.0-jdk-8-9
 
 MAINTAINER Arnaud Jutzeler <arnaud.jutzeler@chuv.ch>
 
+ARG BUILD_DATE
+ARG VCS_REF
+ARG VERSION
+
 ENV SCALA_VERSION=2.11.8 \
     SBT_VERSION=0.13.16 \
     HOME=/root
@@ -55,6 +59,6 @@ LABEL org.label-schema.build-date=$BUILD_DATE \
       org.label-schema.vcs-ref=$VCS_REF \
       org.label-schema.version="$VERSION" \
       org.label-schema.vendor="LREN CHUV" \
-      org.label-schema.license="GPLv3" \
+      org.label-schema.license="Apache2.0" \
       org.label-schema.docker.dockerfile="Dockerfile" \
       org.label-schema.schema-version="1.0"

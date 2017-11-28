@@ -2,6 +2,10 @@ FROM openjdk:8u131-jre-alpine
 
 MAINTAINER Arnaud Jutzeler <arnaud.jutzeler@chuv.ch>
 
+ARG BUILD_DATE
+ARG VCS_REF
+ARG VERSION
+
 RUN apk add --no-cache shadow=4.2.1-r11
 
 ENV JAVA_OPTIONS="-XX:+UnlockExperimentalVMOptions -XX:+UseCGroupMemoryLimitForHeap"

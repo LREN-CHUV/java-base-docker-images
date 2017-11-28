@@ -3,6 +3,10 @@ FROM maven:3.5.0-jdk-8-alpine
 
 MAINTAINER Arnaud Jutzeler <arnaud.jutzeler@chuv.ch>
 
+ARG BUILD_DATE
+ARG VCS_REF
+ARG VERSION
+
 ENV HOME=/root
 COPY docker/seed-src /seed-src
 WORKDIR /seed-src

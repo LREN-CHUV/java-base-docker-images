@@ -15,6 +15,10 @@ FROM hbpmip/java-mip:0.5.3
 
 MAINTAINER ludovic.claude@chuv.ch
 
+ARG BUILD_DATE
+ARG VCS_REF
+ARG VERSION
+
 ENV JAVA_CLASSPATH=${JAVA_CLASSPATH}:/usr/share/jars/mip-rapidminer-deps.jar \
     JAVA_MAINCLASS=eu.humanbrainproject.mip.algorithms.rapidminer.Main
 
