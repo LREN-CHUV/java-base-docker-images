@@ -46,3 +46,9 @@ Run Weka algorithms (cliassifiers) in MIP platform.
 This image contains [Scala](https://www.scala-lang.org/) and [sbt](http://www.scala-sbt.org/)
 
 Use it to build Scala projects.
+
+## [hbpmip/chaos-algorithm](./chaos-algorithm/): An algorithm designed to break
+
+[![DockerHub](https://img.shields.io/badge/docker-hbpmip%2Fchaos--algorithm-008bb8.svg)](https://hub.docker.com/r/hbpmip/chaos-algorithm/) [![ImageVersion](https://images.microbadger.com/badges/version/hbpmip/chaos-algorithm.svg)](https://hub.docker.com/r/hbpmip/chaos-algorithm/tags "hbpmip/chaos-algorithm image tags") [![ImageLayers](https://images.microbadger.com/badges/image/hbpmip/chaos-algorithm.svg)](https://microbadger.com/#/images/hbpmip/chaos-algorithm "hbpmip/chaos-algorithm on microbadger")
+
+This image contains an algorithm designed to break in various ways, useful for testing only.
