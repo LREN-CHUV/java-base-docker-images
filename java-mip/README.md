@@ -62,30 +62,40 @@ You may want to use one of the following specialised images for your algorithm i
 ## Summary of commands:
 
 * Run the main computations
-  ````
+
+  ```sh
     mkdir -p in out && docker run --rm -v $(pwd)/in:/data/in -v $(pwd)/out:/data/out <image name> compute
-  ````
+  ```
 * Export the documentation to the ./doc directory
-  ````
+
+  ```sh
     docker run --rm -v /data/out:./doc <image name> export-docs
-  ````
+  ```
+
 * Interactive shell
-  ````
+
+  ```sh
     docker run -i -t --rm <image name> shell
-  ````
+  ```
+
 * Quick documentation accessible at http://localhost:7777/ and sources at http://localhost:7777/src/
   Stop the server using Ctrl+C from the command line.
-  ````
+
+  ```sh
     docker run -d --rm -p 7777:80 <image name> serve
-  ````
+  ```
+
 * Export the sources to the ./src directory
-  ````
+
+  ```sh
     mkdir -p src && docker run --rm -v $(pwd)/src:/data/out <image name> export
-  ````
+  ```
+
 * Export the documentation to the ./doc directory
-  ````
+
+  ```sh
     mkdir -p doc && docker run --rm -v $(pwd)/doc:/data/out <image name> export-docs
-  ````
+  ```
 
 ## Useful environment variables:
 
