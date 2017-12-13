@@ -36,7 +36,7 @@ lazy val settings = commonSettings ++ gitSettings ++ scalafmtSettings
 
 lazy val commonSettings =
   Seq(
-    scalaVersion := "2.11.8",
+    scalaVersion := "2.11.11",
     organization := "eu.humanbrainproject.mip",
     organizationName := "LREN CHUV",
     startYear := Some(2017),
@@ -48,6 +48,7 @@ lazy val commonSettings =
       "-Yno-adapted-args",
       "-Ywarn-dead-code",
       "-Ywarn-value-discard",
+      "-Ypartial-unification",
       "-language:_",
       "-target:jvm-1.8",
       "-encoding",
