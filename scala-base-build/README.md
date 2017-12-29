@@ -32,7 +32,7 @@ Dockerfile
 
   RUN sbt package
 
-  FROM hbpmip/java-base:8u131-2
+  FROM hbpmip/java-base:8u151-0
 
   COPY --from=scala-build-env /build/target/scala_2.11/my-project.jar /usr/share/jars/
 
