@@ -1,14 +1,19 @@
-FROM openjdk:8u131-jre-alpine
-
-MAINTAINER Arnaud Jutzeler <arnaud.jutzeler@chuv.ch>
+FROM openjdk:8u151-jre-alpine
 
 ARG BUILD_DATE
 ARG VCS_REF
 ARG VERSION
 
-RUN apk add --no-cache shadow=4.2.1-r11
+ENV DOCKERIZE_VERSION=v0.6.0 \
+    JAVA_OPTIONS="-XX:+UnlockExperimentalVMOptions -XX:+UseCGroupMemoryLimitForHeap"
 
-ENV JAVA_OPTIONS="-XX:+UnlockExperimentalVMOptions -XX:+UseCGroupMemoryLimitForHeap"
+RUN apk add --no-cache --update ca-certificates wget shadow \
+    && update-ca-certificates \
+    && wget -O /tmp/dockerize.tar.gz "https://github.com/jwilder/dockerize/releases/download/$DOCKERIZE_VERSION/dockerize-alpine-linux-amd64-${DOCKERIZE_VERSION}.tar.gz" \
+    && tar -C /usr/local/bin -xzvf /tmp/dockerize.tar.gz \
+    && chown root:root /usr/local/bin/dockerize \
+    && apk del wget \
+    && rm -rf /var/cache/apk/* /tmp/*
 
 LABEL org.label-schema.build-date=$BUILD_DATE \
       org.label-schema.name="hbpmip/java-base" \
