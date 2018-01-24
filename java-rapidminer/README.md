@@ -15,7 +15,7 @@ Use this image as the parent image to adapt a RapidMiner algorithm to the MIP pl
 
 Dockerfile
 ```dockerfile
-  FROM hbpmip/java-base-build:3.5.0-jdk-8-9 as build-java-env
+  FROM hbpmip/java-base-build:3.5.2-jdk-8-0 as build-java-env
 
   COPY pom.xml /project/pom.xml
   COPY src/ /project/src
