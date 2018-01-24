@@ -13,8 +13,8 @@ ARG BUILD_DATE
 ARG VCS_REF
 ARG VERSION
 
-ENV SCALA_VERSION=2.11.8 \
-    SBT_VERSION=0.13.16 \
+ENV SCALA_VERSION=2.11.11 \
+    SBT_VERSION=1.1.0 \
     HOME=/root
 
 # Install sbt dependencies
@@ -22,7 +22,7 @@ RUN apk add --no-cache ncurses git
 
 # Install sbt
 RUN \
-  curl -L -o sbt-$SBT_VERSION.tgz https://cocl.us/sbt-$SBT_VERSION.tgz && \
+  curl -L -o sbt-$SBT_VERSION.tgz https://github.com/sbt/sbt/releases/download/v$SBT_VERSION/sbt-$SBT_VERSION.tgz && \
   mkdir -p /opt /usr/share/sbt/ref /usr/share/ivy/ref/repository && \
   tar -x -v -z -C /opt -f sbt-$SBT_VERSION.tgz && \
   rm sbt-$SBT_VERSION.tgz && \

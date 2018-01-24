@@ -11,10 +11,14 @@ lazy val library =
       val scalaCheck = "1.13.5"
       val scalaTest  = "3.0.3"
       val spec2      = "3.8.9"
+      val akka       = "2.5.9"
     }
     val scalaCheck: ModuleID  = "org.scalacheck"    %% "scalacheck"   % Version.scalaCheck
     val scalaTest: ModuleID   = "org.scalatest"     %% "scalatest"    % Version.scalaTest
     val spec2: ModuleID       = "org.specs2"        %% "specs2-core"  % Version.spec2
+    val akkaActor: ModuleID   = "com.typesafe.akka" %% "akka-actor"   % Version.akka
+    val akkaRemote: ModuleID  = "com.typesafe.akka" %% "akka-remote"  % Version.akka
+    val akkaCluster: ModuleID = "com.typesafe.akka" %% "akka-cluster" % Version.akka
   }
 
 lazy val `seed` =
@@ -25,10 +29,14 @@ lazy val `seed` =
     .settings(
       Seq(
         libraryDependencies ++= Seq(
+          library.akkaActor,
+          library.akkaRemote,
+          library.akkaCluster,
           library.scalaCheck % Test,
           library.scalaTest  % Test,
           library.spec2      % Test
-        )
+        ),
+        crossScalaVersions := Seq("2.11.11", "2.12.4")
       )
     )
 
@@ -36,7 +44,6 @@ lazy val settings = commonSettings ++ gitSettings ++ scalafmtSettings
 
 lazy val commonSettings =
   Seq(
-    scalaVersion := "2.11.11",
     organization := "eu.humanbrainproject.mip",
     organizationName := "LREN CHUV",
     startYear := Some(2017),
@@ -77,5 +84,5 @@ lazy val scalafmtSettings =
   Seq(
     scalafmtOnCompile := true,
     scalafmtOnCompile.in(Sbt) := false,
-    scalafmtVersion := "1.1.0"
+    scalafmtVersion := "1.4.0"
   )
