@@ -13,7 +13,7 @@ ARG BUILD_DATE
 ARG VCS_REF
 ARG VERSION
 
-ENV SCALA_VERSION=2.11.11 \
+ENV SCALA_VERSION=2.12.4 \
     SBT_VERSION=1.1.0 \
     HOME=/root
 
@@ -41,7 +41,7 @@ COPY docker/build.sbt /seed/
 COPY docker/project/ /seed/project/
 COPY docker/src/ /seed/src/
 
-RUN cd /seed && sbt about && sbt sbtVersion compile && rm -rf /seed/target && mv /root/.ivy2/cache/* /usr/share/ivy/ref/repository/
+RUN cd /seed && sbt about && sbt sbtVersion +compile && rm -rf /seed/target && mv /root/.ivy2/cache/* /usr/share/ivy/ref/repository/
 
 COPY docker/warm-ivy2-cache.sh docker/check-sources.sh /
 
