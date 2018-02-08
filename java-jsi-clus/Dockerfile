@@ -2,7 +2,6 @@ FROM hbpmip/java-base-build:3.5.0-jdk-8-9 as build-java-env
 
 COPY pom.xml /project/pom.xml
 COPY src/ /project/src
-COPY lib/ /project/lib
 
 # Fill the cache for jar dependencies, to allow code changes reusing previously downloaded jars
 RUN cp /usr/share/maven/ref/settings-docker.xml /root/.m2/settings.xml \

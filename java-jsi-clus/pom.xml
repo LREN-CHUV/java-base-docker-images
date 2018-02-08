@@ -5,7 +5,7 @@
   <groupId>eu.humanbrainproject.mip.algorithms</groupId>
   <artifactId>jsi-clus</artifactId>
   <packaging>jar</packaging>
-  <version>0.1.0</version>
+  <version>0.2.0</version>
   <name>mip-jsi-clus</name>
   <description>Support for the execution of CLUS-based JSI algorithms in the MIP Woken environment.</description>
 

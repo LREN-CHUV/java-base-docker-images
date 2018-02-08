@@ -20,6 +20,7 @@ import eu.humanbrainproject.mip.algorithms.Algorithm;
 import eu.humanbrainproject.mip.algorithms.Configuration;
 import eu.humanbrainproject.mip.algorithms.db.DBException;
 import eu.humanbrainproject.mip.algorithms.jsi.serializers.pfa.ClusModelPFASerializer;
+import eu.humanbrainproject.mip.algorithms.jsi.serializers.pfa.ClusVisualizationSerializer;
 import si.ijs.kt.clus.model.ClusModel;
 import si.ijs.kt.clus.model.io.ClusModelCollectionIO;
 import weka.core.Instances;
@@ -86,6 +87,7 @@ public class ClusAlgorithm<M extends ClusModel> implements Algorithm {
 		// save model
 		ClusModelCollectionIO io = ClusModelCollectionIO.load(ClusHelper.ClusConstants.CLUS_MODELFILE);
 		model = (M) io.getModel(clusMeta.WHICH_MODEL_TO_USE);
+		
 	}
 
 	/**
@@ -147,6 +149,7 @@ public class ClusAlgorithm<M extends ClusModel> implements Algorithm {
 			Double myDouble = Configuration.INSTANCE.randomSeed();
 			Integer seed = myDouble == null ? 1 : Integer.valueOf((int) Math.round(myDouble));
 			generalDict.put("RandomSeed", seed.toString());
+			generalDict.put("Verbose", "0");
 
 			Map<String, String> dataDict = new HashMap<>();
 			dataDict.put("File", ClusHelper.ClusConstants.CLUS_DATAFILE);

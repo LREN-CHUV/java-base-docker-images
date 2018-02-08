@@ -8,6 +8,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import eu.humanbrainproject.mip.algorithms.Algorithm.AlgorithmCapability;
+import eu.humanbrainproject.mip.algorithms.jsi.serializers.pfa.ClusVisualizationSerializer;
 
 
 public abstract class ClusMeta {
@@ -18,8 +19,7 @@ public abstract class ClusMeta {
     public Map<String, Map<String, String>> SETTINGS; // Settings for the clus algorithm (this is algorithm-specific; should implement generateSettings())
     public List<String> CMDLINE_SWITCHES; // Command-line switches for clus
     public int WHICH_MODEL_TO_USE; // CLUS produces several models. Which one to use? DEFAULT=0, ORIGINAL=1, PRUNED=2, ...
-
-
+   
     public ClusMeta() {
         NAME = "generic algorithm name";
         DOCUMENTATION = "generic algorithm documentation";
