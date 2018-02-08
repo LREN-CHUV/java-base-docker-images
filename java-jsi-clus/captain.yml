@@ -1,0 +1,7 @@
+target_image:
+  build: Dockerfile
+  image: hbpmip/java-jsi-clus
+  pre:
+    - echo "Start building java-jsi-clus"
+  post:
+    - echo "Finished building java-jsi-clus"
