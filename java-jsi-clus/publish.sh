@@ -102,7 +102,7 @@ $DOCKER run -d --rm --name java-jsi-clus-published hbpmip/java-jsi-clus:latest s
 $DOCKER container cp java-jsi-clus-published:/usr/share/jars/mip-jsi-clus.jar target/mip-jsi-clus-for-deploy.jar
 $DOCKER rm -f java-jsi-clus-published
 
-mvn deploy:deploy-file \
+mvn -X deploy:deploy-file \
   "-Durl=https://api.bintray.com/maven/hbpmedical/maven/eu.humanbrainproject.mip.algorithms:jsi-clus/;publish=1" \
    -DrepositoryId=bintray-hbpmedical-maven -Dfile=target/mip-jsi-clus-for-deploy.jar -DpomFile=pom.xml
 
