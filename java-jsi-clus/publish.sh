@@ -120,11 +120,11 @@ BUILD_DATE=$(date -Iseconds) \
   WORKSPACE=$WORKSPACE \
   $CAPTAIN push target_image --branch-tags=false --commit-tags=false --tag $updated_version
 
-#### Notify Microbadger
-###curl -XPOST https://hooks.microbadger.com/images/hbpmip/java-jsi-clus/eqm5EMJzbfgo1X3c_E03j5YxL1c=
-###
-#### Notify on slack
-###sed "s/USER/${USER^}/" $WORKSPACE/slack.json > $WORKSPACE/.slack.json
-###sed -i.bak "s/VERSION/$updated_version/" $WORKSPACE/.slack.json
-###curl -k -X POST --data-urlencode payload@$WORKSPACE/.slack.json https://hbps1.chuv.ch/slack/dev-activity
-###rm -f $WORKSPACE/.slack.json $WORKSPACE/.slack.json.bak
+## Notify Microbadger
+curl -XPOST https://hooks.microbadger.com/images/hbpmip/java-jsi-clus/eqm5EMJzbfgo1X3c_E03j5YxL1c=
+
+# Notify on slack
+sed "s/USER/${USER^}/" $WORKSPACE/slack.json > $WORKSPACE/.slack.json
+sed -i.bak "s/VERSION/$updated_version/" $WORKSPACE/.slack.json
+curl -k -X POST --data-urlencode payload@$WORKSPACE/.slack.json https://hbps1.chuv.ch/slack/dev-activity
+rm -f $WORKSPACE/.slack.json $WORKSPACE/.slack.json.bak
