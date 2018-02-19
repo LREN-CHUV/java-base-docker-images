@@ -2,10 +2,10 @@
 
 # hbpmip/java-jsi-clus: Java environment for JSI Clus algorithms
 
-This image contains the CLUS software which contains multiple algortithms from JSI (http://kt.ijs.si).
+This image contains support for execution of CLUS software. CLUS contains multiple machine learning algorithms from JSI (http://kt.ijs.si).
 
 ## Usage
 
-Use this image as part of a multistage build:
+Use this image as part of a multistage build.
 
 TODO
