@@ -10,6 +10,7 @@ import java.nio.file.Files;
 import eu.humanbrainproject.mip.algorithms.jsi.common.ClusAlgorithm;
 import eu.humanbrainproject.mip.algorithms.jsi.common.ClusHelper;
 import eu.humanbrainproject.mip.algorithms.jsi.common.ClusMeta;
+import eu.humanbrainproject.mip.algorithms.jsi.common.InputData;
 import eu.humanbrainproject.mip.algorithms.jsi.serializers.pfa.ClusModelPFASerializer;
 import eu.humanbrainproject.mip.algorithms.jsi.serializers.pfa.ClusVisualizationSerializer;
 import si.ijs.kt.clus.model.ClusModel;
@@ -51,7 +52,9 @@ public class Main<M extends ClusModel> {
 			Files.createLink(targetDbProps, dbProps);
 		}
 
-		ClusAlgorithm<M> experiment = new ClusAlgorithm<>(algorithmSerializer, clusMeta);
+		InputData input = InputData.fromEnv();
+		
+		ClusAlgorithm<M> experiment = new ClusAlgorithm<>(input, algorithmSerializer, clusMeta);
 
 		String visualization = "";
 		try {

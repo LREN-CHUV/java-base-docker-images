@@ -1,0 +1,18 @@
+{
+  "name" : "DummyAlgorithm",
+  "method" : "map",
+  "doc" : "This is the documentation for the dummy algorithm.",
+  "metadata" : {
+    "docker_image" : ""
+  },
+  "input" : { },
+  "output" : { },
+  "cells" : { },
+  "pools" : { },
+  "begin" : [ ],
+  "action" : [ {
+    "Hello" : "World"
+  } ],
+  "end" : [ ],
+  "fcns" : { }
+}

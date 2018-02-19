@@ -69,7 +69,7 @@ select_part() {
 
 git pull --tags
 # Look for a version tag in Git. If not found, ask the user to provide one
-[ $(git tag --points-at HEAD | grep java-rapidminer | wc -l) == 1 ] || (
+[ $(git tag --points-at HEAD | grep java-jsi-clus | wc -l) == 1 ] || (
   latest_version=$(bumpversion --dry-run --list patch | grep current_version | sed -r s,"^.*=",, || echo '0.0.1')
   echo
   echo "Current commit has not been tagged with a version. Latest known version is $latest_version."
@@ -97,14 +97,14 @@ echo "Build the project for distribution..."
 ./build.sh
 # Extract the jar from the Docker image and publish it to BinTray first to be able to execute the tests
 mkdir -p target/
-$DOCKER rm -f java-rapidminer-published 2> /dev/null || true
-$DOCKER run -d --rm --name java-rapidminer-published hbpmip/java-rapidminer:latest serve
-$DOCKER container cp java-rapidminer-published:/usr/share/jars/mip-rapidminer.jar target/mip-rapidminer-for-deploy.jar
-$DOCKER rm -f java-rapidminer-published
+$DOCKER rm -f java-jsi-clus-published 2> /dev/null || true
+$DOCKER run -d --rm --name java-jsi-clus-published hbpmip/java-jsi-clus:latest serve
+$DOCKER container cp java-jsi-clus-published:/usr/share/jars/mip-jsi-clus.jar target/mip-jsi-clus-for-deploy.jar
+$DOCKER rm -f java-jsi-clus-published
 
 mvn deploy:deploy-file \
-  "-Durl=https://api.bintray.com/maven/hbpmedical/maven/eu.humanbrainproject.mip.algorithms:rapidminer/;publish=1" \
-   -DrepositoryId=bintray-hbpmedical-maven -Dfile=target/mip-rapidminer-for-deploy.jar -DpomFile=pom.xml
+  "-Durl=https://api.bintray.com/maven/hbpmedical/maven/eu.humanbrainproject.mip.algorithms:jsi-clus/;publish=1" \
+   -DrepositoryId=bintray-hbpmedical-maven -Dfile=target/mip-jsi-clus-for-deploy.jar -DpomFile=pom.xml
 
 ./tests/test.sh
 echo "[ok] Done"
@@ -120,11 +120,11 @@ BUILD_DATE=$(date -Iseconds) \
   WORKSPACE=$WORKSPACE \
   $CAPTAIN push target_image --branch-tags=false --commit-tags=false --tag $updated_version
 
-# Notify Microbadger
-curl -XPOST https://hooks.microbadger.com/images/hbpmip/java-rapidminer/eqm5EMJzbfgo1X3c_E03j5YxL1c=
-
-# Notify on slack
-sed "s/USER/${USER^}/" $WORKSPACE/slack.json > $WORKSPACE/.slack.json
-sed -i.bak "s/VERSION/$updated_version/" $WORKSPACE/.slack.json
-curl -k -X POST --data-urlencode payload@$WORKSPACE/.slack.json https://hbps1.chuv.ch/slack/dev-activity
-rm -f $WORKSPACE/.slack.json $WORKSPACE/.slack.json.bak
+#### Notify Microbadger
+###curl -XPOST https://hooks.microbadger.com/images/hbpmip/java-jsi-clus/eqm5EMJzbfgo1X3c_E03j5YxL1c=
+###
+#### Notify on slack
+###sed "s/USER/${USER^}/" $WORKSPACE/slack.json > $WORKSPACE/.slack.json
+###sed -i.bak "s/VERSION/$updated_version/" $WORKSPACE/.slack.json
+###curl -k -X POST --data-urlencode payload@$WORKSPACE/.slack.json https://hbps1.chuv.ch/slack/dev-activity
+###rm -f $WORKSPACE/.slack.json $WORKSPACE/.slack.json.bak

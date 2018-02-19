@@ -1,38 +1,62 @@
+
 package eu.humanbrainproject.mip.algorithms.jsi;
 
-import junit.framework.Test;
-import junit.framework.TestCase;
-import junit.framework.TestSuite;
+import java.net.URL;
 
-/**
- * Unit test for simple App.
- */
-public class MainTest 
-    extends TestCase
-{
-    /**
-     * Create the test case
-     *
-     * @param testName name of the test case
-     */
-    public MainTest( String testName )
-    {
-        super( testName );
-    }
+import org.codehaus.jackson.map.ObjectMapper;
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Test;
 
-    /**
-     * @return the suite of tests being tested
-     */
-    public static Test suite()
-    {
-        return new TestSuite( MainTest.class );
-    }
+import eu.humanbrainproject.mip.algorithms.jsi.common.ClusAlgorithm;
+import eu.humanbrainproject.mip.algorithms.jsi.common.ClusMeta;
+import eu.humanbrainproject.mip.algorithms.jsi.dummy.DummyMeta;
+import eu.humanbrainproject.mip.algorithms.jsi.dummy.DummySerializer;
+import eu.humanbrainproject.mip.algorithms.jsi.dummy.FileInputData;
+import eu.humanbrainproject.mip.algorithms.jsi.serializers.pfa.ClusGenericSerializer;
+import eu.humanbrainproject.mip.algorithms.jsi.serializers.pfa.ClusModelPFASerializer;
+import si.ijs.kt.clus.model.ClusModel;
 
-    /**
-     * Rigourous Test :-)
-     */
-    public void testApp()
-    {
-        assertTrue( true );
+import org.codehaus.jackson.JsonNode;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
+
+@DisplayName("With CLUS algorithms")
+public class MainTest {
+
+    private static ObjectMapper mapper = new ObjectMapper();
+
+
+    @Test
+    @DisplayName("we can implement a dummy regressor and export its model to PFA")
+    public void testRegression() throws Exception {
+
+        String[] featureNames = new String[] { "input1", "input2" };
+        String[] variableNames = new String[] { "output1" };
+
+        // Get algorithm input
+        final URL resource = getClass().getResource("regression.csv");
+        assertNotNull(resource);
+
+        FileInputData input = new FileInputData(featureNames, variableNames, resource, ".csv", 0);
+
+        ClusMeta clusMeta = new DummyMeta();
+        ClusGenericSerializer<ClusModel> modelSerializer = new DummySerializer();
+        ClusModelPFASerializer<ClusModel> mainSerializer = new ClusModelPFASerializer<>(modelSerializer);
+        ClusAlgorithm<ClusModel> algorithm = new ClusAlgorithm<>(input, mainSerializer, clusMeta);
+
+        algorithm.run();
+
+        System.out.println(algorithm.toPrettyPFA());
+        String pfa = algorithm.toPFA();
+        assertTrue(!pfa.contains("error"));
+        assertTrue(pfa.contains("\"action\""));
+        assertTrue(pfa.contains("\"Hello\":\"World\""));
+
+        final JsonNode jsonPfa = mapper.readTree(pfa.replaceFirst("SELECT \\* FROM .*\\\\\"", "SELECT"));
+        final JsonNode jsonExpected = mapper.readTree(getClass().getResource("regression.pfa.json"));
+
+        assertEquals(jsonExpected, jsonPfa);
     }
 }
