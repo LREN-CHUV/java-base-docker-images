@@ -236,8 +236,7 @@
 		<repository>
 			<id>bintray-hbpmedical-maven</id>
 			<name>hbpmedical-maven</name>
-			<url>https://api.bintray.com/maven/hbpmedical/maven/eu.humanbrainproject.mip.algorithms:jsi-clus/;publish=1
-			</url>
+			<url>https://api.bintray.com/maven/hbpmedical/maven/eu.humanbrainproject.mip.algorithms:jsi-clus/;publish=1</url>
 		</repository>
 	</distributionManagement>
 
