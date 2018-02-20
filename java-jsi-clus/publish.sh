@@ -106,7 +106,6 @@ mvn -X deploy:deploy-file \
   "-Durl=https://api.bintray.com/maven/hbpmedical/maven/eu.humanbrainproject.mip.algorithms:jsi-clus/;publish=1" \
    -DrepositoryId=bintray-hbpmedical-maven -Dfile=target/mip-jsi-clus-for-deploy.jar -DpomFile=pom.xml
 
-./tests/test.sh
 echo "[ok] Done"
 
 git push
