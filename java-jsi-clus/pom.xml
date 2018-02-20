@@ -20,11 +20,12 @@
 		<info.reports.plugin.version>2.9</info.reports.plugin.version>
 		<surefire.report.plugin.version>2.20</surefire.report.plugin.version>
 		<jxr.plugin.version>2.5</jxr.plugin.version>
-		<hadrian.version>0.8.4</hadrian.version>
+		<!-- <hadrian.version>0.8.4</hadrian.version> -->
 		<junit.version>5.0.0</junit.version>
 		<postgres.version>9.4.1212.jre7</postgres.version>
 		<mip.adapter.version>0.5.3</mip.adapter.version>
 		<clus.version>1.0.0</clus.version>
+		<weka.version>3.8.1</weka.version>
 	</properties>
 
 	<repositories>
@@ -32,12 +33,6 @@
 			<id>maven</id>
 			<url>https://repo.maven.apache.org/maven2</url>
 			<name>Central Maven repository</name>
-		</repository>
-
-		<repository>
-			<id>opendatagroup</id>
-			<url>http://repository.opendatagroup.com/maven</url>
-			<name>Repository for Hadrian</name>
 		</repository>
 
 		<repository>
@@ -55,13 +50,6 @@
 			<groupId>org.junit.jupiter</groupId>
 			<artifactId>junit-jupiter-api</artifactId>
 			<version>${junit.version}</version>
-			<scope>test</scope>
-		</dependency>
-
-		<dependency>
-			<groupId>com.opendatagroup</groupId>
-			<artifactId>hadrian</artifactId>
-			<version>${hadrian.version}</version>
 			<scope>test</scope>
 		</dependency>
 
@@ -86,7 +74,7 @@
 		<dependency>
 			<groupId>nz.ac.waikato.cms.weka</groupId>
 			<artifactId>weka-stable</artifactId>
-			<version>3.8.1</version>
+			<version>${weka.version}</version>
 		</dependency>
 	</dependencies>
 

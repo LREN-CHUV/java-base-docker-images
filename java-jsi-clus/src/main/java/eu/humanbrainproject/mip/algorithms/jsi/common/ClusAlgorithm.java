@@ -17,7 +17,6 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.module.SimpleModule;
 
 import eu.humanbrainproject.mip.algorithms.Algorithm;
-import eu.humanbrainproject.mip.algorithms.Configuration;
 import eu.humanbrainproject.mip.algorithms.db.DBException;
 import eu.humanbrainproject.mip.algorithms.jsi.serializers.pfa.ClusModelPFASerializer;
 import si.ijs.kt.clus.model.ClusModel;
@@ -30,11 +29,19 @@ public class ClusAlgorithm<M extends ClusModel> implements Algorithm {
 
     private static final Logger LOGGER = Logger.getLogger(ClusAlgorithm.class.getName());
 
+    /** Clus metadata */
     private final ClusMeta clusMeta;
-    private M model; // Induced model
-    private ClusModelPFASerializer<M> algorithmSerializer; // Serializer for the
-                                                           // algorithm
-    private Exception exception; // Exception (if applicable)
+
+    /** Induced model */
+    private M model;
+
+    /** Serializer for the algorithm */
+    private ClusModelPFASerializer<M> algorithmSerializer;
+
+    /** Exception (if applicable) */
+    private Exception exception;
+
+    /** Input data for learning */
     private InputData input;
 
 
@@ -73,6 +80,10 @@ public class ClusAlgorithm<M extends ClusModel> implements Algorithm {
 
 
     public ClusAlgorithm(InputData input, ClusModelPFASerializer<M> serializer, ClusMeta clusMeta) {
+
+        if (input == null || serializer == null || clusMeta == null)
+            throw new IllegalArgumentException();
+
         this.input = input;
         this.algorithmSerializer = serializer;
         this.clusMeta = clusMeta;
@@ -91,11 +102,11 @@ public class ClusAlgorithm<M extends ClusModel> implements Algorithm {
         writeArffAndSettings();
 
         // Run experiment
-        clusMeta.CMDLINE_SWITCHES.add(ClusHelper.ClusConstants.CLUS_SETTINGSFILE);
+        clusMeta.CMDLINE_SWITCHES.add(ClusConstants.CLUS_SETTINGSFILE);
         si.ijs.kt.clus.Clus.main(clusMeta.CMDLINE_SWITCHES.toArray(new String[0]));
 
         // save model
-        ClusModelCollectionIO io = ClusModelCollectionIO.load(ClusHelper.ClusConstants.CLUS_MODELFILE);
+        ClusModelCollectionIO io = ClusModelCollectionIO.load(ClusConstants.CLUS_MODELFILE);
         model = (M) io.getModel(clusMeta.WHICH_MODEL_TO_USE);
 
     }
@@ -142,7 +153,7 @@ public class ClusAlgorithm<M extends ClusModel> implements Algorithm {
 
             ArffSaver arffSaver = new ArffSaver();
             arffSaver.setInstances(data);
-            arffSaver.setFile(new File(ClusHelper.ClusConstants.CLUS_DATAFILE));
+            arffSaver.setFile(new File(ClusConstants.CLUS_DATAFILE));
             arffSaver.writeBatch();
             arffSaver = null;
 
@@ -164,7 +175,7 @@ public class ClusAlgorithm<M extends ClusModel> implements Algorithm {
             generalDict.put("Verbose", "0");
 
             Map<String, String> dataDict = new HashMap<>();
-            dataDict.put("File", ClusHelper.ClusConstants.CLUS_DATAFILE);
+            dataDict.put("File", ClusConstants.CLUS_DATAFILE);
 
             Map<String, String> attributesDict = new HashMap<>();
             attributesDict.put("Descriptive", String.join(",", descriptiveIndices));
@@ -179,7 +190,7 @@ public class ClusAlgorithm<M extends ClusModel> implements Algorithm {
             addSafe("[Attributes]", attributesDict);
             addSafe("[Output]", outputDict);
 
-            PrintWriter pw = new PrintWriter(new FileWriter(ClusHelper.ClusConstants.CLUS_SETTINGSFILE));
+            PrintWriter pw = new PrintWriter(new FileWriter(ClusConstants.CLUS_SETTINGSFILE));
             for (String s : clusMeta.SETTINGS.keySet()) {
                 pw.write(s + System.lineSeparator());
 

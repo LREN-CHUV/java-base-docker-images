@@ -8,7 +8,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import eu.humanbrainproject.mip.algorithms.Algorithm.AlgorithmCapability;
-import eu.humanbrainproject.mip.algorithms.jsi.serializers.pfa.ClusVisualizationSerializer;
 
 
 public abstract class ClusMeta {

@@ -1,0 +1,201 @@
+Clus run stream
+***************
+
+Date: 20/02/18 17:22
+File: experiment.out
+Attributes: 4 (input: 2, output: 1)
+Missing values: No
+
+[General]
+Verbose = 0
+Compatibility = Latest
+RandomSeed = 0
+ResourceInfoLoaded = No
+
+[Data]
+File = experiment.arff
+TestSet = None
+PruneSet = None
+XVal = 10
+RemoveMissingTarget = No
+NormalizeData = None
+
+[Attributes]
+Target = 3
+Clustering = 3
+Descriptive = 1-2
+Key = None
+Disable = None
+Weights = Normalize
+ClusteringWeights = 1.0
+ReduceMemoryNominalAttrs = No
+GIS = None
+
+[Constraints]
+Syntactic = None
+MaxSize = Infinity
+MaxError = 0.0
+MaxDepth = Infinity
+
+[Nominal]
+MEstimate = 1.0
+
+[Model]
+MinimalWeight = 2.0
+MinimalNumberExamples = 0
+MinimalKnownWeight = 0.0
+ParamTuneNumberFolds = 10
+NominalSubsetTests = Yes
+
+[Tree]
+Heuristic = Gain
+HeuristicComplexity = N2
+SetDistance = GSMDistance
+TupleDistance = Euclidean
+TSDistance = DTW
+PruningMethod = C4.5
+BinarySplit = Yes
+ConvertToRules = No
+AlternativeSplits = No
+Optimize = {}
+MSENominal = No
+SplitSampling = None
+MissingClusteringAttrHandling = EstimateFromParentNode
+MissingTargetAttrHandling = ParentNode
+InductionOrder = DepthFirst
+EntropyType = StandardEntropy
+ConsiderUnlableInstancesInIGCalc = No
+SpatialMatrix = Binary
+SpatialMeasure = GlobalMoran
+Bandwidth = 0.001
+Longlat = No
+NumNeightbours = 0.0
+Alpha = 1.0
+SplitPosition = Exact
+
+[SemiSupervised]
+SemiSupervisedMethod = PCT
+StoppingCriteria = NoneAdded
+UnlabeledCriteria = Threshold
+ConfidenceThreshold = 0.8
+ConfidenceMeasure = Variance
+Iterations = 10
+K = 5
+UnlabeledData = 
+PercentageLabeled = 5
+UseWeights = No
+AirbagTrials = 0
+ExhaustiveSearchThresholds = [0.5,0.6,0.7,0.8,0.9,0.99]
+OOBErrorCalculation = LabeledOnly
+Normalization = MinMaxNormalization
+Aggregation = Average
+CalibrateHmcThreshold = No
+PruningWhenTuning = No
+InternalFolds = 5
+WeightScoresFile = NO
+PossibleWeights = [0.0,0.1,0.2,0.3,0.4,0.5,0.6,0.7,0.8,0.9,1.0]
+
+[Output]
+ShowModels = {Default, Pruned, Others}
+TrainErrors = Yes
+ValidErrors = Yes
+TestErrors = Yes
+AllFoldModels = Yes
+AllFoldErrors = No
+AllFoldDatasets = No
+UnknownFrequency = No
+BranchFrequency = No
+ShowInfo = {Count}
+PrintModelAndExamples = No
+WriteErrorFile = No
+WriteModelFile = Yes
+WriteOOBFile = No
+WritePredictions = {None}
+GzipOutput = No
+ModelIDFiles = No
+WriteCurves = No
+OutputPythonModel = No
+OutputROSSubspaces = No
+OutputJSONModel = No
+OutputDatabaseQueries = No
+OutputClowdFlowsJSON = No
+
+Run: 01
+*******
+
+Statistics
+----------
+
+FTValue (FTest): 1.0
+Induction Time: 0.007 sec
+Pruning Time: 0.001 sec
+Model information:
+     Default: Nodes = 1 (Leaves: 1)
+     Original: Nodes = 3 (Leaves: 2)
+     Pruned: Nodes = 3 (Leaves: 2)
+
+Training error
+--------------
+
+Number of examples: 7
+Classification Error
+   Default: 
+   Attribute: output1
+     REAL\PRED | A | B | C |
+     -------------------------
+             A | 3 | 0 | 0 | 3
+             B | 2 | 0 | 0 | 2
+             C | 2 | 0 | 0 | 2
+     -------------------------
+               | 7 | 0 | 0 | 7
+     Accuracy: 0.428571
+     Cramer's coefficient: 0
+
+   Original: 
+   Attribute: output1
+     REAL\PRED | A | B | C |
+     -------------------------
+             A | 3 | 0 | 0 | 3
+             B | 0 | 2 | 0 | 2
+             C | 2 | 0 | 0 | 2
+     -------------------------
+               | 5 | 2 | 0 | 7
+     Accuracy: 0.714286
+     Cramer's coefficient: 0.707107
+
+   Pruned: 
+   Attribute: output1
+     REAL\PRED | A | B | C |
+     -------------------------
+             A | 3 | 0 | 0 | 3
+             B | 0 | 2 | 0 | 2
+             C | 2 | 0 | 0 | 2
+     -------------------------
+               | 5 | 2 | 0 | 7
+     Accuracy: 0.714286
+     Cramer's coefficient: 0.707107
+
+Weighted mean squared error (MSE) for Nominal Attributes (Weights [1.531])
+   Default        : [1]
+   Original       : [0.525]
+   Pruned         : [0.525]
+
+Default Model
+*************
+
+[A] [3.0]: 7
+
+Original Model
+**************
+
+input1 > 4.6
++--yes: [B] [2.0]: 2
++--no:  [A] [3.0]: 5
+
+Pruned Model
+************
+
+input1 > 4.6
++--yes: [B] [2.0]: 2
++--no:  [A] [3.0]: 5
+

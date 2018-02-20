@@ -1,0 +1,11 @@
+[Output]
+TrainErrors=Yes
+WriteModelFile=Yes
+[General]
+RandomSeed=0
+Verbose=0
+[Data]
+File=experiment.arff
+[Attributes]
+Target=3
+Descriptive=1,2

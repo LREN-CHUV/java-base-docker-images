@@ -20,7 +20,8 @@ public class ClusModelPFASerializer<M extends ClusModel> extends AlgorithmSerial
 		this.modelSerializer = modelSerializer;
 	}
 
-	@Override
+	@SuppressWarnings({ "unchecked", "rawtypes" })
+    @Override
 	protected InputDescription getInputDescription(ClusAlgorithm<M> value) {
 
 		InputData input = null;
