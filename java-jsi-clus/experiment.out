@@ -1,7 +1,7 @@
 Clus run stream
 ***************
 
-Date: 20/02/18 17:22
+Date: 21/02/18 16:45
 File: experiment.out
 Attributes: 4 (input: 2, output: 1)
 Missing values: No
@@ -127,7 +127,7 @@ Statistics
 ----------
 
 FTValue (FTest): 1.0
-Induction Time: 0.007 sec
+Induction Time: 0.005 sec
 Pruning Time: 0.001 sec
 Model information:
      Default: Nodes = 1 (Leaves: 1)
