@@ -54,20 +54,17 @@ LABEL org.label-schema.build-date=$BUILD_DATE \
 
 Your algorithm will require additional classes and files packaged in my-algo.jar to adapt it to MIP Woken and to generate PFA output:
 
-* MyAlgoSerializer extends WekaClassifierSerializer<MyAlgo>
-* settings.properties containing
+* YourAlgoMeta extends ClusMeta
+* YourAlgoSerializer extends ClusGenericSerializer<ClusModel>
+* YourAlgoVisualizer extends ClusVisualizationSerializer<ClusModel>
 
-```
-classifier=weka.classifiers.functions.MyAlgo
-classifierSerializer=eu.humanbrainproject.mip.algorithms.weka.simplelr.MyAlgoSerializer
-```
 
 We provide a Java library to support the integration:
 
 ```xml
 <dependency>
   <groupId>eu.humanbrainproject.mip.algorithms</groupId>
-  <artifactId>weka</artifactId>
-  <version>${mip.weka.version}</version>
+  <artifactId>jsi-clus</artifactId>
+  <version>${mip.jsi-clus.version}</version>
 </dependency>
 ```
