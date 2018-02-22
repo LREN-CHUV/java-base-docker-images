@@ -9,7 +9,7 @@ import org.junit.jupiter.api.Test;
 import eu.humanbrainproject.mip.algorithms.jsi.common.ClusAlgorithm;
 import eu.humanbrainproject.mip.algorithms.jsi.common.ClusMeta;
 import eu.humanbrainproject.mip.algorithms.jsi.common.ClusConstants;
-import eu.humanbrainproject.mip.algorithms.jsi.dummy.DummyFimpSerializer;
+import eu.humanbrainproject.mip.algorithms.jsi.dummy.DummyDescriptiveSerializer;
 import eu.humanbrainproject.mip.algorithms.jsi.dummy.DummyMeta;
 import eu.humanbrainproject.mip.algorithms.jsi.dummy.DummyModelSerializer;
 import eu.humanbrainproject.mip.algorithms.jsi.dummy.DummyVisualizer;
@@ -103,7 +103,7 @@ public class MainTest {
     @Test
     @DisplayName("some algorithms may produce feature importances")
     public void testFimp() {
-        DummyFimpSerializer v = new DummyFimpSerializer();
+        DummyDescriptiveSerializer v = new DummyDescriptiveSerializer();
 
         assertEquals("DummyFimp", v.getFimpString(null));
     }
