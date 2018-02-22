@@ -4,7 +4,7 @@ package eu.humanbrainproject.mip.algorithms.jsi.common;
 /**
  * @author Martin Breskvar
  * 
- *         A class for storing some simple constants
+ * A class for storing some simple constants
  */
 public class ClusConstants {
 

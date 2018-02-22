@@ -3,6 +3,8 @@ package eu.humanbrainproject.mip.algorithms.jsi;
 
 import java.util.logging.Level;
 import java.util.logging.Logger;
+
+import java.io.File;
 import java.nio.file.FileSystems;
 import java.nio.file.Path;
 import java.nio.file.Files;
@@ -10,11 +12,17 @@ import java.nio.file.Files;
 import eu.humanbrainproject.mip.algorithms.jsi.common.ClusAlgorithm;
 import eu.humanbrainproject.mip.algorithms.jsi.common.ClusMeta;
 import eu.humanbrainproject.mip.algorithms.jsi.common.InputData;
+import eu.humanbrainproject.mip.algorithms.jsi.serializers.pfa.ClusFimpSerializer;
 import eu.humanbrainproject.mip.algorithms.jsi.serializers.pfa.ClusModelPFASerializer;
 import eu.humanbrainproject.mip.algorithms.jsi.serializers.pfa.ClusVisualizationSerializer;
+import eu.humanbrainproject.mip.algorithms.jsi.common.ClusConstants;
+
+import si.ijs.kt.clus.ext.featureRanking.Fimp;
 import si.ijs.kt.clus.model.ClusModel;
+
 import eu.humanbrainproject.mip.algorithms.Configuration;
 import eu.humanbrainproject.mip.algorithms.ResultsFormat;
+import eu.humanbrainproject.mip.algorithms.Algorithm.AlgorithmCapability;
 import eu.humanbrainproject.mip.algorithms.db.OutputDataConnector;
 
 
@@ -30,12 +38,14 @@ public class Main<M extends ClusModel> {
     private final ClusModelPFASerializer<M> algorithmSerializer;
     private final ClusMeta clusMeta;
     private final ClusVisualizationSerializer<M> algorithmVisualizationSerializer;
+    private final ClusFimpSerializer algorithmFimpSerializer;
 
 
-    public Main(ClusModelPFASerializer<M> algorithmSerializer, ClusMeta clusMeta, ClusVisualizationSerializer<M> algorithmVisualizationSerializer) {
+    public Main(ClusModelPFASerializer<M> algorithmSerializer, ClusMeta clusMeta, ClusVisualizationSerializer<M> algorithmVisualizationSerializer, ClusFimpSerializer algorithmFimpSerializer) {
         this.algorithmSerializer = algorithmSerializer;
         this.clusMeta = clusMeta;
         this.algorithmVisualizationSerializer = algorithmVisualizationSerializer;
+        this.algorithmFimpSerializer = algorithmFimpSerializer;
     }
 
 
@@ -56,30 +66,49 @@ public class Main<M extends ClusModel> {
         ClusAlgorithm<M> experiment = new ClusAlgorithm<>(input, algorithmSerializer, clusMeta);
 
         String visualization = "";
+        String importances = "";
+        OutputDataConnector out = null;
         try {
             experiment.run();
 
+            out = OutputDataConnector.fromEnv();
+
             // generate vizualization if it exists
-            if (algorithmVisualizationSerializer != null) {
+            if (algorithmVisualizationSerializer != null && experiment.getCapabilities().contains(AlgorithmCapability.VISUALISATION)) {
                 visualization = algorithmVisualizationSerializer.getVisualizationString(experiment.getModel());
+            }
+
+            if (algorithmFimpSerializer != null && experiment.getCapabilities().contains(AlgorithmCapability.FEATURE_IMPORTANCE)) {
+                // get feature importances if they exist
+                if (new File(ClusConstants.CLUS_FIMPFILE).exists()) {
+                    si.ijs.kt.clus.ext.featureRanking.Fimp fimp = new Fimp(ClusConstants.CLUS_FIMPFILE);
+                    importances = algorithmFimpSerializer.getFimpString(fimp);
+                }
             }
         }
         catch (Exception e) {
             LOGGER.log(Level.SEVERE, "Cannot execute the algorithm", e);
         }
         finally {
-            // get constructed PFA and save to database
-            String pfa = experiment.toPFA();
+            // if algorithm is predictive, get constructed PFA and save it to database
+            if (experiment.getCapabilities().contains(AlgorithmCapability.PREDICTIVE_MODEL)) {
+                String pfa = experiment.toPFA();
 
-            LOGGER.log(Level.FINEST, "Saving PFA to database");
-            // Write results PFA in DB - it can represent also an error
-            OutputDataConnector out = OutputDataConnector.fromEnv();
-            out.saveResults(pfa, ResultsFormat.PFA_JSON);
+                LOGGER.log(Level.FINEST, "Saving PFA to database");
+                // Write results PFA in DB - it can represent also an error
+                out.saveResults(pfa, ResultsFormat.PFA_JSON);
+            }
 
-            if (visualization != "") // if algo has a visualization
-            {
+            // if algorithm has a visualization
+            if (visualization != "") {
                 LOGGER.log(Level.FINEST, "Saving VISUALIZATION to database");
                 out.saveResults(visualization, ResultsFormat.JAVASCRIPT_VISJS);
+            }
+
+            // if algorithm produced feature importances
+            if (importances != "") {
+                LOGGER.log(Level.FINEST, "Saving IMPORTANCES to database");
+                out.saveResults(importances, ResultsFormat.PFA_JSON);
             }
         }
     }

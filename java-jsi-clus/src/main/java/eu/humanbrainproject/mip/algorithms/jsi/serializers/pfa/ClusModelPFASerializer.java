@@ -11,7 +11,11 @@ import eu.humanbrainproject.mip.algorithms.serializers.pfa.AlgorithmSerializer;
 import eu.humanbrainproject.mip.algorithms.serializers.pfa.InputDescription;
 import si.ijs.kt.clus.model.ClusModel;
 
-
+/**
+ * 
+ * @author Martin Breskvar
+ *
+ */
 public class ClusModelPFASerializer<M extends ClusModel> extends AlgorithmSerializer<ClusAlgorithm<M>> {
 
     private final ClusGenericSerializer<M> modelSerializer;

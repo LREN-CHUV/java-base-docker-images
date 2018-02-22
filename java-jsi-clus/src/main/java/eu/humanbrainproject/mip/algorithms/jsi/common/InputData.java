@@ -8,6 +8,11 @@ import weka.core.Instances;
 import weka.experiment.InstanceQuery;
 
 
+/**
+ * 
+ * @author Martin Breskvar
+ *
+ */
 public class InputData {
 
     private final InputDataConnector connector;
@@ -25,15 +30,14 @@ public class InputData {
 
         /* targets */
         final String[] outputNames = conf.variables();
-        
+
         /* inputs */
         final String[] inputNames = conf.covariables();
-        
+
         /* random seed */
         Double myDouble = conf.randomSeed();
         Integer seed = (myDouble == null || myDouble < 0) ? 1 : Integer.valueOf((int) Math.round(myDouble));
-        
-        
+
         final InputDataConnector connector = InputDataConnector.fromEnv();
 
         return new InputData(inputNames, outputNames, connector, seed);

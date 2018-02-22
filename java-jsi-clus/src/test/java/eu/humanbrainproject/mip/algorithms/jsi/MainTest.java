@@ -9,6 +9,7 @@ import org.junit.jupiter.api.Test;
 import eu.humanbrainproject.mip.algorithms.jsi.common.ClusAlgorithm;
 import eu.humanbrainproject.mip.algorithms.jsi.common.ClusMeta;
 import eu.humanbrainproject.mip.algorithms.jsi.common.ClusConstants;
+import eu.humanbrainproject.mip.algorithms.jsi.dummy.DummyFimpSerializer;
 import eu.humanbrainproject.mip.algorithms.jsi.dummy.DummyMeta;
 import eu.humanbrainproject.mip.algorithms.jsi.dummy.DummyModelSerializer;
 import eu.humanbrainproject.mip.algorithms.jsi.dummy.DummyVisualizer;
@@ -88,13 +89,22 @@ public class MainTest {
 
         assertEquals(jsonExpected, jsonPfa);
     }
-    
-    
+
+
     @Test
     @DisplayName("some algorithms may produce visualizations")
     public void testVisualization() {
         DummyVisualizer v = new DummyVisualizer();
-        
+
         assertEquals("DummyVisualization", v.getVisualizationString(null));
+    }
+
+
+    @Test
+    @DisplayName("some algorithms may produce feature importances")
+    public void testFimp() {
+        DummyFimpSerializer v = new DummyFimpSerializer();
+
+        assertEquals("DummyFimp", v.getFimpString(null));
     }
 }

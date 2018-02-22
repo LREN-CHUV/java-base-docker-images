@@ -12,6 +12,8 @@ import weka.core.converters.ConverterUtils;
 
 
 /**
+ * @author Martin Breskvar
+ * 
  * @return the input data initialized from a file
  */
 public class FileInputData extends InputData {

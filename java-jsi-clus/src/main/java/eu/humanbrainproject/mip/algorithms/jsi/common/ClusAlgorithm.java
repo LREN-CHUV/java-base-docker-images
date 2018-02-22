@@ -25,6 +25,11 @@ import weka.core.Instances;
 import weka.core.converters.ArffSaver;
 
 
+/**
+ * 
+ * @author Martin Breskvar
+ *
+ */
 public class ClusAlgorithm<M extends ClusModel> implements Algorithm {
 
     private static final Logger LOGGER = Logger.getLogger(ClusAlgorithm.class.getName());
@@ -108,7 +113,6 @@ public class ClusAlgorithm<M extends ClusModel> implements Algorithm {
         // save model
         ClusModelCollectionIO io = ClusModelCollectionIO.load(ClusConstants.CLUS_MODELFILE);
         model = (M) io.getModel(clusMeta.WHICH_MODEL_TO_USE);
-
     }
 
 

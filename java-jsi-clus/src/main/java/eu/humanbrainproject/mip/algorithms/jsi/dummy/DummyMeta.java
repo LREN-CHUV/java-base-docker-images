@@ -7,6 +7,11 @@ import eu.humanbrainproject.mip.algorithms.Algorithm.AlgorithmCapability;
 import eu.humanbrainproject.mip.algorithms.jsi.common.ClusMeta;
 
 
+/**
+ * 
+ * @author Martin Breskvar
+ *
+ */
 public class DummyMeta extends ClusMeta {
 
     public DummyMeta() {
