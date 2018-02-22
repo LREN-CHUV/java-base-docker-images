@@ -28,6 +28,10 @@ public interface Algorithm {
          */
         CLASSIFICATION,
         /**
+         * The algorithm provides regression
+         */
+        REGRESSION,        
+        /**
          * The algorithm provides statistical information about the input data
          */
         STATISTICAL,
@@ -38,7 +42,10 @@ public interface Algorithm {
         /**
          * The algorithm provides one or more visualisations
          */
-        VISUALISATION
+        VISUALISATION,
+        /**
+         * The algorithm providec feature importances
+         */
+        FEATURE_IMPORTANCE        
     }
-
 }
