@@ -9,7 +9,8 @@ public enum ResultsFormat {
     HIGHCHARTS("highcharts_json", "application/highcharts+json"),
     JAVASCRIPT_VISJS("visjs", "application/visjs+javascript"),
     PNG_IMAGE("png_image", "image/png;base64"),
-    SVG_IMAGE("svg_image", "image/svg+xml");
+    SVG_IMAGE("svg_image", "image/svg+xml"),
+    TABULAR_DATA_RESOURCE_JSON("tdr_json", "application/json");
 
     private final String shape;
     private final String mimeType;
