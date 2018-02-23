@@ -31,7 +31,7 @@ MAINTAINER <your email>
 
 ENV DOCKER_IMAGE=my-algo \
     JAVA_CLASSPATH=${JAVA_CLASSPATH}:/usr/share/jars/my-algo.jar \
-    JAVA_MAINCLASS=eu.humanbrainproject.mip.algorithms.jsi.clus.YourEntrypoint 
+    JAVA_MAINCLASS=eu.humanbrainproject.mip.algorithms.jsi.clus.YourEntrypoint
 
 COPY --from=build-java-env /project/target/my-algo.jar /usr/share/jars/my-algo.jar
 COPY --from=build-java-env /project/target/site/ /var/www/html/
