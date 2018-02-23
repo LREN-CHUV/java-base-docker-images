@@ -72,10 +72,8 @@ jobs:
       - run:
           name: "Build chaos-algorithm"
           command: |
-            PATH=$PATH:/$HOME/.captain/bin/ ./chaos-algorithm/build.sh
-      # No tests for chaos-algorithm
+            PATH=$PATH:/$HOME/.captain/bin/ ./chaos-algorithm/build.sh      # No tests for chaos-algorithm
       - run:
           name: "Build java-jsi-clus"
           command: |
-            PATH=$PATH:/$HOME/.captain/bin/ ./java-jsi-clus/build.sh
-      # No tests for java-jsi-clus
+            PATH=$PATH:/$HOME/.captain/bin/ ./java-jsi-clus/build.sh       # No tests for java-jsi-clus
