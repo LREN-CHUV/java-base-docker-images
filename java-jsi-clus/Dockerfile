@@ -8,7 +8,7 @@ RUN cp /usr/share/maven/ref/settings-docker.xml /root/.m2/settings.xml \
     && mvn dependency:go-offline
 
 # Repeating copy of the settings works better. I dunno why.
-RUN cp /usr/share/maven/ref/settings-docker.xml /root/.m2/settings.xml \ 
+RUN cp /usr/share/maven/ref/settings-docker.xml /root/.m2/settings.xml \
     && mvn package site
 
 FROM hbpmip/java-mip:0.5.3
@@ -27,7 +27,6 @@ COPY src/ /mip/java-jsi-clus/src/
 
 RUN mkdir -p /opt/weka/props/weka/experiment \
     && chown -R compute:compute /mip/ /opt/weka/ /usr/share/jars/
-
 
 WORKDIR /usr/share/jars
 
