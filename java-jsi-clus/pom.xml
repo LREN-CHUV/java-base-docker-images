@@ -20,7 +20,6 @@
 		<info.reports.plugin.version>2.9</info.reports.plugin.version>
 		<surefire.report.plugin.version>2.20</surefire.report.plugin.version>
 		<jxr.plugin.version>2.5</jxr.plugin.version>
-		<!-- <hadrian.version>0.8.4</hadrian.version> -->
 		<junit.version>5.0.0</junit.version>
 		<postgres.version>9.4.1212.jre7</postgres.version>
 		<mip.adapter.version>0.5.4</mip.adapter.version>
