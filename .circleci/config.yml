@@ -79,3 +79,4 @@ jobs:
           command: |
             PATH=$PATH:/$HOME/.captain/bin/ ./java-jsi-clus/build.sh
       # No tests for java-jsi-clus
+      
