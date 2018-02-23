@@ -31,7 +31,7 @@ MAINTAINER <your email>
 
 ENV DOCKER_IMAGE=my-algo \
     JAVA_CLASSPATH=${JAVA_CLASSPATH}:/usr/share/jars/my-algo.jar \
-    JAVA_MAINCLASS=eu.humanbrainproject.mip.algorithms.jsi.clus.YourEntrypoint 
+    JAVA_MAINCLASS=eu.humanbrainproject.mip.algorithms.jsi.clus.YourEntrypoint
 
 COPY --from=build-java-env /project/target/my-algo.jar /usr/share/jars/my-algo.jar
 COPY --from=build-java-env /project/target/site/ /var/www/html/
@@ -52,7 +52,6 @@ LABEL org.label-schema.build-date=$BUILD_DATE \
       org.label-schema.license="GPLv3" \
       org.label-schema.docker.dockerfile="Dockerfile" \
       org.label-schema.schema-version="1.0"
-
 ```
 
 Your algorithm will require additional classes and files packaged in my-algo.jar to adapt it to MIP Woken and to generate PFA output:
@@ -60,7 +59,6 @@ Your algorithm will require additional classes and files packaged in my-algo.jar
 * YourAlgoMeta extends ClusMeta
 * YourAlgoSerializer extends ClusGenericSerializer<ClusModel>
 * YourAlgoVisualizer extends ClusVisualizationSerializer<ClusModel>
-
 
 We provide a Java library to support the integration:
 
