@@ -16,7 +16,7 @@
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <jdk.version>1.8</jdk.version>
-    <compiler.plugin.version>3.6.2</compiler.plugin.version>
+    <compiler.plugin.version>3.7.0</compiler.plugin.version>
     <surefire.plugin.version>2.19</surefire.plugin.version>
     <jar.plugin.version>3.0.2</jar.plugin.version>
   </properties>
