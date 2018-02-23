@@ -83,7 +83,7 @@ public class ClusAlgorithm<M extends ClusModel> implements Algorithm {
     if (clusMeta == null) {
       throw new IllegalArgumentException("clusMeta is null");
     }
-    
+
     this.input = input;
     this.algorithmSerializer = serializer;
     this.clusMeta = clusMeta;

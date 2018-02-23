@@ -78,7 +78,7 @@ public class Main<M extends ClusModel> {
 
   public void run() throws Exception {
 
-    LOGGER.log(Level.FINEST, "Strating the CLUS library");
+    LOGGER.log(Level.FINEST, "Starting the CLUS library");
     LOGGER.log(Level.FINEST, "Preparing WEKA database props");
 
     // weka properties
