@@ -29,7 +29,7 @@ else
   CAPTAIN="sudo captain"
 fi
 
-$DOCKER pull openjdk:8u131-jre-alpine
+$DOCKER pull openjdk:8u151-jre-alpine
 BUILD_DATE=$(date -Iseconds) \
   VCS_REF=$(git describe --tags --dirty) \
   VERSION=$(git describe --tags --dirty) \
