@@ -4,3 +4,5 @@ target/
 *.iml
 dependency-reduced-pom.xml
 .settings/
+/.classpath
+experiment.*

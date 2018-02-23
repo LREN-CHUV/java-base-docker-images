@@ -37,7 +37,13 @@ Run Rapidminer algorithms (experiments) in MIP platform.
 
 [![DockerHub](https://img.shields.io/badge/docker-hbpmip%2Fjava--weka-008bb8.svg)](https://hub.docker.com/r/hbpmip/java-weka/) [![ImageVersion](https://images.microbadger.com/badges/version/hbpmip/java-weka.svg)](https://hub.docker.com/r/hbpmip/java-weka/tags "hbpmip/java-weka image tags") [![ImageLayers](https://images.microbadger.com/badges/image/hbpmip/java-weka.svg)](https://microbadger.com/#/images/hbpmip/java-weka "hbpmip/java-weka on microbadger")
 
-Run Weka algorithms (cliassifiers) in MIP platform.
+Run Weka algorithms (classifiers) in MIP platform.
+
+## [hbpmip/java-jsi-clus](./java-jsi-clus/): Run CLUS-based algorithms in MIP
+
+[![DockerHub](https://img.shields.io/badge/docker-hbpmip%2Fjava--jsi--clus-008bb8.svg)](https://hub.docker.com/r/hbpmip/java-jsi-clus/) [![ImageVersion](https://images.microbadger.com/badges/version/hbpmip/java-jsi-clus.svg)](https://hub.docker.com/r/hbpmip/java-jsi-clus/tags "hbpmip/java-jsi-clus image tags") [![ImageLayers](https://images.microbadger.com/badges/image/hbpmip/java-jsi-clus.svg)](https://microbadger.com/#/images/hbpmip/java-jsi-clus "hbpmip/java-jsi-clus on microbadger")
+
+Run JSI CLUS-based algorithms in MIP platform. Support for single-target and multi-target classification and regression, time-series prediction, feature ranking and decision tree visualization.
 
 ## [hbpmip/scala-base-build](./scala-base-build/): Scala build environment, including sbt
 

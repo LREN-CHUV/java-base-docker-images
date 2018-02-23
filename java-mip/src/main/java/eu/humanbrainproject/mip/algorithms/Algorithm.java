@@ -28,6 +28,22 @@ public interface Algorithm {
          */
         CLASSIFICATION,
         /**
+         * The algorithm provides multi-target classification
+         */
+        CLASSIFICATION_MT,
+        /**
+         * The algorithm provides regression
+         */
+        REGRESSION,
+        /**
+         * The algorithm provides multi-target regression
+         */
+        REGRESSION_MT,
+        /**
+         * The algorithm provides time-series prediction
+         */
+        TIME_SERIES,
+        /**
          * The algorithm provides statistical information about the input data
          */
         STATISTICAL,
@@ -38,7 +54,10 @@ public interface Algorithm {
         /**
          * The algorithm provides one or more visualisations
          */
-        VISUALISATION
+        VISUALISATION,
+        /**
+         * The algorithm provides feature importances
+         */
+        FEATURE_IMPORTANCE        
     }
-
 }

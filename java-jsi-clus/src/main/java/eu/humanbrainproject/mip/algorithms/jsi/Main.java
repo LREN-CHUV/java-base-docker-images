@@ -3,18 +3,26 @@ package eu.humanbrainproject.mip.algorithms.jsi;
 
 import java.util.logging.Level;
 import java.util.logging.Logger;
+
+import java.io.File;
 import java.nio.file.FileSystems;
 import java.nio.file.Path;
 import java.nio.file.Files;
 
 import eu.humanbrainproject.mip.algorithms.jsi.common.ClusAlgorithm;
-import eu.humanbrainproject.mip.algorithms.jsi.common.ClusHelper;
 import eu.humanbrainproject.mip.algorithms.jsi.common.ClusMeta;
+import eu.humanbrainproject.mip.algorithms.jsi.common.InputData;
+import eu.humanbrainproject.mip.algorithms.jsi.serializers.pfa.ClusDescriptiveSerializer;
 import eu.humanbrainproject.mip.algorithms.jsi.serializers.pfa.ClusModelPFASerializer;
 import eu.humanbrainproject.mip.algorithms.jsi.serializers.pfa.ClusVisualizationSerializer;
+import eu.humanbrainproject.mip.algorithms.jsi.common.ClusConstants;
+import si.ijs.kt.clus.algo.rules.ClusRuleSet;
+import si.ijs.kt.clus.ext.featureRanking.Fimp;
 import si.ijs.kt.clus.model.ClusModel;
+
 import eu.humanbrainproject.mip.algorithms.Configuration;
 import eu.humanbrainproject.mip.algorithms.ResultsFormat;
+import eu.humanbrainproject.mip.algorithms.Algorithm.AlgorithmCapability;
 import eu.humanbrainproject.mip.algorithms.db.OutputDataConnector;
 
 /**
@@ -24,112 +32,128 @@ import eu.humanbrainproject.mip.algorithms.db.OutputDataConnector;
  */
 public class Main<M extends ClusModel> {
 
-	private static final Logger LOGGER = Logger.getLogger(Main.class.getName());
+  private static final Logger LOGGER = Logger.getLogger(Main.class.getName());
 
-	private final ClusModelPFASerializer<M> algorithmSerializer;
-	private final ClusMeta clusMeta;
-	private final ClusVisualizationSerializer<M> algorithmVisualizationSerializer;
+  private ClusModelPFASerializer<M> algorithmSerializer = null;
+  private ClusMeta clusMeta = null;
+  private ClusVisualizationSerializer<M> algorithmVisualizationSerializer = null;
+  private ClusDescriptiveSerializer algorithmDescriptiveSerializer = null;
 
-	public Main(ClusModelPFASerializer<M> algorithmSerializer, ClusMeta clusMeta,
-			ClusVisualizationSerializer<M> algorithmVisualizationSerializer) {
-		this.algorithmSerializer = algorithmSerializer;
-		this.clusMeta = clusMeta;
-		this.algorithmVisualizationSerializer = algorithmVisualizationSerializer;
-	}
+  public Main(
+      ClusModelPFASerializer<M> algorithmSerializer,
+      ClusMeta clusMeta,
+      ClusVisualizationSerializer<M> algorithmVisualizationSerializer,
+      ClusDescriptiveSerializer algorithmDescriptiveSeriRalizer) {
 
-	public void run() throws Exception {
+    if (algorithmSerializer == null) {
+      throw new IllegalArgumentException("algorithmSerializer is null");
+    }
+    if (clusMeta == null) {
+      throw new IllegalArgumentException("clusMeta is null");
+    }
 
-		LOGGER.log(Level.FINEST, "Strating the CLUS library");
-		LOGGER.log(Level.FINEST, "Preparing WEKA database props");
+    this.algorithmSerializer = algorithmSerializer;
+    this.algorithmVisualizationSerializer = algorithmVisualizationSerializer;
+    this.clusMeta = clusMeta;
+    this.algorithmDescriptiveSerializer = algorithmDescriptiveSeriRalizer;
+  }
 
-		// weka properties
-		Path targetDbProps = FileSystems.getDefault().getPath("/opt", "weka", "props", "weka", "experiment",
-				"DatabaseUtils.props");
-		if (Configuration.INSTANCE.inputJdbcUrl().startsWith("jdbc:postgresql:")) {
-			Path dbProps = FileSystems.getDefault().getPath("/opt", "weka", "databases-props",
-					"DatabaseUtils.props.postgresql");
-			Files.createLink(targetDbProps, dbProps);
-		}
+  public Main(ClusModelPFASerializer<M> algorithmSerializer, ClusMeta clusMeta) {
+    this(algorithmSerializer, clusMeta, null, null);
+  }
 
-		ClusAlgorithm<M> experiment = new ClusAlgorithm<>(algorithmSerializer, clusMeta);
+  public Main(
+      ClusModelPFASerializer<M> algorithmSerializer,
+      ClusMeta clusMeta,
+      ClusVisualizationSerializer<M> algorithmVisualizationSerializer) {
+    this(algorithmSerializer, clusMeta, algorithmVisualizationSerializer, null);
+  }
 
-		String visualization = "";
-		try {
-			experiment.run();
+  public Main(
+      ClusModelPFASerializer<M> algorithmSerializer,
+      ClusMeta clusMeta,
+      ClusDescriptiveSerializer algorithmDescriptiveSeriRalizer) {
+    this(algorithmSerializer, clusMeta, null, algorithmDescriptiveSeriRalizer);
+  }
 
-			// generate vizualization if it exists
-			if (algorithmVisualizationSerializer != null) {
-				visualization = algorithmVisualizationSerializer.getVisualizationString(experiment.getModel());
-			}
-		} catch (Exception e) {
-			LOGGER.log(Level.SEVERE, "Cannot execute the algorithm", e);
-		} finally {
-			// get constructed PFA and save to database
-			String pfa = experiment.toPFA();
+  public void run() throws Exception {
 
-			// for debugging
-			String isDebug = System.getenv(ClusHelper.ClusConstants.CLUS_DEBUG_ENV_VARIABLE);
-			if (isDebug != null && isDebug.toLowerCase().equals("yes")) {
-				ClusHelper.writeDebug(pfa);
-			}
+    LOGGER.log(Level.FINEST, "Strating the CLUS library");
+    LOGGER.log(Level.FINEST, "Preparing WEKA database props");
 
-			LOGGER.log(Level.FINEST, "Saving PFA to database");
-			// Write results PFA in DB - it can represent also an error
-			OutputDataConnector out = OutputDataConnector.fromEnv();
-			out.saveResults(pfa, ResultsFormat.PFA_JSON);
+    // weka properties
 
-			if (visualization != "") // if algo has a visualization
-			{
-				LOGGER.log(Level.FINEST, "Saving VISUALIZATION to database");
-				out.saveResults(visualization, ResultsFormat.JAVASCRIPT_VISJS);
-			}
-		}
-	}
+    Path targetDbProps =
+        FileSystems.getDefault()
+            .getPath("/opt", "weka", "props", "weka", "experiment", "DatabaseUtils.props");
+    if (Configuration.INSTANCE.inputJdbcUrl().startsWith("jdbc:postgresql:")) {
+      Path dbProps =
+          FileSystems.getDefault()
+              .getPath("/opt", "weka", "databases-props", "DatabaseUtils.props.postgresql");
+      Files.createLink(targetDbProps, dbProps);
+    }
 
-	// public static void main(String[] args) {
-	//
-	// try {
-	// String settingsPath = (args.length == 0) ? "settings.properties" :
-	// args[0];
-	//
-	// // weka properties
-	// Path targetDbProps = FileSystems.getDefault().getPath("/opt", "weka",
-	// "props", "weka", "experiment", "DatabaseUtils.props");
-	// if (Configuration.INSTANCE.inputJdbcUrl().startsWith("jdbc:postgresql:"))
-	// {
-	// Path dbProps = FileSystems.getDefault().getPath("/opt", "weka",
-	// "databases-props", "DatabaseUtils.props.postgresql");
-	// Files.createLink(targetDbProps, dbProps);
-	// }
-	//
-	// Properties settings = new Properties();
-	// settings.load(Main.class.getResourceAsStream(settingsPath));
-	//
-	//
-	// final String modelSerializerClassName =
-	// settings.getProperty("serializer");
-	// Class<?> modelSerializerClass = Class.forName(modelSerializerClassName);
-	// ClusGenericSerializer<ClusModel> modelSerializer =
-	// (ClusGenericSerializer<ClusModel>) modelSerializerClass.newInstance();
-	//
-	// ClusModelPFASerializer<ClusModel> mainSerializer = new
-	// ClusModelPFASerializer<>(modelSerializer);
-	//
-	// final String metaClassName = settings.getProperty("meta");
-	// Class<?> metaClass = Class.forName(metaClassName);
-	// ClusMeta meta = (ClusMeta)metaClass.newInstance();
-	//
-	// // read parameters from environment
-	// // TODO
-	//
-	// // run the algorithm
-	// Main main = new Main(mainSerializer, meta);
-	// main.run();
-	// }
-	// catch (Exception e) {
-	// LOGGER.log(Level.SEVERE, "Cannot execute the algorithm", e);
-	// System.exit(1);
-	// }
-	// }
+    InputData input = InputData.fromEnv();
 
+    ClusAlgorithm<M> experiment = new ClusAlgorithm<>(input, algorithmSerializer, clusMeta);
+
+    String visualizationOutput = "";
+    String descriptiveOutput = "";
+    OutputDataConnector out = null;
+    try {
+      experiment.run();
+
+      out = OutputDataConnector.fromEnv();
+
+      // generate vizualization if it exists
+      if (algorithmVisualizationSerializer != null
+          && experiment.getCapabilities().contains(AlgorithmCapability.VISUALISATION)) {
+        visualizationOutput =
+            algorithmVisualizationSerializer.getVisualizationString(experiment.getModel());
+      }
+
+      if (algorithmDescriptiveSerializer != null) {
+        if (experiment.getCapabilities().contains(AlgorithmCapability.FEATURE_IMPORTANCE)
+            && !experiment.getCapabilities().contains(AlgorithmCapability.PREDICTIVE_MODEL)) {
+
+          // get feature importances if they exist
+          if (new File(ClusConstants.CLUS_FIMPFILE).exists()) {
+            si.ijs.kt.clus.ext.featureRanking.Fimp fimp = new Fimp(ClusConstants.CLUS_FIMPFILE);
+            descriptiveOutput = algorithmDescriptiveSerializer.getFimpString(fimp);
+          }
+        } else if (experiment.getCapabilities().contains(AlgorithmCapability.PREDICTIVE_MODEL)) {
+          // we have a descriptive output for the algorithm
+          // currently we only support rule models
+          if (experiment.getModel() instanceof ClusRuleSet) {
+            descriptiveOutput =
+                algorithmDescriptiveSerializer.getRulesetString(
+                    (ClusRuleSet) experiment.getModel());
+          }
+        }
+      }
+    } catch (Exception e) {
+      LOGGER.log(Level.SEVERE, "Cannot execute the algorithm", e);
+    } finally {
+      // if algorithm is predictive, get constructed PFA and save it to database
+      if (experiment.getCapabilities().contains(AlgorithmCapability.PREDICTIVE_MODEL)) {
+        String pfa = experiment.toPFA();
+
+        LOGGER.log(Level.FINEST, "Saving PFA to database");
+        // Write results PFA in DB - it can represent also an error
+        out.saveResults(pfa, ResultsFormat.PFA_JSON);
+      }
+
+      // if algorithm has a visualization
+      if (visualizationOutput != "") {
+        LOGGER.log(Level.FINEST, "Saving VISUALIZATION to database");
+        out.saveResults(visualizationOutput, ResultsFormat.JAVASCRIPT_VISJS);
+      }
+
+      // if algorithm produced feature importances
+      if (descriptiveOutput != "") {
+        LOGGER.log(Level.FINEST, "Saving TABULAR DATA to database");
+        out.saveResults(descriptiveOutput, ResultsFormat.TABULAR_DATA_RESOURCE_JSON);
+      }
+    }
+  }
 }

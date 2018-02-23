@@ -1,4 +1,6 @@
 .git/
 .idea/
+.settings/
 target/
+bin/
 *~

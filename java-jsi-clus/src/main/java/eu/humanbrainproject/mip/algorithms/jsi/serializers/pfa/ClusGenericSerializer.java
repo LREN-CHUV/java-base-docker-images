@@ -7,7 +7,11 @@ import com.fasterxml.jackson.core.JsonGenerator;
 import si.ijs.kt.clus.model.ClusModel;
 
 
-
+/**
+ * 
+ * @author Martin Breskvar
+ *
+ */
 public abstract class ClusGenericSerializer<M extends ClusModel> {
 
     public abstract void writeModelConstants(M model, JsonGenerator jgen) throws IOException;
@@ -17,17 +21,21 @@ public abstract class ClusGenericSerializer<M extends ClusModel> {
         // Empty expression, to override if necessary
     }
 
+
     public void writePfaAction(M model, JsonGenerator jgen) throws IOException {
         // Empty expression, to override if necessary
     }
+
 
     public void writePfaEnd(M model, JsonGenerator jgen) throws IOException {
         // Empty expression, to override if necessary
     }
 
+
     public void writePfaFunctionDefinitions(M model, JsonGenerator jgen) throws IOException {
         // Empty set of functions, to override if necessary
     }
+
 
     public void writePfaPools(M model, JsonGenerator jgen) throws IOException {
         // Empty set of pools, to override if necessary

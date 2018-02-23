@@ -17,191 +17,205 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.module.SimpleModule;
 
 import eu.humanbrainproject.mip.algorithms.Algorithm;
-import eu.humanbrainproject.mip.algorithms.Configuration;
 import eu.humanbrainproject.mip.algorithms.db.DBException;
 import eu.humanbrainproject.mip.algorithms.jsi.serializers.pfa.ClusModelPFASerializer;
-import eu.humanbrainproject.mip.algorithms.jsi.serializers.pfa.ClusVisualizationSerializer;
 import si.ijs.kt.clus.model.ClusModel;
 import si.ijs.kt.clus.model.io.ClusModelCollectionIO;
 import weka.core.Instances;
 import weka.core.converters.ArffSaver;
 
+/** @author Martin Breskvar */
 public class ClusAlgorithm<M extends ClusModel> implements Algorithm {
 
-	private static final Logger LOGGER = Logger.getLogger(ClusAlgorithm.class.getName());
+  private static final Logger LOGGER = Logger.getLogger(ClusAlgorithm.class.getName());
 
-	private final ClusMeta clusMeta;
-	private M model; // Induced model
-	private ClusModelPFASerializer<M> algorithmSerializer; // Serializer for the
-															// algorithm
-	private Exception exception; // Exception (if applicable)
-	private InputData input;
+  /** Clus metadata */
+  private final ClusMeta clusMeta;
 
-	@Override
-	public Set<AlgorithmCapability> getCapabilities() {
-		return clusMeta.CAPABILITIES;
-	}
+  /** Induced model */
+  private M model;
 
-	@Override
-	public String getDocumentation() {
-		return clusMeta.DOCUMENTATION;
-	}
+  /** Serializer for the algorithm */
+  private ClusModelPFASerializer<M> algorithmSerializer;
 
-	@Override
-	public String getName() {
-		return clusMeta.NAME;
-	}
+  /** Exception (if applicable) */
+  private Exception exception;
 
-	@Override
-	public String getErrorMessage() {
-		if (exception != null) {
-			return exception.getMessage();
-		} else {
-			return null;
-		}
-	}
+  /** Input data for learning */
+  private InputData input;
 
-	public M getModel() {
-		return model;
-	}
+  @Override
+  public Set<AlgorithmCapability> getCapabilities() {
+    return clusMeta.CAPABILITIES;
+  }
 
-	public ClusAlgorithm(ClusModelPFASerializer<M> serializer, ClusMeta clusMeta) {
-		this.algorithmSerializer = serializer;
-		this.clusMeta = clusMeta;
-	}
+  @Override
+  public String getDocumentation() {
+    return clusMeta.DOCUMENTATION;
+  }
 
-	public InputData getInput() {
-		return input;
-	}
+  @Override
+  public String getName() {
+    return clusMeta.NAME;
+  }
 
-	@SuppressWarnings("unchecked")
-	public void run() throws Exception {
+  @Override
+  public String getErrorMessage() {
+    if (exception != null) {
+      return exception.getMessage();
+    } else {
+      return null;
+    }
+  }
 
-		// write data and settings do disk
-		writeArffAndSettings();
+  public M getModel() {
+    return model;
+  }
 
-		// Run experiment
-		clusMeta.CMDLINE_SWITCHES.add(ClusHelper.ClusConstants.CLUS_SETTINGSFILE);
-		si.ijs.kt.clus.Clus.main(clusMeta.CMDLINE_SWITCHES.toArray(new String[0]));
+  public ClusAlgorithm(InputData input, ClusModelPFASerializer<M> serializer, ClusMeta clusMeta) {
 
-		// save model
-		ClusModelCollectionIO io = ClusModelCollectionIO.load(ClusHelper.ClusConstants.CLUS_MODELFILE);
-		model = (M) io.getModel(clusMeta.WHICH_MODEL_TO_USE);
-		
-	}
+    if (input == null) {
+      throw new IllegalArgumentException("input is null");
+    }
+    if (serializer == null) {
+      throw new IllegalArgumentException("serializer is null");
+    }
+    if (clusMeta == null) {
+      throw new IllegalArgumentException("clusMeta is null");
+    }
+    
+    this.input = input;
+    this.algorithmSerializer = serializer;
+    this.clusMeta = clusMeta;
+  }
 
-	/**
-	 * Generate the PFA representation of the experiment outcome
-	 *
-	 * @return
-	 * @throws IOException
-	 */
-	public String toPrettyPFA() throws IOException {
-		ObjectMapper myObjectMapper = getObjectMapper();
-		return myObjectMapper.writerWithDefaultPrettyPrinter().writeValueAsString(this);
-	}
+  public InputData getInput() {
+    return input;
+  }
 
-	public String toPFA() throws IOException {
-		ObjectMapper myObjectMapper = getObjectMapper();
-		return myObjectMapper.writeValueAsString(this);
-	}
+  @SuppressWarnings("unchecked")
+  public void run() throws Exception {
 
-	@SuppressWarnings("unchecked")
-	private ObjectMapper getObjectMapper() {
-		ObjectMapper myObjectMapper = new ObjectMapper();
-		SimpleModule module = new SimpleModule("CLUS", new Version(1, 0, 0, null, null, null));
-		// module.addSerializer(algorithmSerializer);
+    // write data and settings do disk
+    writeArffAndSettings();
 
-		module.addSerializer((Class<? extends ClusAlgorithm<M>>) this.getClass(), algorithmSerializer);
+    // Run experiment
+    clusMeta.CMDLINE_SWITCHES.add(ClusConstants.CLUS_SETTINGSFILE);
+    si.ijs.kt.clus.Clus.main(clusMeta.CMDLINE_SWITCHES.toArray(new String[0]));
 
-		myObjectMapper.registerModule(module);
-		return myObjectMapper;
-	}
+    // save model
+    ClusModelCollectionIO io = ClusModelCollectionIO.load(ClusConstants.CLUS_MODELFILE);
+    model = (M) io.getModel(clusMeta.WHICH_MODEL_TO_USE);
+  }
 
-	/**
-	 * Fetches data from database and saves it to arff. It also creates the
-	 * settings file for CLUS.
-	 */
-	private void writeArffAndSettings() {
-		try {
-			// get data and save it to disk
-			input = InputData.fromEnv();
-			Instances data = input.getData();
+  /**
+   * Generate the PFA representation of the experiment outcome
+   *
+   * @return
+   * @throws IOException
+   */
+  public String toPrettyPFA() throws IOException {
+    ObjectMapper myObjectMapper = getObjectMapper();
+    return myObjectMapper.writerWithDefaultPrettyPrinter().writeValueAsString(this);
+  }
 
-			ArffSaver arffSaver = new ArffSaver();
-			arffSaver.setInstances(data);
-			arffSaver.setFile(new File(ClusHelper.ClusConstants.CLUS_DATAFILE));
-			arffSaver.writeBatch();
+  public String toPFA() throws IOException {
+    ObjectMapper myObjectMapper = getObjectMapper();
+    return myObjectMapper.writeValueAsString(this);
+  }
 
-			// .s file
-			List<String> descriptiveIndices = new ArrayList<String>();
-			List<String> targetIndices = new ArrayList<String>();
+  @SuppressWarnings("unchecked")
+  private ObjectMapper getObjectMapper() {
+    ObjectMapper myObjectMapper = new ObjectMapper();
+    SimpleModule module = new SimpleModule("CLUS", new Version(1, 0, 0, null, null, null));
+    // module.addSerializer(algorithmSerializer);
 
-			for (String s : Configuration.INSTANCE.covariables()) {
-				descriptiveIndices.add(data.attribute(s).index() + 1 + "");
-			}
+    module.addSerializer((Class<? extends ClusAlgorithm<M>>) this.getClass(), algorithmSerializer);
 
-			for (String s : Configuration.INSTANCE.variables()) {
-				targetIndices.add(data.attribute(s).index() + 1 + "");
-			}
+    myObjectMapper.registerModule(module);
+    return myObjectMapper;
+  }
 
-			Map<String, String> generalDict = new HashMap<>();
-			Double myDouble = Configuration.INSTANCE.randomSeed();
-			Integer seed = myDouble == null ? 1 : Integer.valueOf((int) Math.round(myDouble));
-			generalDict.put("RandomSeed", seed.toString());
-			generalDict.put("Verbose", "0");
+  /**
+   * Fetches data from database and saves it to arff. It also creates the settings file for CLUS.
+   */
+  private void writeArffAndSettings() {
+    try {
+      Instances data = input.getData();
 
-			Map<String, String> dataDict = new HashMap<>();
-			dataDict.put("File", ClusHelper.ClusConstants.CLUS_DATAFILE);
+      ArffSaver arffSaver = new ArffSaver();
+      arffSaver.setInstances(data);
+      arffSaver.setFile(new File(ClusConstants.CLUS_DATAFILE));
+      arffSaver.writeBatch();
+      arffSaver = null;
 
-			Map<String, String> attributesDict = new HashMap<>();
-			attributesDict.put("Descriptive", String.join(",", descriptiveIndices));
-			attributesDict.put("Target", String.join(",", targetIndices));
+      // .s file
+      List<String> descriptiveIndices = new ArrayList<String>();
+      List<String> targetIndices = new ArrayList<String>();
 
-			Map<String, String> outputDict = new HashMap<>();
-			outputDict.put("WriteModelFile", "Yes");
-			outputDict.put("TrainErrors", "Yes");
+      for (String s : input.getInputFeaturesNames()) {
+        descriptiveIndices.add(Integer.toString(data.attribute(s).index() + 1));
+      }
 
-			addSafe("[General]", generalDict);
-			addSafe("[Data]", dataDict);
-			addSafe("[Attributes]", attributesDict);
-			addSafe("[Output]", outputDict);
+      for (String s : input.getOutputFeaturesNames()) {
+        targetIndices.add(Integer.toString(data.attribute(s).index() + 1));
+      }
 
-			PrintWriter pw = new PrintWriter(new FileWriter(ClusHelper.ClusConstants.CLUS_SETTINGSFILE));
-			for (String s : clusMeta.SETTINGS.keySet()) {
-				pw.write(s + System.lineSeparator());
+      Map<String, String> generalDict = new HashMap<>();
 
-				Map<String, String> m = clusMeta.SETTINGS.get(s);
-				for (String e : m.keySet()) {
-					pw.write(e + "=" + m.get(e) + System.lineSeparator());
-				}
-			}
+      generalDict.put("RandomSeed", Integer.toString(input.getRandomSeed()));
+      generalDict.put("Verbose", "0");
 
-			pw.flush();
-			pw.close();
-		} catch (IOException | DBException e) {
-			LOGGER.severe(e.getMessage());
-			System.exit(1);
-		}
-	}
+      Map<String, String> dataDict = new HashMap<>();
+      dataDict.put("File", ClusConstants.CLUS_DATAFILE);
 
-	private void addSafe(String key, Map<String, String> entries) {
-		Map<String, Map<String, String>> x = clusMeta.SETTINGS;
-		if (!x.containsKey(key)) {
-			x.put(key, entries);
-		} else {
-			Map<String, String> existing = x.get(key);
+      Map<String, String> attributesDict = new HashMap<>();
+      attributesDict.put("Descriptive", String.join(",", descriptiveIndices));
+      attributesDict.put("Target", String.join(",", targetIndices));
 
-			for (String s : entries.keySet()) {
-				if (existing.putIfAbsent(s, entries.get(s)) != null) { // key
-																		// exists
-																		// and
-																		// has
-																		// value
-					// override the current value
-					existing.put(s, entries.get(s));
-				}
-			}
-		}
-	}
+      Map<String, String> outputDict = new HashMap<>();
+      outputDict.put("WriteModelFile", "Yes");
+      outputDict.put("TrainErrors", "Yes");
+
+      addSafe("[General]", generalDict);
+      addSafe("[Data]", dataDict);
+      addSafe("[Attributes]", attributesDict);
+      addSafe("[Output]", outputDict);
+
+      PrintWriter pw = new PrintWriter(new FileWriter(ClusConstants.CLUS_SETTINGSFILE));
+      for (String s : clusMeta.SETTINGS.keySet()) {
+        pw.write(s + System.lineSeparator());
+
+        Map<String, String> m = clusMeta.SETTINGS.get(s);
+        for (String e : m.keySet()) {
+          pw.write(e + "=" + m.get(e) + System.lineSeparator());
+        }
+      }
+
+      pw.flush();
+      pw.close();
+      pw = null;
+    } catch (IOException | DBException e) {
+      LOGGER.severe(e.getMessage());
+      System.exit(1);
+    }
+  }
+
+  private void addSafe(String key, Map<String, String> entries) {
+    Map<String, Map<String, String>> x = clusMeta.SETTINGS;
+    if (!x.containsKey(key)) {
+      x.put(key, entries);
+    } else {
+      Map<String, String> existing = x.get(key);
+
+      for (String s : entries.keySet()) {
+
+        // key exists and has value
+        if (existing.putIfAbsent(s, entries.get(s)) != null) {
+          // override the current value
+          existing.put(s, entries.get(s));
+        }
+      }
+    }
+  }
 }
