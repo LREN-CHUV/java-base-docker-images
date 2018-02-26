@@ -46,15 +46,15 @@ public class Main {
 
         InputData inputData = InputData.fromEnv();
 
-        // Run experiment
-        RapidMinerAlgorithm<?> experiment = new RapidMinerAlgorithm<>(inputData, model, algorithmSerializer);
+        // Run algorithm
+        RapidMinerAlgorithm<?> algorithm = new RapidMinerAlgorithm<>(inputData, model, algorithmSerializer);
 
         try {
-            experiment.run();
+            algorithm.run();
         } finally {
 
             // Write results PFA in DB - it can represent also an error
-            String pfa = experiment.toPFA();
+            String pfa = algorithm.toPFA();
             OutputDataConnector out = OutputDataConnector.fromEnv();
             out.saveResults(pfa, ResultsFormat.PFA_JSON);
         }
