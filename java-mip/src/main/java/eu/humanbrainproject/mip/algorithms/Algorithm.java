@@ -56,7 +56,7 @@ public interface Algorithm {
          */
         VISUALISATION,
         /**
-         * The algorithm provides feature importances
+         * The algorithm provides feature importance
          */
         FEATURE_IMPORTANCE        
     }
