@@ -23,12 +23,12 @@ public class WekaAlgorithmSerializer<M extends Classifier> extends AlgorithmSeri
     }
 
     @Override
-    protected InputDescription getInputDescription(WekaAlgorithm<M> value) {
+    protected InputDescription<WekaAlgorithm<M>> getInputDescription(WekaAlgorithm<M> value) {
         InputData input = value.getInput();
 
         // Input, output
         if (input != null) {
-            return new WekaInputDescription(value);
+            return new WekaInputDescription<WekaAlgorithm<M>>(value);
         } else {
             return null;
         }

@@ -1,6 +1,7 @@
 package eu.humanbrainproject.mip.algorithms.weka;
 
 import com.fasterxml.jackson.core.Version;
+import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.module.SimpleModule;
 import eu.humanbrainproject.mip.algorithms.Algorithm;
@@ -119,7 +120,10 @@ public class WekaAlgorithm<M extends Classifier> implements Algorithm {
      */
     public String toPFA() throws IOException {
         ObjectMapper myObjectMapper = getObjectMapper();
-        return myObjectMapper.writeValueAsString(this);
+        String rawJson = myObjectMapper.writeValueAsString(this);
+        // Parse again the Json as it may contain segments forcibly added with writeRaw()
+        JsonNode json = myObjectMapper.readTree(rawJson);
+        return myObjectMapper.writeValueAsString(json);
     }
 
     /**
@@ -133,7 +137,7 @@ public class WekaAlgorithm<M extends Classifier> implements Algorithm {
         return myObjectMapper.writerWithDefaultPrettyPrinter().writeValueAsString(this);
     }
 
-    @SuppressWarnings("RedundantCast")
+    @SuppressWarnings({ "RedundantCast", "unchecked" })
     private ObjectMapper getObjectMapper() {
         ObjectMapper myObjectMapper = new ObjectMapper();
         SimpleModule module = new SimpleModule("Weka", new Version(1, 0, 0, null, null, null));
