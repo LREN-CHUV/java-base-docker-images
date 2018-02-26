@@ -27,7 +27,7 @@
     <junit.version>5.0.0</junit.version>
     <postgres.version>9.4.1212.jre7</postgres.version>
     <weka.version>3.8.1</weka.version>
-    <mip.adapter.version>0.5.4</mip.adapter.version>
+    <mip.adapter.version>0.5.5</mip.adapter.version>
   </properties>
 
   <repositories>
