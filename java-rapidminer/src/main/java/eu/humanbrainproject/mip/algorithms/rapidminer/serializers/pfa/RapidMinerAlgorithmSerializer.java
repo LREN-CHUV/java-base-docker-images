@@ -24,12 +24,12 @@ public class RapidMinerAlgorithmSerializer<M extends PredictionModel> extends Al
     }
 
     @Override
-    protected InputDescription getInputDescription(RapidMinerAlgorithm<M> value) {
+    protected InputDescription<RapidMinerAlgorithm<M>> getInputDescription(RapidMinerAlgorithm<M> value) {
         InputData input = value.getInput();
 
         // Input, output
         if (input != null) {
-            return new RapidMinerInputDescription(value);
+            return new RapidMinerInputDescription<M>(value);
         } else {
             return null;
         }

@@ -1,7 +1,9 @@
 package eu.humanbrainproject.mip.algorithms.rapidminer.serializers.pfa;
 
 import com.rapidminer.example.Attribute;
+import com.rapidminer.operator.learner.PredictionModel;
 import com.rapidminer.tools.Ontology;
+
 import eu.humanbrainproject.mip.algorithms.db.DBException;
 import eu.humanbrainproject.mip.algorithms.rapidminer.InputData;
 import eu.humanbrainproject.mip.algorithms.rapidminer.RapidMinerAlgorithm;
@@ -11,9 +13,9 @@ import eu.humanbrainproject.mip.algorithms.serializers.pfa.InputDescription;
 import java.util.LinkedList;
 import java.util.List;
 
-public class RapidMinerInputDescription extends InputDescription<RapidMinerAlgorithm<?>> {
+public class RapidMinerInputDescription<M extends PredictionModel> extends InputDescription<RapidMinerAlgorithm<M>> {
 
-    public RapidMinerInputDescription(RapidMinerAlgorithm<?> algorithm) {
+    public RapidMinerInputDescription(RapidMinerAlgorithm<M> algorithm) {
         super(algorithm);
     }
 

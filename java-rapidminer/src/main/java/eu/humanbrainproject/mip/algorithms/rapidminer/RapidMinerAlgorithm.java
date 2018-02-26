@@ -1,8 +1,6 @@
 package eu.humanbrainproject.mip.algorithms.rapidminer;
 
 import java.io.IOException;
-import java.util.Arrays;
-import java.util.HashSet;
 import java.util.Set;
 import java.util.logging.Logger;
 
@@ -50,7 +48,7 @@ public class RapidMinerAlgorithm<M extends PredictionModel> implements Algorithm
      * @param model
      */
     public RapidMinerAlgorithm(InputData input, RapidMinerModel<M> model, RapidMinerAlgorithmSerializer<M> serializer) {
-        this.input = input;
+		this.input = input;
         this.model = model;
         this.serializer = serializer;
     }
@@ -161,11 +159,11 @@ public class RapidMinerAlgorithm<M extends PredictionModel> implements Algorithm
         return myObjectMapper.writerWithDefaultPrettyPrinter().writeValueAsString(this);
     }
 
-    @SuppressWarnings("unchecked")
+    @SuppressWarnings({ "unchecked", "rawtypes" })
     private ObjectMapper getObjectMapper() {
         ObjectMapper myObjectMapper = new ObjectMapper();
         SimpleModule module = new SimpleModule("RapidMiner", new Version(1, 0, 0, null, null, null));
-        module.addSerializer(RapidMinerAlgorithm.class, serializer);
+        module.addSerializer(RapidMinerAlgorithm.class, (RapidMinerAlgorithmSerializer)serializer);
         myObjectMapper.registerModule(module);
         myObjectMapper.enable(MapperFeature.SORT_PROPERTIES_ALPHABETICALLY);
         myObjectMapper.enable(SerializationFeature.ORDER_MAP_ENTRIES_BY_KEYS);
