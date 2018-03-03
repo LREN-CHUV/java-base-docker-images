@@ -8,7 +8,7 @@ package eu.humanbrainproject.mip.algorithms.jsi.common;
 public class ClusConstants {
 
   /** the name of all files regarding CLUS (this can be changed) */
-  private static final String CLUS_FILE = "experiment";
+  public static final String CLUS_FILE = "experiment";
 
   /** where should the arff be stored (CLUS specific settings, do not change this!) */
   public static final String CLUS_DATAFILE = CLUS_FILE + ".arff";
@@ -21,7 +21,4 @@ public class ClusConstants {
 
   /** where should the .model file be stored (CLUS specific settings, do not change this!) */
   public static final String CLUS_MODELFILE = CLUS_FILE + ".model";
-
-  /** where should the .fimp file be stored (CLUS specific settings, do not change this!) */
-  public static final String CLUS_FIMPFILE = CLUS_FILE + ".fimp";
 }
