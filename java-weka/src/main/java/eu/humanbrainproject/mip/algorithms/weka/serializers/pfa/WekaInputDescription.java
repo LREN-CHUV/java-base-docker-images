@@ -8,7 +8,7 @@ import weka.core.Attribute;
 
 import java.util.*;
 
-public class WekaInputDescription<T extends WekaAlgorithm> extends InputDescription<T> {
+public class WekaInputDescription<T extends WekaAlgorithm<?>> extends InputDescription<T> {
 
     public WekaInputDescription(T algorithm) {
         super(algorithm);
@@ -19,7 +19,7 @@ public class WekaInputDescription<T extends WekaAlgorithm> extends InputDescript
         int valueType = getData().getData().attribute(variable).type();
         switch (valueType) {
             case Attribute.NUMERIC: return VariableType.REAL;
-            default: return VariableType.CATEGORICAL;
+            default: return VariableType.CATEGORICAL_STRING;
         }
     }
 

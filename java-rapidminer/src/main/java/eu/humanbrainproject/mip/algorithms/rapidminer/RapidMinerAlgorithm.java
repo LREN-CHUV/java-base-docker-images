@@ -1,13 +1,14 @@
 package eu.humanbrainproject.mip.algorithms.rapidminer;
 
 import java.io.IOException;
-import java.util.Arrays;
-import java.util.HashSet;
 import java.util.Set;
 import java.util.logging.Logger;
 
 import com.fasterxml.jackson.core.Version;
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.MapperFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.databind.module.SimpleModule;
 
 import com.rapidminer.RapidMiner;
@@ -38,7 +39,7 @@ public class RapidMinerAlgorithm<M extends PredictionModel> implements Algorithm
 
     private InputData input;
     private final RapidMinerModel<M> model;
-    private final RapidMinerAlgorithmSerializer serializer;
+    private final RapidMinerAlgorithmSerializer<M> serializer;
 
     public Exception exception;
 
@@ -46,8 +47,8 @@ public class RapidMinerAlgorithm<M extends PredictionModel> implements Algorithm
      * @param input
      * @param model
      */
-    public RapidMinerAlgorithm(InputData input, RapidMinerModel<M> model, RapidMinerAlgorithmSerializer serializer) {
-        this.input = input;
+    public RapidMinerAlgorithm(InputData input, RapidMinerModel<M> model, RapidMinerAlgorithmSerializer<M> serializer) {
+		this.input = input;
         this.model = model;
         this.serializer = serializer;
     }
@@ -141,7 +142,10 @@ public class RapidMinerAlgorithm<M extends PredictionModel> implements Algorithm
      */
     public String toPFA() throws IOException {
         ObjectMapper myObjectMapper = getObjectMapper();
-        return myObjectMapper.writeValueAsString(this);
+        String rawJson = myObjectMapper.writeValueAsString(this);
+        // Parse again the Json as it may contain segments forcibly added with writeRaw()
+        JsonNode json = myObjectMapper.readTree(rawJson);
+        return myObjectMapper.writeValueAsString(json);
     }
 
     /**
@@ -155,11 +159,14 @@ public class RapidMinerAlgorithm<M extends PredictionModel> implements Algorithm
         return myObjectMapper.writerWithDefaultPrettyPrinter().writeValueAsString(this);
     }
 
+    @SuppressWarnings({ "unchecked", "rawtypes" })
     private ObjectMapper getObjectMapper() {
         ObjectMapper myObjectMapper = new ObjectMapper();
         SimpleModule module = new SimpleModule("RapidMiner", new Version(1, 0, 0, null, null, null));
-        module.addSerializer(RapidMinerAlgorithm.class, serializer);
+        module.addSerializer(RapidMinerAlgorithm.class, (RapidMinerAlgorithmSerializer)serializer);
         myObjectMapper.registerModule(module);
+        myObjectMapper.enable(MapperFeature.SORT_PROPERTIES_ALPHABETICALLY);
+        myObjectMapper.enable(SerializationFeature.ORDER_MAP_ENTRIES_BY_KEYS);
         return myObjectMapper;
     }
 

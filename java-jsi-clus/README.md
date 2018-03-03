@@ -14,32 +14,32 @@ Use this image as part of a multistage build. You need to use this image as the 
 Dockerfile
 ```dockerfile
   FROM hbpmip/java-base-build:3.5.0-jdk-8-9 as build-java-env
-  
+
   COPY pom.xml /project/pom.xml
   RUN cp /usr/share/maven/ref/settings-docker.xml /root/.m2/settings.xml \
       && mvn dependency:resolve
-  
+
   COPY src/ /project/src
-  
+
   # Repeating copy of the settings works better. I dunno why.
   RUN cp /usr/share/maven/ref/settings-docker.xml /root/.m2/settings.xml \
       && mvn -Dmaven.test.skip=true package site
-  
+
   FROM hbpmip/java-jsi-clus:latest
-  
+
   MAINTAINER <your email>
-  
+
   ENV DOCKER_IMAGE=my-algo \
       JAVA_CLASSPATH=${JAVA_CLASSPATH}:/usr/share/jars/my-algo.jar \
       JAVA_MAINCLASS=eu.humanbrainproject.mip.algorithms.jsi.clus.YourEntrypoint
-  
+
   COPY --from=build-java-env /project/target/my-algo.jar /usr/share/jars/my-algo.jar
   COPY --from=build-java-env /project/target/site/ /var/www/html/
   COPY src/ /src/
-  
+
   RUN chown -R compute:compute /src/ \
       && chown -R root:www-data /var/www/html/
-  
+
   LABEL org.label-schema.build-date=$BUILD_DATE \
         org.label-schema.name="hbpmip/my-algo" \
         org.label-schema.description="My algorithm" \

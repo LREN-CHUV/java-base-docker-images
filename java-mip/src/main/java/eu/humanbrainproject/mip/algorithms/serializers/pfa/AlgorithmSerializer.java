@@ -30,7 +30,7 @@ public abstract class AlgorithmSerializer<T extends Algorithm> extends JsonSeria
             jgen.writeStringField("doc", value.getDocumentation());
 
             String errorMessage = value.getErrorMessage();
-            InputDescription inputDescription = getInputDescription(value);
+            InputDescription<T> inputDescription = getInputDescription(value);
 
             // Metadata
             jgen.writeObjectFieldStart("metadata");
@@ -136,7 +136,7 @@ public abstract class AlgorithmSerializer<T extends Algorithm> extends JsonSeria
 
     }
 
-    protected abstract InputDescription getInputDescription(T value);
+    protected abstract InputDescription<T> getInputDescription(T value);
 
     /**
      * Write the model constants and optionally other data such as summary statistics in the 'cells' field of
@@ -170,7 +170,7 @@ public abstract class AlgorithmSerializer<T extends Algorithm> extends JsonSeria
         jgen.writeEndObject();
         jgen.writeStartObject();
         {
-            InputDescription inputDescription = getInputDescription(value);
+            InputDescription<T> inputDescription = getInputDescription(value);
             generateDummyOutput(jgen, inputDescription);
         }
         jgen.writeEndObject();
@@ -187,13 +187,13 @@ public abstract class AlgorithmSerializer<T extends Algorithm> extends JsonSeria
         jgen.writeEndObject();
         jgen.writeStartObject();
         {
-            InputDescription inputDescription = getInputDescription(value);
+            InputDescription<T> inputDescription = getInputDescription(value);
             generateDummyOutput(jgen, inputDescription);
         }
         jgen.writeEndObject();
     }
 
-    protected void generateDummyOutput(JsonGenerator jgen, InputDescription inputDescription) {
+    protected void generateDummyOutput(JsonGenerator jgen, InputDescription<T> inputDescription) {
         try {
             switch (inputDescription.getType(inputDescription.getVariables()[0])) {
                 case CATEGORICAL_STRING: {

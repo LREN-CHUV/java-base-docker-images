@@ -7,7 +7,9 @@ package eu.humanbrainproject.mip.algorithms.db;
  */
 public class DBException extends Exception {
 
-    private Exception parent;
+	private static final long serialVersionUID = -4203912300241196848L;
+
+	private Exception parent;
 
     public DBException(Exception parent) {
         this.parent = parent;

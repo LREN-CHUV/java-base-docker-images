@@ -48,7 +48,7 @@ public class Main<M extends Classifier> {
         }
     }
 
-    @SuppressWarnings("unchecked")
+    @SuppressWarnings({ "unchecked", "rawtypes" })
     public static void main(String[] args) {
 
         try {
