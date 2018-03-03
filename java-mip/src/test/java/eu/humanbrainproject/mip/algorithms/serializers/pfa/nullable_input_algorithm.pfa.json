@@ -111,7 +111,7 @@
         ]
       }
     ],
-    "name": "DependentVariables",
+    "name": "IndpendentVariables",
     "type": "record"
   },
   "metadata": {
