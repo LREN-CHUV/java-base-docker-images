@@ -29,7 +29,7 @@
     <junit.version>5.0.0</junit.version>
     <rapidminer.version>7.0.1</rapidminer.version>
     <postgres.version>9.4.1212.jre7</postgres.version>
-    <mip.adapter.version>0.5.5</mip.adapter.version>
+    <mip.adapter.version>0.5.6</mip.adapter.version>
   </properties>
 
   <repositories>
