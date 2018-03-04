@@ -1,6 +1,8 @@
 
 package eu.humanbrainproject.mip.algorithms.jsi;
 
+import java.util.HashMap;
+import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -16,6 +18,7 @@ import eu.humanbrainproject.mip.algorithms.jsi.serializers.pfa.ClusDescriptiveSe
 import eu.humanbrainproject.mip.algorithms.jsi.serializers.pfa.ClusModelPFASerializer;
 import eu.humanbrainproject.mip.algorithms.jsi.serializers.pfa.ClusVisualizationSerializer;
 import eu.humanbrainproject.mip.algorithms.jsi.common.ClusConstants;
+import eu.humanbrainproject.mip.algorithms.jsi.common.ClusHelpers;
 import si.ijs.kt.clus.algo.rules.ClusRuleSet;
 import si.ijs.kt.clus.ext.featureRanking.Fimp;
 import si.ijs.kt.clus.model.ClusModel;
@@ -99,6 +102,7 @@ public class Main<M extends ClusModel> {
 
     String visualizationOutput = "";
     String descriptiveOutput = "";
+    String tabularDataResourceOutput = "";
     OutputDataConnector out = null;
     try {
       experiment.run();
@@ -117,16 +121,22 @@ public class Main<M extends ClusModel> {
             && !experiment.getCapabilities().contains(AlgorithmCapability.PREDICTIVE_MODEL)) {
 
           // get feature importances if they exist
-          if (new File(ClusConstants.CLUS_FIMPFILE).exists()) {
-            si.ijs.kt.clus.ext.featureRanking.Fimp fimp = new Fimp(ClusConstants.CLUS_FIMPFILE);
-            descriptiveOutput = algorithmDescriptiveSerializer.getFimpString(fimp);
+          if (clusMeta.SETTINGS.containsKey("[Ensemble]")) {
+            Map<String, String> ensembleSettings = clusMeta.SETTINGS.get("[Ensemble]");
+            String iterations = ensembleSettings.get("Iterations");
+            String fimpFile = ClusConstants.CLUS_FILE + iterations + ".fimp";
+
+            if (new File(fimpFile).exists()) {
+              si.ijs.kt.clus.ext.featureRanking.Fimp fimp = new Fimp(fimpFile);
+              tabularDataResourceOutput = algorithmDescriptiveSerializer.getFimpString(fimp);
+            }
           }
         } else if (experiment.getCapabilities().contains(AlgorithmCapability.PREDICTIVE_MODEL)) {
           // we have a descriptive output for the algorithm
           // currently we only support rule models
           if (experiment.getModel() instanceof ClusRuleSet) {
             descriptiveOutput =
-                algorithmDescriptiveSerializer.getRulesetString(
+                algorithmDescriptiveSerializer.getRuleSetString(
                     (ClusRuleSet) experiment.getModel());
           }
         }
@@ -149,11 +159,20 @@ public class Main<M extends ClusModel> {
         out.saveResults(visualizationOutput, ResultsFormat.JAVASCRIPT_VISJS);
       }
 
-      // if algorithm produced feature importances
-      if (descriptiveOutput != "") {
+      // if algorithm produced tabular data
+      if (tabularDataResourceOutput != "") {
         LOGGER.log(Level.FINEST, "Saving TABULAR DATA to database");
-        out.saveResults(descriptiveOutput, ResultsFormat.TABULAR_DATA_RESOURCE_JSON);
+        out.saveResults(tabularDataResourceOutput, ResultsFormat.TABULAR_DATA_RESOURCE_JSON);
       }
+
+      // if algorithm produced HTML output
+      if (descriptiveOutput != "") {
+          LOGGER.log(Level.FINEST, "Saving DESCRIPTIVE OUTPUT to database");
+          out.saveResults(descriptiveOutput, ResultsFormat.HTML);
+      }
+
+      // clean up
+      ClusHelpers.CleanUp();
     }
   }
 }

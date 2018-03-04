@@ -9,5 +9,5 @@ public abstract class ClusDescriptiveSerializer {
 
   public abstract String getFimpString(Fimp fimp);
 
-  public abstract String getRulesetString(ClusRuleSet rules);
+  public abstract String getRuleSetString(ClusRuleSet rules);
 }

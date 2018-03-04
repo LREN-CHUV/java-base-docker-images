@@ -14,7 +14,7 @@ public class DummyDescriptiveSerializer extends ClusDescriptiveSerializer {
   }
 
   @Override
-  public String getRulesetString(ClusRuleSet rules) {
+  public String getRuleSetString(ClusRuleSet rules) {
     return "DummyRules";
   }
 }

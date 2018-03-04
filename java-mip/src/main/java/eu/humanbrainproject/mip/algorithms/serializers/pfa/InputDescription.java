@@ -37,7 +37,7 @@ public abstract class InputDescription<T extends Algorithm> {
         // Input
         jgen.writeObjectFieldStart("input");
         jgen.writeStringField("doc", "Input is the list of covariables and groups");
-        jgen.writeStringField("name", "DependentVariables");
+        jgen.writeStringField("name", "IndependentVariables");
         jgen.writeStringField("type", "record");
         jgen.writeArrayFieldStart("fields");
         for (String covariable : getCovariables()) {
@@ -111,6 +111,7 @@ public abstract class InputDescription<T extends Algorithm> {
             final VariableType type = getType(getVariables()[0]);
             jgen.writeStringField("type", toPFAType(type));
         } else {
+            jgen.writeStringField("name", "DependentVariables");
             jgen.writeStringField("type", "record");
             jgen.writeArrayFieldStart("fields");
             for (String variable : getVariables()) {
