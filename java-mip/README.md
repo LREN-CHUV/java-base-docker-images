@@ -36,7 +36,7 @@ Dockerfile
   RUN cp /usr/share/maven/ref/settings-docker.xml /root/.m2/settings.xml \
       && mvn package assembly:single site
 
-  FROM hbpmip/java-mip:0.5.6
+  FROM hbpmip/java-mip:0.5.7
 
   MAINTAINER <your email>
 
