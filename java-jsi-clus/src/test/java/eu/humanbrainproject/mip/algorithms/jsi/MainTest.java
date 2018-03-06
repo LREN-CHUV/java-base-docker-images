@@ -43,7 +43,7 @@ public class MainTest {
   @DisplayName("some files will be generated on the fly")
   public void testCreateFiles() throws Exception {
     String[] featureNames = new String[] {"input1", "input2"};
-    String[] variableNames = new String[] {"output1"};
+    String[] variableNames = new String[] {"output1", "output2"};
 
     final URL resource = getClass().getResource("data.csv");
     assertNotNull(resource);
@@ -89,7 +89,7 @@ public class MainTest {
   public void testVisualization() {
     DummyVisualizer v = new DummyVisualizer();
 
-    assertEquals("DummyVisualization", v.getVisualizationString(null));
+    assertEquals("DummyVisualization", v.getVisualizationString(null, null));
   }
 
   @Test

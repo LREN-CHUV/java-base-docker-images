@@ -14,15 +14,23 @@
           "input2"
         ],
         "sql": "SELECT",
-        "variable": "output1"
+        "variables": [
+          "output1",
+          "output2"
+        ]
       },
       "type": {
         "doc": "Definition of the query that has produced this model",
         "fields": [
           {
-            "doc": "Dependent variable",
-            "name": "variable",
-            "type": "string"
+            "doc": "List of dependent variables",
+            "name": "variables",
+            "type": {
+              "items": {
+                "type": "string"
+              },
+              "type": "array"
+            }
           },
           {
             "doc": "List of explanatory variables",
@@ -76,7 +84,18 @@
   "name": "DummyAlgorithm",
   "output": {
     "doc": "Output is the estimate of the variable",
-    "type": "string"
+    "fields": [
+      {
+        "name": "output1",
+        "type": "string"
+      },
+      {
+        "name": "output2",
+        "type": "string"
+      }
+    ],
+    "name": "DependentVariables",
+    "type": "record"
   },
   "pools": {}
 }

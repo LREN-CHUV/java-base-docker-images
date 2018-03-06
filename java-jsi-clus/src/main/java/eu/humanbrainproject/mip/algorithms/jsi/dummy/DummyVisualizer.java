@@ -8,7 +8,7 @@ import si.ijs.kt.clus.model.ClusModel;
 public class DummyVisualizer extends ClusVisualizationSerializer<ClusModel> {
 
   @Override
-  public String getVisualizationString(ClusModel model) {
+  public String getVisualizationString(ClusModel model, String[] outputFeaturesNames) {
     return "DummyVisualization";
   }
 }

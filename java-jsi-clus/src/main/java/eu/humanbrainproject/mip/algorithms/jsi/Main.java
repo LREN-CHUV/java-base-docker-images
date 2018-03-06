@@ -1,9 +1,7 @@
 
 package eu.humanbrainproject.mip.algorithms.jsi;
 
-import java.util.HashMap;
 import java.util.Map;
-import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import java.io.File;
@@ -81,11 +79,10 @@ public class Main<M extends ClusModel> {
 
   public void run() throws Exception {
 
-    LOGGER.log(Level.FINEST, "Starting the CLUS library");
-    LOGGER.log(Level.FINEST, "Preparing WEKA database props");
+    LOGGER.finest("Starting the CLUS library");
+    LOGGER.finest("Preparing WEKA database props");
 
     // weka properties
-
     Path targetDbProps =
         FileSystems.getDefault()
             .getPath("/opt", "weka", "props", "weka", "experiment", "DatabaseUtils.props");
@@ -96,6 +93,7 @@ public class Main<M extends ClusModel> {
       Files.createLink(targetDbProps, dbProps);
     }
 
+    LOGGER.finest("Reading input data");
     InputData input = InputData.fromEnv();
 
     ClusAlgorithm<M> experiment = new ClusAlgorithm<>(input, algorithmSerializer, clusMeta);
@@ -105,6 +103,7 @@ public class Main<M extends ClusModel> {
     String tabularDataResourceOutput = "";
     OutputDataConnector out = null;
     try {
+      LOGGER.info("Starting experiment");
       experiment.run();
 
       out = OutputDataConnector.fromEnv();
@@ -112,8 +111,11 @@ public class Main<M extends ClusModel> {
       // generate vizualization if it exists
       if (algorithmVisualizationSerializer != null
           && experiment.getCapabilities().contains(AlgorithmCapability.VISUALISATION)) {
+
+        LOGGER.info("Reading visualization");
+        
         visualizationOutput =
-            algorithmVisualizationSerializer.getVisualizationString(experiment.getModel());
+            algorithmVisualizationSerializer.getVisualizationString(experiment.getModel(), experiment.getInput().getOutputFeaturesNames());
       }
 
       if (algorithmDescriptiveSerializer != null) {
@@ -122,6 +124,8 @@ public class Main<M extends ClusModel> {
 
           // get feature importances if they exist
           if (clusMeta.SETTINGS.containsKey("[Ensemble]")) {
+            LOGGER.info("Reading feature importances");
+
             Map<String, String> ensembleSettings = clusMeta.SETTINGS.get("[Ensemble]");
             String iterations = ensembleSettings.get("Iterations");
             String fimpFile = ClusConstants.CLUS_FILE + iterations + ".fimp";
@@ -135,6 +139,9 @@ public class Main<M extends ClusModel> {
           // we have a descriptive output for the algorithm
           // currently we only support rule models
           if (experiment.getModel() instanceof ClusRuleSet) {
+
+            LOGGER.info("Reading descriptive output");
+
             descriptiveOutput =
                 algorithmDescriptiveSerializer.getRuleSetString(
                     (ClusRuleSet) experiment.getModel());
@@ -142,33 +149,34 @@ public class Main<M extends ClusModel> {
         }
       }
     } catch (Exception e) {
-      LOGGER.log(Level.SEVERE, "Cannot execute the algorithm", e);
+      LOGGER.log(java.util.logging.Level.SEVERE, "Cannot execute the algorithm", e);
+      System.exit(1);
     } finally {
       // if algorithm is predictive, get constructed PFA and save it to database
       if (experiment.getCapabilities().contains(AlgorithmCapability.PREDICTIVE_MODEL)) {
         String pfa = experiment.toPFA();
 
-        LOGGER.log(Level.FINEST, "Saving PFA to database");
+        LOGGER.finest("Saving PFA to database");
         // Write results PFA in DB - it can represent also an error
         out.saveResults(pfa, ResultsFormat.PFA_JSON);
       }
 
       // if algorithm has a visualization
       if (visualizationOutput != "") {
-        LOGGER.log(Level.FINEST, "Saving VISUALIZATION to database");
+        LOGGER.finest("Saving VISUALIZATION to database");
         out.saveResults(visualizationOutput, ResultsFormat.JAVASCRIPT_VISJS);
       }
 
       // if algorithm produced tabular data
       if (tabularDataResourceOutput != "") {
-        LOGGER.log(Level.FINEST, "Saving TABULAR DATA to database");
+        LOGGER.finest("Saving TABULAR DATA to database");
         out.saveResults(tabularDataResourceOutput, ResultsFormat.TABULAR_DATA_RESOURCE_JSON);
       }
 
       // if algorithm produced HTML output
       if (descriptiveOutput != "") {
-          LOGGER.log(Level.FINEST, "Saving DESCRIPTIVE OUTPUT to database");
-          out.saveResults(descriptiveOutput, ResultsFormat.HTML);
+        LOGGER.finest("Saving DESCRIPTIVE OUTPUT to database");
+        out.saveResults(descriptiveOutput, ResultsFormat.HTML);
       }
 
       // clean up
