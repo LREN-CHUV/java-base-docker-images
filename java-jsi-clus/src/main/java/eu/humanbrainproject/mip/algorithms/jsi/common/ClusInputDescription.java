@@ -19,7 +19,7 @@ public class ClusInputDescription<T extends ClusAlgorithm> extends InputDescript
   protected VariableType getType(String variable) throws DBException {
     int valueType = getData().getData().attribute(variable).type();
     switch (valueType) {
-      case Attribute.NUMERIC:
+      case Attribute.NUMERIC:   
         return VariableType.REAL;
       default:
         return VariableType.CATEGORICAL_STRING;

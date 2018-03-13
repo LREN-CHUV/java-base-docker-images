@@ -128,7 +128,6 @@ public class ClusAlgorithm<M extends ClusModel> implements Algorithm {
   private ObjectMapper getObjectMapper() {
     ObjectMapper myObjectMapper = new ObjectMapper();
     SimpleModule module = new SimpleModule("CLUS", new Version(1, 0, 0, null, null, null));
-    // module.addSerializer(algorithmSerializer);
 
     module.addSerializer((Class<? extends ClusAlgorithm<M>>) this.getClass(), algorithmSerializer);
 
@@ -138,8 +137,10 @@ public class ClusAlgorithm<M extends ClusModel> implements Algorithm {
 
   /**
    * Fetches data from database and saves it to arff. It also creates the settings file for CLUS.
+   *
+   * @throws Exception
    */
-  private void writeArffAndSettings() {
+  private void writeArffAndSettings() throws Exception {
     try {
       Instances data = input.getData();
 
@@ -197,7 +198,8 @@ public class ClusAlgorithm<M extends ClusModel> implements Algorithm {
       pw = null;
     } catch (IOException | DBException e) {
       LOGGER.severe(e.getMessage());
-      System.exit(1);
+      this.exception = e;
+      throw e;
     }
   }
 

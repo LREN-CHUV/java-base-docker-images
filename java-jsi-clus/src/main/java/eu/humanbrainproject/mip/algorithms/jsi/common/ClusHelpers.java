@@ -9,7 +9,7 @@ public class ClusHelpers {
   public static void CleanUp() {
     // remove all temp files
     ArrayList<String> extensions =
-        new ArrayList<String>(Arrays.asList("s", "arff", "out", "fimp", "model"));
+        new ArrayList<String>(Arrays.asList("s", "arff", "out", "fimp", "model", "oob", "xval"));
 
     for (String extension : extensions) {
 
