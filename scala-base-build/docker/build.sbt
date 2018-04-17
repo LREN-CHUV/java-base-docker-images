@@ -9,9 +9,9 @@ lazy val library =
   new {
     object Version {
       val scalaCheck = "1.13.5"
-      val scalaTest  = "3.0.3"
+      val scalaTest  = "3.0.5"
       val spec2      = "3.8.9"
-      val akka       = "2.5.9"
+      val akka       = "2.5.12"
     }
     val scalaCheck: ModuleID  = "org.scalacheck"    %% "scalacheck"   % Version.scalaCheck
     val scalaTest: ModuleID   = "org.scalatest"     %% "scalatest"    % Version.scalaTest
@@ -19,6 +19,7 @@ lazy val library =
     val akkaActor: ModuleID   = "com.typesafe.akka" %% "akka-actor"   % Version.akka
     val akkaRemote: ModuleID  = "com.typesafe.akka" %% "akka-remote"  % Version.akka
     val akkaCluster: ModuleID = "com.typesafe.akka" %% "akka-cluster" % Version.akka
+    val akkaClusterTools: ModuleID = "com.typesafe.akka" %% "akka-cluster-tools" % Version.akka
   }
 
 lazy val `seed` =
@@ -32,11 +33,12 @@ lazy val `seed` =
           library.akkaActor,
           library.akkaRemote,
           library.akkaCluster,
+          library.akkaClusterTools,
           library.scalaCheck % Test,
           library.scalaTest  % Test,
           library.spec2      % Test
         ),
-        crossScalaVersions := Seq("2.11.12", "2.12.4")
+        crossScalaVersions := Seq("2.11.12", "2.12.5")
       )
     )
 
