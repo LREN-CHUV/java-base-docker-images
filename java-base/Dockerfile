@@ -1,10 +1,10 @@
-FROM openjdk:8u151-jre-slim-stretch
+FROM openjdk:10.0.1-10-jre-slim-sid
 
 ARG BUILD_DATE
 ARG VCS_REF
 ARG VERSION
 
-ENV DOCKERIZE_VERSION=v0.6.0 \
+ENV DOCKERIZE_VERSION=v0.6.1 \
     JAVA_OPTIONS="-XX:+UnlockExperimentalVMOptions -XX:+UseCGroupMemoryLimitForHeap"
 
 RUN apt-get update && apt-get install -y --no-install-recommends ca-certificates wget \
