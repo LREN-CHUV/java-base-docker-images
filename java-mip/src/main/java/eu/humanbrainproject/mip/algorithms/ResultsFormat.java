@@ -23,6 +23,7 @@ public enum ResultsFormat {
   PNG_IMAGE("png_image", "image/png;base64"),
   SVG_IMAGE("svg_image", "image/svg+xml"),
   HTML("html", "text/html"),
+  TEXT("text", "text/plain"),
   /**
    * Tabular data resource
    * @see https://frictionlessdata.io/specs/tabular-data-resource/
