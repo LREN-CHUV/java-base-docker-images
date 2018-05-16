@@ -16,20 +16,28 @@ public class Configuration {
     private Configuration() {
     }
 
+    public String inputJdbcDriver() {
+        return env("IN_JDBC_DRIVER", "org.postgresql.Driver");
+    }
+
     public String inputJdbcUrl() {
         return env("IN_JDBC_URL");
     }
 
     public String inputJdbcUser() {
-        return env("IN_JDBC_USER");
+        return env("IN_USER");
     }
 
     public String inputJdbcPassword() {
-        return env("IN_JDBC_PASSWORD");
+        return env("IN_PASSWORD");
     }
 
     public String inputSqlQuery() {
         return env("PARAM_query", "");
+    }
+
+    public String outputJdbcDriver() {
+        return env("OUT_JDBC_DRIVER", "org.postgresql.Driver");
     }
 
     public String outputJdbcUrl() {
@@ -37,11 +45,11 @@ public class Configuration {
     }
 
     public String outputJdbcUser() {
-        return env("OUT_JDBC_USER");
+        return env("OUT_USER");
     }
 
     public String outputJdbcPassword() {
-        return env("OUT_JDBC_PASSWORD");
+        return env("OUT_PASSWORD");
     }
 
     public String outputResultTable() {
@@ -93,7 +101,7 @@ public class Configuration {
     public Map<String, String> algorithmParameterValues(Set<String> algorithmParameters) {
         HashMap<String, String> values = new HashMap<>();
         for (String param: algorithmParameters) {
-            values.put(param, env("MODEL_PARAM_" + param, env("PARAM_MODEL_" + param)));
+            values.put(param, env("MODEL_PARAM_" + param));
         }
         return values;
     }
@@ -107,7 +115,7 @@ public class Configuration {
     public Map<String, String> algorithmParameterValues(Map<String, String> algorithmParametersWithDefaultValues) {
         HashMap<String, String> values = new HashMap<>();
         for (String param: algorithmParametersWithDefaultValues.keySet()) {
-            values.put(param, env("MODEL_PARAM_" + param, env("PARAM_MODEL_" + param, algorithmParametersWithDefaultValues.get(param))));
+            values.put(param, env("MODEL_PARAM_" + param, algorithmParametersWithDefaultValues.get(param)));
         }
         return values;
     }
