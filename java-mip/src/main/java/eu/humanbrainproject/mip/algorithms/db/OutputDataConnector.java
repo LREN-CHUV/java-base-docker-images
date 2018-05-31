@@ -2,10 +2,12 @@ package eu.humanbrainproject.mip.algorithms.db;
 
 import eu.humanbrainproject.mip.algorithms.Configuration;
 import eu.humanbrainproject.mip.algorithms.ResultsFormat;
+import eu.humanbrainproject.mip.algorithms.Parameters;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
+import java.util.HashMap;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -48,17 +50,26 @@ public class OutputDataConnector extends DBConnector {
             throws DBException {
 
         final Configuration conf = Configuration.INSTANCE;
+        Parameters parameters = new Parameters(conf.inputSqlQuery(), conf.variables()[0], conf.covariables(), new HashMap<>());
 
-        saveResults(results, resultsFormat, conf.jobId(), conf.executionNode(), conf.function());
+        saveResults(results, resultsFormat, parameters);
     }
 
-    public void saveResults(String results, ResultsFormat resultsFormat, String jobId, String executionNode, String function)
+    public void saveResults(String results, ResultsFormat resultsFormat, Parameters parameters)
+            throws DBException {
+
+        final Configuration conf = Configuration.INSTANCE;
+
+        saveResults(results, resultsFormat, conf.jobId(), conf.executionNode(), conf.function(), parameters, "", null);
+    }
+
+    public void saveResults(String results, ResultsFormat resultsFormat, String jobId, String executionNode, String function, Parameters parameters, String resultName, String resultTitle)
             throws DBException {
 
         try (Connection conn = getConnection()) {
             conn.setAutoCommit(false);
 
-            String insertRequest = String.format("INSERT INTO %s (job_id, node, data, shape, function) VALUES (?, ?, ?, ?, ?)", outTable);
+            String insertRequest = String.format("INSERT INTO %s (job_id, node, data, shape, function, parameters, result_name, result_title) VALUES (?, ?, ?, ?, ?, ?, ?, ?)", outTable);
 
             try (PreparedStatement stmt = conn.prepareStatement(insertRequest)) {
                 stmt.setString(1, jobId);
@@ -66,6 +77,9 @@ public class OutputDataConnector extends DBConnector {
                 stmt.setString(3, results);
                 stmt.setString(4, resultsFormat.getShape());
                 stmt.setString(5, function);
+                stmt.setString(6, parameters.toString());
+                stmt.setString(7, resultName);
+                stmt.setString(8, resultTitle);
 
                 stmt.executeUpdate();
                 conn.commit();
