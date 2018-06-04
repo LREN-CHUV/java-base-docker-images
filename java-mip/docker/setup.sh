@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 
 # The master for this script exists in the Python '2.7' directory. Do
 # not edit the version of this script found in other directories. When
@@ -39,9 +39,9 @@ GOSU_DOWNLOAD_KEY="0x036A9C25BF357DD4"
 
 # Download and install gosu
 # https://github.com/tianon/gosu/releases
-buildDeps='bash curl gnupg'
+buildDeps='curl gnupg'
 set -x
-apk add --no-cache $buildDeps
+apt-get update && apt-get install -y $buildDeps
 gpg-agent --daemon
 # Use an alternative key server to improve reliability of CI
 gpg --keyserver pgp.mit.edu --recv-keys $GOSU_DOWNLOAD_KEY || \
@@ -53,16 +53,16 @@ gpg --verify gosu-amd64.asc
 rm -f gosu-amd64.asc
 mv gosu-amd64 /usr/bin/gosu
 chmod +x /usr/bin/gosu
-pkill gpg-agent
-apk del --purge $buildDeps
-rm -rf /root/.gnupg
-rm -rf /var/cache/apk/*
 
 # Install nginx to be able to serve content from this container
-apk --no-cache add nginx~=1.12
+apt-get install -y nginx
 rm -rf /etc/nginx/*.d
 mkdir -p /etc/nginx/addon.d /etc/nginx/conf.d /etc/nginx/host.d /etc/nginx/nginx.d
 usermod -a -G www-data compute
+
+# Clean
+apt-get autoremove --purge --allow-remove-essential -y $buildDeps && rm -rf /var/lib/apt/lists/*
+rm -rf /root/.gnupg
 
 # Create our standard directories:
 #   /data/in : input data should go there
