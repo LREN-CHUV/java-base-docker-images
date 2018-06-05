@@ -2,7 +2,9 @@ package eu.humanbrainproject.mip.algorithms;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import org.postgresql.util.PGobject;
 
+import java.sql.SQLException;
 import java.util.Map;
 
 public class Parameters {
@@ -59,5 +61,16 @@ public class Parameters {
             e.printStackTrace();
         }
         return null;
+    }
+
+    public PGobject toPGObject() {
+        PGobject jsonObject = new PGobject();
+        jsonObject.setType("json");
+        try {
+            jsonObject.setValue(this.toString());
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return jsonObject;
     }
 }

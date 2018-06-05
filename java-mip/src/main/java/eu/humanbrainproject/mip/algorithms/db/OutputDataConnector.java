@@ -77,7 +77,7 @@ public class OutputDataConnector extends DBConnector {
                 stmt.setString(3, results);
                 stmt.setString(4, resultsFormat.getShape());
                 stmt.setString(5, function);
-                stmt.setString(6, parameters.toString());
+                stmt.setObject(6, parameters.toPGObject());
                 stmt.setString(7, resultName);
                 stmt.setString(8, resultTitle);
 
