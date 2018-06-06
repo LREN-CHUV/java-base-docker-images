@@ -101,8 +101,16 @@ public class Configuration {
      */
     public Map<String, String> algorithmParameterValues() {
         Map<String, String> envVars = System.getenv();
-        envVars.entrySet().removeIf(entry -> !entry.getKey().contains("MODEL_PARAM_"));
-        return envVars;
+        Map<String, String> params = new HashMap<>();
+        for (Map.Entry<String, String> entry : envVars.entrySet())
+        {
+            System.out.println(entry);
+            if(entry.getKey().contains("MODEL_PARAM_"))
+            {
+                params.put(entry.getKey(), entry.getValue());
+            }
+        }
+        return params;
     }
 
     /**
