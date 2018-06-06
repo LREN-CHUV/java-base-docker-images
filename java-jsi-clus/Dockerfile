@@ -11,7 +11,7 @@ RUN cp /usr/share/maven/ref/settings-docker.xml /root/.m2/settings.xml \
 RUN cp /usr/share/maven/ref/settings-docker.xml /root/.m2/settings.xml \ 
     && mvn package site
 
-FROM hbpmip/java-mip:0.5.10
+FROM hbpmip/java-mip:0.5.11
 
 MAINTAINER martin.breskvar@ijs.si
 
