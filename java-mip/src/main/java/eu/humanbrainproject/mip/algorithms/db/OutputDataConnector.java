@@ -1,13 +1,12 @@
 package eu.humanbrainproject.mip.algorithms.db;
 
 import eu.humanbrainproject.mip.algorithms.Configuration;
-import eu.humanbrainproject.mip.algorithms.ResultsFormat;
 import eu.humanbrainproject.mip.algorithms.Parameters;
+import eu.humanbrainproject.mip.algorithms.ResultsFormat;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
-import java.util.HashMap;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -50,7 +49,7 @@ public class OutputDataConnector extends DBConnector {
             throws DBException {
 
         final Configuration conf = Configuration.INSTANCE;
-        Parameters parameters = new Parameters(conf.inputSqlQuery(), conf.variables()[0], conf.covariables(), new HashMap<>());
+        Parameters parameters = new Parameters(conf.inputSqlQuery(), conf.variables()[0], conf.covariables(), conf.algorithmParameterValues());
 
         saveResults(results, resultsFormat, parameters);
     }

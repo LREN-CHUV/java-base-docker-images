@@ -95,6 +95,18 @@ public class Configuration {
 
     /**
      * Return the values of the algorithm parameters read from the environment variables.
+     * For a parameter k, we read the value of environment variable MODEL_PARAM_k.
+     * Unlike the similar functions below, this one tries to read any environment variable starting by "MODEL_PARAM_",
+     * so you don't have to give a list of parameters as an input.
+     */
+    public Map<String, String> algorithmParameterValues() {
+        Map<String, String> envVars = System.getenv();
+        envVars.entrySet().removeIf(entry -> !entry.getKey().contains("MODEL_PARAM_"));
+        return envVars;
+    }
+
+    /**
+     * Return the values of the algorithm parameters read from the environment variables.
      * For a parameter k, we read first the value of environment variable MODEL_PARAM_k,
      * then for backwards compatibility the value of environment variable PARAM_MODEL_k
      */
