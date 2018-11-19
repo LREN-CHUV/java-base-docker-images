@@ -1,4 +1,4 @@
-FROM openjdk:10.0.1-10-jre-slim-sid
+FROM openjdk:11.0.1-jre-slim-sid
 
 ARG BUILD_DATE
 ARG VCS_REF

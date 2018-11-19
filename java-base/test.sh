@@ -8,4 +8,4 @@ else
   DOCKER="sudo docker"
 fi
 
-$DOCKER run -it --rm hbpmip/java-base:latest java -version
+$DOCKER run -it --rm hbpmip/java-base java -version

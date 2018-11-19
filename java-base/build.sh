@@ -29,7 +29,7 @@ else
   CAPTAIN="sudo captain"
 fi
 
-$DOCKER pull openjdk:8u151-jre-slim-stretch
+$DOCKER pull openjdk:11.0.1-jre-slim-sid
 BUILD_DATE=$(date -Iseconds) \
   VCS_REF=$(git describe --tags --dirty) \
   VERSION=$(git describe --tags --dirty) \
