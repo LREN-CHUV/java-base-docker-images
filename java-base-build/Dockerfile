@@ -1,7 +1,5 @@
 # Pull base image
-FROM maven:3.5.2-jdk-8-alpine
-
-MAINTAINER Arnaud Jutzeler <arnaud.jutzeler@chuv.ch>
+FROM maven:3.6.0-jdk-11-slim
 
 ARG BUILD_DATE
 ARG VCS_REF
@@ -10,6 +8,10 @@ ARG VERSION
 ENV HOME=/root
 COPY docker/seed-src /seed-src
 WORKDIR /seed-src
+
+# Run Maven on an empty project and force it to download most of its dependencies to fill the cache
+RUN mvn dependency:go-offline -B \
+    && rm -rf /seed-src/target
 
 # Run Maven on an empty project and force it to download most of its dependencies to fill the cache
 RUN mkdir -p /usr/share/maven/ref/repository \
