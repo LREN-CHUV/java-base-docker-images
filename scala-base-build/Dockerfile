@@ -7,18 +7,17 @@ FROM hbpmip/java-base-build:3.6.0-jdk-11-0
 # https://github.com/hseeberger/scala-sbt
 #
 
-MAINTAINER Arnaud Jutzeler <arnaud.jutzeler@chuv.ch>
-
 ARG BUILD_DATE
 ARG VCS_REF
 ARG VERSION
 
-ENV SCALA_VERSION=2.12.5 \
-    SBT_VERSION=1.1.0 \
+ENV SCALA_VERSION=2.12.7 \
+    SBT_VERSION=1.2.6 \
     HOME=/root
 
 # Install sbt dependencies
-RUN apk add --no-cache ncurses git
+RUN apt-get update && apt-get install -y ncurses-bin git \
+    && rm -rf /var/lib/apt/lists/*
 
 # Install sbt
 RUN \

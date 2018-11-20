@@ -8,14 +8,12 @@ name          := "seed"
 lazy val library =
   new {
     object Version {
-      val scalaCheck = "1.13.5"
+      val scalaCheck = "1.14.0"
       val scalaTest  = "3.0.5"
-      val spec2      = "3.8.9"
-      val akka       = "2.5.12"
+      val akka       = "2.5.18"
     }
     val scalaCheck: ModuleID  = "org.scalacheck"    %% "scalacheck"   % Version.scalaCheck
     val scalaTest: ModuleID   = "org.scalatest"     %% "scalatest"    % Version.scalaTest
-    val spec2: ModuleID       = "org.specs2"        %% "specs2-core"  % Version.spec2
     val akkaActor: ModuleID   = "com.typesafe.akka" %% "akka-actor"   % Version.akka
     val akkaRemote: ModuleID  = "com.typesafe.akka" %% "akka-remote"  % Version.akka
     val akkaCluster: ModuleID = "com.typesafe.akka" %% "akka-cluster" % Version.akka
@@ -35,10 +33,9 @@ lazy val `seed` =
           library.akkaCluster,
           library.akkaClusterTools,
           library.scalaCheck % Test,
-          library.scalaTest  % Test,
-          library.spec2      % Test
+          library.scalaTest  % Test
         ),
-        crossScalaVersions := Seq("2.11.12", "2.12.5")
+        crossScalaVersions := Seq("2.11.12", "2.12.7")
       )
     )
 
@@ -86,5 +83,5 @@ lazy val scalafmtSettings =
   Seq(
     scalafmtOnCompile := true,
     scalafmtOnCompile.in(Sbt) := false,
-    scalafmtVersion := "1.4.0"
+    scalafmtVersion := "1.5.1"
   )
