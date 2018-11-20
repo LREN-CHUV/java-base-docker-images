@@ -5,13 +5,10 @@ ARG BUILD_DATE
 ARG VCS_REF
 ARG VERSION
 
+RUN mkdir -p /root/.m2
 ENV HOME=/root
 COPY docker/seed-src /seed-src
 WORKDIR /seed-src
-
-# Run Maven on an empty project and force it to download most of its dependencies to fill the cache
-RUN mvn dependency:go-offline -B \
-    && rm -rf /seed-src/target
 
 # Run Maven on an empty project and force it to download most of its dependencies to fill the cache
 RUN mkdir -p /usr/share/maven/ref/repository \
@@ -25,7 +22,7 @@ RUN mkdir -p /usr/share/maven/ref/repository \
         package \
         assembly:single \
         site \
-        dependency:go-offline \
+        dependency:go-offline -B \
     && rm -rf /seed-src/target
 
 WORKDIR /project
