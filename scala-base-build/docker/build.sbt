@@ -11,13 +11,24 @@ lazy val library =
       val scalaCheck = "1.14.0"
       val scalaTest  = "3.0.5"
       val akka       = "2.5.18"
+      val akkaHttp   = "10.1.5"
+      val sprayJson  = "1.3.5"
+      val slf4j      = "1.7.25"
+      val log4j      = "2.11.1"
+      val cats       = "1.4.0"
     }
-    val scalaCheck: ModuleID  = "org.scalacheck"    %% "scalacheck"   % Version.scalaCheck
-    val scalaTest: ModuleID   = "org.scalatest"     %% "scalatest"    % Version.scalaTest
-    val akkaActor: ModuleID   = "com.typesafe.akka" %% "akka-actor"   % Version.akka
-    val akkaRemote: ModuleID  = "com.typesafe.akka" %% "akka-remote"  % Version.akka
-    val akkaCluster: ModuleID = "com.typesafe.akka" %% "akka-cluster" % Version.akka
+    val scalaCheck: ModuleID       = "org.scalacheck"    %% "scalacheck"   % Version.scalaCheck
+    val scalaTest: ModuleID        = "org.scalatest"     %% "scalatest"    % Version.scalaTest
+    val akkaActor: ModuleID        = "com.typesafe.akka" %% "akka-actor"   % Version.akka
+    val akkaRemote: ModuleID       = "com.typesafe.akka" %% "akka-remote"  % Version.akka
+    val akkaCluster: ModuleID      = "com.typesafe.akka" %% "akka-cluster" % Version.akka
     val akkaClusterTools: ModuleID = "com.typesafe.akka" %% "akka-cluster-tools" % Version.akka
+    val akkaHttp: ModuleID         = "com.typesafe.akka" %% "akka-http" % Version.akkaHttp
+    val akkaHttpJson: ModuleID     = "com.typesafe.akka" %% "akka-http-spray-json" % Version.akkaHttp
+    val sprayJson: ModuleID        = "io.spray"          %% "spray-json"   % Version.sprayJson
+    val slf4j: ModuleID            = "org.slf4j"          % "slf4j-api"    % Version.slf4j
+    val log4jSlf4j: ModuleID       = "org.apache.logging.log4j" % "log4j-slf4j-impl" % Version.log4j
+    val catsCore: ModuleID         = "org.typelevel"     %% "cats-core"    % Version.cats
   }
 
 lazy val `seed` =
@@ -32,6 +43,12 @@ lazy val `seed` =
           library.akkaRemote,
           library.akkaCluster,
           library.akkaClusterTools,
+          library.akkaHttp,
+          library.akkaHttpJson,
+          library.sprayJson,
+          library.slf4j,
+          library.log4jSlf4j,
+          library.catsCore,
           library.scalaCheck % Test,
           library.scalaTest  % Test
         ),
