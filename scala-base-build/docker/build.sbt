@@ -48,6 +48,9 @@ lazy val `seed` =
           library.akkaRemote,
           library.akkaCluster,
           library.akkaClusterTools,
+          library.akkaStream,
+          library.akkaContrib,
+          library.akkaSlf4j,
           library.akkaHttp,
           library.akkaHttpJson,
           library.sprayJson,
@@ -55,7 +58,9 @@ lazy val `seed` =
           library.log4jSlf4j,
           library.catsCore,
           library.scalaCheck % Test,
-          library.scalaTest  % Test
+          library.scalaTest  % Test,
+          library.akkaTestkit  % Test,
+          library.akkaStreamTestkit  % Test
         ),
         crossScalaVersions := Seq("2.11.12", "2.12.7")
       )
