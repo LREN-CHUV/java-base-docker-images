@@ -5,7 +5,7 @@ ARG VCS_REF
 ARG VERSION
 
 ENV DOCKERIZE_VERSION=v0.6.1 \
-    JAVA_OPTIONS="-XX:+UnlockExperimentalVMOptions -XX:+UseCGroupMemoryLimitForHeap"
+    JAVA_OPTIONS=""
 
 RUN apt-get update && apt-get install -y --no-install-recommends ca-certificates wget \
     && update-ca-certificates \
