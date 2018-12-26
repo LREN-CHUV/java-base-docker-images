@@ -128,8 +128,7 @@ public class Configuration {
 
     /**
      * Return the values of the algorithm parameters read from the environment variables.
-     * For a parameter k, we read first the value of environment variable MODEL_PARAM_k,
-     * then for backwards compatibility the value of environment variable PARAM_MODEL_k.
+     * For a parameter k, we read the value of environment variable MODEL_PARAM_k,.
      * If no matching environment variable is found, then the value of k in the input map is used.
      */
     public Map<String, String> algorithmParameterValues(Map<String, String> algorithmParametersWithDefaultValues) {

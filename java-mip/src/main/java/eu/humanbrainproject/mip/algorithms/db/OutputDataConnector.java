@@ -1,7 +1,6 @@
 package eu.humanbrainproject.mip.algorithms.db;
 
 import eu.humanbrainproject.mip.algorithms.Configuration;
-import eu.humanbrainproject.mip.algorithms.Parameters;
 import eu.humanbrainproject.mip.algorithms.ResultsFormat;
 
 import java.sql.Connection;
@@ -68,17 +67,18 @@ public class OutputDataConnector extends DBConnector {
         try (Connection conn = getConnection()) {
             conn.setAutoCommit(false);
 
-            String insertRequest = String.format("INSERT INTO %s (job_id, node, data, shape, function, parameters, result_name, result_title) VALUES (?, ?, ?, ?, ?, ?, ?, ?)", outTable);
+            String insertRequest = String.format("INSERT INTO %s (job_id, node, timestamp, data, shape, function, parameters, result_name, result_title) VALUES (?, ?, ?, ?, ?, ?, ?, ?)", outTable);
 
             try (PreparedStatement stmt = conn.prepareStatement(insertRequest)) {
                 stmt.setString(1, jobId);
                 stmt.setString(2, executionNode);
-                stmt.setString(3, results);
-                stmt.setString(4, resultsFormat.getShape());
-                stmt.setString(5, function);
-                stmt.setObject(6, parameters.toPGObject());
-                stmt.setString(7, resultName);
-                stmt.setString(8, resultTitle);
+                stmt.setTimestamp(3, new Timestamp(System.currentTimeMillis()));
+                stmt.setString(4, results);
+                stmt.setString(5, resultsFormat.getShape());
+                stmt.setString(6, function);
+                stmt.setObject(7, parameters.toPGObject());
+                stmt.setString(8, resultName);
+                stmt.setString(9, resultTitle);
 
                 stmt.executeUpdate();
                 conn.commit();
