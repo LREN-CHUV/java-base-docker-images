@@ -10,12 +10,12 @@ lazy val library =
     object Version {
       val scalaCheck = "1.14.0"
       val scalaTest  = "3.0.5"
-      val akka       = "2.5.18"
-      val akkaHttp   = "10.1.5"
+      val akka       = "2.5.19"
+      val akkaHttp   = "10.1.7"
       val sprayJson  = "1.3.5"
       val slf4j      = "1.7.25"
       val log4j      = "2.11.1"
-      val cats       = "1.4.0"
+      val cats       = "1.5.0"
     }
     val scalaCheck: ModuleID       = "org.scalacheck"    %% "scalacheck"   % Version.scalaCheck
     val scalaTest: ModuleID        = "org.scalatest"     %% "scalatest"    % Version.scalaTest
@@ -62,7 +62,7 @@ lazy val `seed` =
           library.akkaTestkit  % Test,
           library.akkaStreamTestkit  % Test
         ),
-        crossScalaVersions := Seq("2.11.12", "2.12.7")
+        crossScalaVersions := Seq("2.11.12", "2.12.8")
       )
     )
 
