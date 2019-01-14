@@ -11,8 +11,8 @@ ARG BUILD_DATE
 ARG VCS_REF
 ARG VERSION
 
-ENV SCALA_VERSION=2.12.7 \
-    SBT_VERSION=1.2.6 \
+ENV SCALA_VERSION=2.12.8 \
+    SBT_VERSION=1.2.8 \
     HOME=/root
 
 # Install sbt dependencies
