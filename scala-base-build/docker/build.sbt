@@ -10,10 +10,10 @@ lazy val library =
     object Version {
       val scalaCheck = "1.14.0"
       val scalaTest  = "3.0.5"
-      val akka       = "2.5.20"
+      val akka       = "2.5.21"
       val akkaHttp   = "10.1.7"
       val sprayJson  = "1.3.5"
-      val slf4j      = "1.7.25"
+      val slf4j      = "1.7.26"
       val log4j      = "2.11.2"
       val cats       = "1.6.0"
     }
