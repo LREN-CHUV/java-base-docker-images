@@ -7,10 +7,6 @@ FROM hbpmip/java-base-build:3.6.0-jdk-11-0
 # https://github.com/hseeberger/scala-sbt
 #
 
-ARG BUILD_DATE
-ARG VCS_REF
-ARG VERSION
-
 ENV SCALA_VERSION=2.12.8 \
     SBT_VERSION=1.2.8 \
     HOME=/root
@@ -48,6 +44,10 @@ COPY docker/warm-ivy2-cache.sh docker/check-sources.sh /
 ONBUILD WORKDIR /build
 # Warm Ivy2 cache
 ONBUILD RUN /warm-ivy2-cache.sh
+
+ARG BUILD_DATE
+ARG VCS_REF
+ARG VERSION
 
 LABEL org.label-schema.build-date=$BUILD_DATE \
       org.label-schema.name="hbpmip/scala-base-build" \
