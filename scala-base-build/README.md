@@ -12,7 +12,7 @@ Use this image as part of a multistage build:
 
 Dockerfile
 ```dockerfile
-  FROM hbpmip/scala-base-build:1.2.6-8 as scala-build-env
+  FROM hbpmip/scala-base-build:1.2.8-0 as scala-build-env
 
   COPY build.sbt /build/
   COPY project/ /build/project/
