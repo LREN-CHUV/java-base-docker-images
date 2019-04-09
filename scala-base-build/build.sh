@@ -27,8 +27,8 @@ else
 fi
 
 source ./.dockerimage
-VCS_REF=$(git describe --tags --dirty)
-VERSION=$(git describe --tags --dirty)
+VCS_REF=$(git describe --tags --dirty | sed 's/scala-base-build-//')
+VERSION=$(git describe --tags --dirty | sed 's/scala-base-build-//')
 
 docker build --build-arg BUILD_DATE=$(date -Iseconds) \
     --build-arg VCS_REF=$VCS_REF \
