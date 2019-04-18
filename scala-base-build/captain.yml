@@ -1,7 +1,0 @@
-target_image:
-  build: Dockerfile
-  image: hbpmip/scala-base-build
-  pre:
-    - echo "Preparing scala-base-build"
-  post:
-    - echo "Finished scala-base-build"
