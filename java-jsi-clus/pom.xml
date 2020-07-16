@@ -21,7 +21,7 @@
 		<surefire.report.plugin.version>2.20</surefire.report.plugin.version>
 		<jxr.plugin.version>2.5</jxr.plugin.version>
 		<junit.version>5.0.0</junit.version>
-		<postgres.version>9.4.1212.jre7</postgres.version>
+		<postgres.version>42.2.5</postgres.version>
 		<mip.adapter.version>0.5.11</mip.adapter.version>
 		<clus.version>1.0.0</clus.version>
 		<weka.version>3.8.1</weka.version>
@@ -149,16 +149,14 @@
 						<configuration>
 							<finalName>${project.artifactId}-deps</finalName>
 							<transformers>
-								<transformer
-									implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">
+								<transformer implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">
 									<manifestEntries>
 										<Main-Class>eu.humanbrainproject.mip.algorithms.jsi.Main</Main-Class>
 										<X-Compile-Source-JDK>${jdk.version}</X-Compile-Source-JDK>
 										<X-Compile-Target-JDK>${jdk.version}</X-Compile-Target-JDK>
 									</manifestEntries>
 								</transformer>
-								<transformer
-									implementation="org.apache.maven.plugins.shade.resource.DontIncludeResourceTransformer">
+								<transformer implementation="org.apache.maven.plugins.shade.resource.DontIncludeResourceTransformer">
 									<resources>
 										<resource>.SF</resource>
 										<resource>.DSA</resource>
