@@ -28,7 +28,7 @@
     <hadrian.version>0.8.5</hadrian.version>
     <junit.version>5.0.0</junit.version>
     <rapidminer.version>7.0.1</rapidminer.version>
-    <postgres.version>9.4.1212.jre7</postgres.version>
+    <postgres.version>42.2.25.jre6</postgres.version>
     <mip.adapter.version>0.5.11</mip.adapter.version>
   </properties>
 
